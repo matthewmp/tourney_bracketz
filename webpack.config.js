@@ -27,11 +27,11 @@ module.exports = {
           loader: "html-loader",
           options: { minimize: true }
         }
-      }//,
-      // {
-      //   test: /\.css$/,
-      //   use: ["style-loader", "css-loader", "postcss-loader"]
-      // }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"]
+      }
     ]
   },
     plugins: [
