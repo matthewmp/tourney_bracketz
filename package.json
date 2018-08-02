@@ -4,8 +4,9 @@
   "description": "Tounrament bracket generator",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development src/client/js",
-    "build": "webpack --config=webpack.config.js"
+    "build-dev": "webpack --mode development src/client/js",
+    "build-prod": "webpack",
+    "start-dev": "webpack-dev-server --config=webpack.config.js"
   },
   "repository": {
     "type": "git",
