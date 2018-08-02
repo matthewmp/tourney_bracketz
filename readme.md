@@ -19,7 +19,7 @@ Getting Started
 Clone the repository
 run NPM install from the root directory of this repository to install dependencies
 
-Prerequisites
+Prerequisites:
 
 Running the tests
 
