@@ -37,7 +37,7 @@ We are not looking for outside contributions at this time. Feel free to fork thi
 Authors
 Matt Palumbo
 Tom Cariello
-Dean Rivers
+Dean Russell Rivers III
 
 
 License
