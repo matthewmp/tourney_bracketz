@@ -1,4 +1,4 @@
-Tourney_Bracketz
+ Tourney_Bracketz
 This web application will allow any user to provide a number of names (between 3 & 64) and the application will randomly assign these names into a tournament bracket and apply byes as needed. The users can indicate winners in any contest to advance to the next level of the tournament. A list of features is below:
 
     Alert all (registered) participants by email after tournament created
@@ -38,6 +38,7 @@ Authors
 Matt Palumbo
 Tom Cariello
 Dean Russell Rivers III
+Brandon Casasnovas
 
 
 License
