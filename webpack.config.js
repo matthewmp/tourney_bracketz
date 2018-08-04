@@ -1,4 +1,6 @@
 var path = require('path');
+const webpack = require('webpack');
+
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: {
@@ -10,7 +12,9 @@ module.exports = {
     path: path.resolve(__dirname, "./dist")
   },
   devServer: {
-    contentBase: "dist"
+    contentBase: "dist",
+    overlay: true,
+    hot: true
   },
   module:{
     rules: [
@@ -38,6 +42,7 @@ module.exports = {
       new HtmlWebPackPlugin({
         template: "src/index.html",
         filename: "./index.html"
-      })
+      }),
+      new webpack.HotModuleReplacementPlugin()
     ]
 }
