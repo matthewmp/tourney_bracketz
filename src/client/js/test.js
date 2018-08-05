@@ -4,6 +4,6 @@ export function test(msg){
 }
 
 export function test2(msg){
-	console.log(msg + '2!');
+	console.log(msg + '1!');
 	return msg;
 }

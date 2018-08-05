@@ -1,5 +1,5 @@
-import express from 'express';
-import path from 'path';
+const express = require('express');
+const path = require('path');
 
 const app = express();
 
@@ -17,13 +17,11 @@ const webpackHotMiddleware = require('webpack-hot-middleware')(compiler);
 app.use(webpackDevMiddleware);
 app.use(webpackHotMiddleware);
 
-//const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
+const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
 
-//app.use(staticMiddleware);
+app.use(staticMiddleware);
 
-app.get('/', (req, res) => {
-  res.send('hi');
-});
+
 
 app.listen(8888, () => {
 	console.log('Listing on 8888');
