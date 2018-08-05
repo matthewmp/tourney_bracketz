@@ -1,3 +1,5 @@
+// Test JS file to make sure es6 is loading and files are importing/exporting correctly
+
 export function test(msg){
 	console.log(msg) ;
 	return msg;
