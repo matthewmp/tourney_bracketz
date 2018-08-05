@@ -8,7 +8,8 @@
     "build-prod": "webpack",
     "start-dev": "webpack-dev-server --config=webpack.config.js",
     "start-server": "nodemon src/server/main.js",
-    "test-client": "mocha --require babel-core/register src/client/test"
+    "test-client": "mocha --require babel-core/register src/client/test",
+    "test-server": "mocha --require babel-core/register src/server/test"
   },
   "repository": {
     "type": "git",
