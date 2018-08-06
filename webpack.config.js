@@ -29,7 +29,7 @@ module.exports = {
         test: /\.html$/,
         use: {
           loader: "html-loader",
-          options: { minimize: true }
+          options: { attrs: ["img:src"] }
         }
       },
       {
@@ -39,10 +39,9 @@ module.exports = {
     ]
   },
     plugins: [
+      new webpack.HotModuleReplacementPlugin(),
       new HtmlWebPackPlugin({
-        template: "src/client/index.html",
-        filename: "./index.html"
-      }),
-      new webpack.HotModuleReplacementPlugin()
+        template: "src/client/index.html"
+      })
     ]
 }
