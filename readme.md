@@ -27,6 +27,8 @@ Running the tests
 
 Deployment
 
+See "build-env-notes" file for break down of the development and build process.
+
 
 Built With
 Node.JS

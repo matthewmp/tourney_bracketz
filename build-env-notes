@@ -73,3 +73,18 @@ Build Environment Notes
 
     This should transpile any files/folder in the src/server directory to the 
     dist folder with the same folder structure.
+
+4. Testing
+   -------
+
+   We are using Mocha for testing with the Chai assertion library.  Tests are
+   written in the 'test' folders located on both the /src/client and /src/server
+   folders.  The naming convention will be "[nameOfTest].spec.js".
+
+   To run tests on the client execute the script:
+
+   'npm run test-client'
+
+   To run tests on the server execute:
+
+   'npm run test-server'
