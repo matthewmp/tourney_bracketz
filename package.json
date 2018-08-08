@@ -4,10 +4,10 @@
   "description": "Tounrament bracket generator",
   "main": "index.js",
   "scripts": {
-    "build-dev": "webpack --mode development src/client/js",
+    "build-client": "webpack --mode development src/client/js",
     "build-prod": "webpack",
     "start-dev": "webpack-dev-server --config=webpack.config.js",
-    "start-server": "nodemon --inspect --watch config --watch src/server src/server/main.js",
+    "start-server": "nodemon --inspect --watch config --watch src/server src/server/main.js src/",
     "build-server": "babel ./src/server --ignore test -d dist",
     "test-client": "mocha --require babel-core/register src/client/test",
     "test-server": "mocha --require babel-core/register src/server/test"

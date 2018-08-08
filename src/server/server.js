@@ -23,7 +23,6 @@ const app = express();
 const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
 app.use(staticMiddleware);
 
-
 // Setup up routes here
 
 

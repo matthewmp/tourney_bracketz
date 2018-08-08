@@ -4,8 +4,6 @@
 require('webpack-hot-middleware/client'); // Webpack configuration
 import '../css/main.css'; // Link main.css.  Any CSS files imported will be applied.
 
-
-
 // *** Start Test JS ***
 import * as test from './test';
 

@@ -1,0 +1,75 @@
+Build Environment Notes
+=======================
+
+0. General Breakdown of Our Build Environment
+   ------------------------------------------
+
+   We are using webpack along with several loaders/plugins to provide an efficient development environment.  Some reasons for using this environment are:
+   		- We want to write our JS in es6 but need to deploy it in es5 for backwards compatability.
+
+   		- We would like to modularize our JS/CSS so that we have organized JS/CSS files broken up into 
+   		  separate files by features instead of 1 large JS/CSS file that is difficult to read/debug.
+
+   		- We would like our code minified for performance.  
+   		  (stripped of white space/line breaks so that it downloads faster)
+
+   		- Use relative paths and let build system resolve paths later in distribution.
+
+   		- Hot reload capability.  When you run the app in the browser while developing, it will reload 
+   		  any changes that are made on the fly in either the 'client/server' directories.
+
+1. Directory Structure:
+   -------------------
+
+   The directories where the development team edits, pushes, and pulls their code is happening in the
+   'src' directory.  In the 'src' directory you will find the 'client' and 'server' folders.  All front end
+   is handled in the 'client' directory and backend in the 'server' directory. 
+
+   The files/folders for distribution are in the 'dist' folder.  These are the 'built' files
+   from the src folder that will live on the server where the app is deployed ie. Heroku.  These
+   files are the final product that the user will download to their browser. 
+
+
+2. Our Running Environment
+   -----------------------
+
+   The run process is handled using scripts.  These scripts are listed in the 'package.json' under scripts.
+
+   To start you would execute the "start-server" script using npm ie:
+
+   'npm run start-server'
+
+   This will start the server on port 8888.  Open local host:8888 in your browser.
+   Any changes you make to the CSS or to the server should be reflected in the browser automatically.  
+
+   The start-server script will simply run the server code inside the src folder,
+   not the dist folder.
+
+   If you are going to only be working on the front end only you can start the dev-server by executing
+   the follwing script:
+
+   'npm run start-dev'
+
+   This will run webpack's dev server.  Any changes in the client folder
+   including CSS/JS will be reloaded on the fly.  This will not be running
+   our server.
+
+3.  The Build Process
+    -----------------
+
+    The build process is to take our cutom code from our src folder that is 
+    written in es6 and transpile it to es5, minify it, resolve any relative paths,
+    and possibly more in the future.  It will then store the finished product
+    inside the dist folder.  To build the client run the script from the terminal:
+
+    'npm run build-client'
+
+    This will produce an html and js file in the dist folder.  All JS files and CSS
+    files will be injected into the single JS file.
+
+    To build the server files run the script:
+
+    'npm run build-server'
+
+    This should transpile any files/folder in the src/server directory to the 
+    dist folder with the same folder structure.

@@ -6,6 +6,6 @@ export function test(msg){
 }
 
 export function test2(msg){
-	console.log(msg + '1!');
+	console.log(msg + 'ppp');
 	return msg;
 }
