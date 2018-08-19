@@ -28,5 +28,5 @@ app.use(staticMiddleware);
 
 // Start Server
 app.listen(8888, () => {
-	console.log('Listing on 8888');
+	console.log('Listening on 8888');
 });

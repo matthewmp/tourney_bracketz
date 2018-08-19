@@ -2,6 +2,7 @@
 // This will be the first file called when webpack is run
 
 require('webpack-hot-middleware/client'); // Webpack configuration
+import '../css/reset.css'; // Link main.css.  Any CSS files imported will be applied.
 import '../css/main.css'; // Link main.css.  Any CSS files imported will be applied.
 
 // *** Start Test JS ***
