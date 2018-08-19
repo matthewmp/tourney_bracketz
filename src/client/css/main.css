@@ -11,3 +11,6 @@ body{
 .heroImage {
 	width: 100%
 }
+ul.showBullets {
+	list-style: disc;
+}
