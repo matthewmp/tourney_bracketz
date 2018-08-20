@@ -39,9 +39,15 @@ module.exports = {
     ]
   },
     plugins: [
+      // List each page/view to enable the build procedure to process them
       new webpack.HotModuleReplacementPlugin(),
       new HtmlWebPackPlugin({
+        filename: 'index.html',
         template: "src/client/index.html"
+      }),
+      new HtmlWebPackPlugin({
+        filename: 'userdashboard.html',
+        template: "src/client/userdashboard.html"
       })
     ]
 }

@@ -4,7 +4,71 @@
 		<meta charset="UTF-8">
 		<title>Tourney Bracketz</title>
 	</head>
-	<body>		
-		<script type="text/javascript" src="main-bundle.js"></script>
-	</body>
+	<body>
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">Tourney Bracketz</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarText">
+				<ul class="navbar-nav mr-auto">
+				</ul>
+				<span class="navbar-text">
+				Login
+				</span>
+			</div>
+		</nav>
+
+		<div class="container">
+			<div class="row hero">
+				<div class="col">
+					<img class="heroImage" src="https://via.placeholder.com/350x150"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-4">
+					Enter names to create a tournament.<Br/>
+
+					<ul class="showBullets">
+						<li>
+							The minimum allowed should be 4 users. As the user hits enter/submits the 4th player a 5th box should show up that is optional.
+						</li>
+						<li>
+								Include a delete option per player.
+						</li>
+						<li>
+							We should check for duplicate name(?)
+						</li>
+					</ul>
+
+					<label for="input01">1:</label>
+					<input type="text" id="input01"/><br/>
+					<label for="input02">2:</label>
+					<input type="text" id="input02"/><br/>
+					<label for="input03">3:</label>
+					<input type="text" id="input03"/><br/>
+					<label for="input04">4:</label>
+					<input type="text" id="input04"/><br/>
+
+				</div>
+				<div class="col-8">
+					<ul class="showBullets">
+						<li>
+							Insert dynamically generated brackets here as player names are being entered.
+						</li>
+						<li>
+							This should update on any change made in the player list.		
+						</li>
+						<li>
+							If 4 or more player names are entered, the user should be able to FINALIZE the tournament.		
+						</li>
+					</ul>
+					
+					<img class="bracketImage" src="https://via.placeholder.com/350x150"/>
+
+				</div>
+			</div>
+		</div>
+	<script type="text/javascript" src="main-bundle.js"></script></body>
 </html>

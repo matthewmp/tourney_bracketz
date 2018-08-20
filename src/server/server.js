@@ -23,7 +23,19 @@ const app = express();
 const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
 app.use(staticMiddleware);
 
+//Template engine for non-static files
+app.set('view engine', 'ejs');
+
 // Setup up routes here
+app.get('/userdashboard', (req, res) => {
+	//I shouldn't have to send this with the full path...
+	// res.sendFile(path.join(__dirname, '../../dist/userdashboard.html'));
+
+	res.render('userdashboard', { 
+		title: "Tournament 123", 
+		winner: "Tom"
+	});
+})
 
 
 // Start Server
