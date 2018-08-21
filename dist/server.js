@@ -22,7 +22,7 @@ var app = express();
 // *** END Webpack configuration ***
 
 // Serve Static Files
-var staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
+var staticMiddleware = express.static(path.resolve(__dirname, "../../dist/"));
 app.use(staticMiddleware);
 
 // Setup up routes here

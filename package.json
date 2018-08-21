@@ -48,7 +48,8 @@
     "webpack-hot-middleware": "^2.22.3"
   },
   "dependencies": {
-    "ejs": "^2.6.1",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "pug": "^2.0.3",
+    "pug-loader": "^2.4.0"
   }
 }

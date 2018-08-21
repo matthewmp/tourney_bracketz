@@ -24,13 +24,23 @@ const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
 app.use(staticMiddleware);
 
 //Template engine for non-static files
-app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
+
+// Indicate to pug that the view layer files are in the views directory
+app.set('views', path.join(__dirname, '../views'));
 
 // Setup up routes here
-app.get('/userdashboard', (req, res) => {
-	//I shouldn't have to send this with the full path...
-	// res.sendFile(path.join(__dirname, '../../dist/userdashboard.html'));
+app.get('/', (req, res) => {
+	console.log('index requested');
 
+	res.render('index', { 
+		title: "Tournament 123", 
+		winner: "Tom"
+	});
+})
+
+app.get('/userdashboard', (req, res) => {
+	console.log('userdashboard requested');
 	res.render('userdashboard', { 
 		title: "Tournament 123", 
 		winner: "Tom"
