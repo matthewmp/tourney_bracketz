@@ -22,13 +22,34 @@ var app = express();
 // *** END Webpack configuration ***
 
 // Serve Static Files
-var staticMiddleware = express.static(path.resolve(__dirname, "../../dist/"));
+var staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
 app.use(staticMiddleware);
 
-// Setup up routes here
+//Template engine for non-static files
+app.set('view engine', 'pug');
 
+// Indicate to pug that the view layer files are in the views directory
+app.set('views', path.join(__dirname, '../views'));
+
+// Setup up routes here
+app.get('/', function (req, res) {
+	console.log('index requested');
+
+	res.render('index', {
+		title: "Tournament 123",
+		winner: "Tom"
+	});
+});
+
+app.get('/userdashboard', function (req, res) {
+	console.log('userdashboard requested');
+	res.render('userdashboard', {
+		title: "Tournament 123",
+		winner: "Tom"
+	});
+});
 
 // Start Server
 app.listen(8888, function () {
-	console.log('Listing on 8888');
+	console.log('Listening on 8888');
 });
