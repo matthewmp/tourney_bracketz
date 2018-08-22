@@ -30,10 +30,10 @@ module.exports = {
           options: { attrs: ["img:src"] },
         }
       },
-      // {
-      //   test: /\.pug$/, // identify all pug files
-      //   use: "pug-html-loader" // use pug--html-loader for the transformation
-      // },
+      {
+        test: /\.pug$/, // identify all pug files
+        use: "pug-html-loader" // use pug--html-loader for the transformation
+      },
       {
         test: /\.css$/, // identify all css files
         use: ["style-loader", "css-loader", "postcss-loader"] // use these loaders for the transformation
@@ -43,14 +43,14 @@ module.exports = {
     plugins: [
       // List each page/view to enable the build procedure to process them
       new webpack.HotModuleReplacementPlugin(),
-      // These directives are not necessary because all PUG files are being handled above.
-      new HtmlWebPackPlugin({
-        filename: 'index.pug',
-        template: "src/views/index.pug"
-      }),
-      new HtmlWebPackPlugin({
-        filename: 'userdashboard.pug',
-        template: "src/views/userdashboard.pug"
-      })
+      // I don't think these directives are not necessary because all PUG files are being handled above.
+      // new HtmlWebPackPlugin({
+      //   filename: 'index.pug',
+      //   template: "src/views/index.pug"
+      // }),
+      // new HtmlWebPackPlugin({
+      //   filename: 'userdashboard.pug',
+      //   template: "src/views/userdashboard.pug"
+      // })
     ]
 }
