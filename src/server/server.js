@@ -21,7 +21,7 @@ const app = express();
 
 // Serve Static Files
 const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
-app.use(staticMiddleware);
+//app.use(staticMiddleware);
 
 //Template engine for non-static files
 app.set('view engine', 'pug');
