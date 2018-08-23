@@ -2,7 +2,6 @@ body{
 	background: rgb(240, 240, 241);
 	filter: grayscale(50%);
 }
-/* style the navbar at the top of each page */
 .navbar {
     width: 100%;
 	color: #fff;

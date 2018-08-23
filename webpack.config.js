@@ -32,7 +32,7 @@ module.exports = {
       },
       {
         test: /\.pug$/, // identify all pug files
-        use: "pug-loader" // use pug-loader for the transformation
+        use: "pug-html-loader" // use pug--html-loader for the transformation
       },
       {
         test: /\.css$/, // identify all css files
@@ -43,13 +43,14 @@ module.exports = {
     plugins: [
       // List each page/view to enable the build procedure to process them
       new webpack.HotModuleReplacementPlugin(),
-      new HtmlWebPackPlugin({
-        filename: 'index.pug',
-        template: "src/views/index.pug"
-      }),
-      new HtmlWebPackPlugin({
-        filename: 'userdashboard.pug',
-        template: "src/views/userdashboard.pug"
-      })
+      // I don't think these directives are not necessary because all PUG files are being handled above.
+      // new HtmlWebPackPlugin({
+      //   filename: 'index.pug',
+      //   template: "src/views/index.pug"
+      // }),
+      // new HtmlWebPackPlugin({
+      //   filename: 'userdashboard.pug',
+      //   template: "src/views/userdashboard.pug"
+      // })
     ]
 }

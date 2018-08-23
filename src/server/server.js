@@ -23,30 +23,37 @@ const app = express();
 const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
 //app.use(staticMiddleware);
 
-//Template engine for non-static files
+
+// **Probably not what we want to do long term
+// This allows access of static files to be served from the src folder.
+app.use(express.static('src'))
+
+// Set the default file type for non-static files
 app.set('view engine', 'pug');
 
-// Indicate to pug that the view layer files are in the views directory
+// Indicate that the view layer files are in the views directory
 app.set('views', path.join(__dirname, '../views'));
 
 // Setup up routes here
+// Do this if someone hits the domain
 app.get('/', (req, res) => {
-	console.log('index requested');
 
-	res.render('index', { 
-		title: "Tournament 123", 
-		winner: "Tom"
+	// The first argument is the file to load. In this case, index.pug
+	res.render('index', 
+		//Create an object with two key value pairs. This object will be used by the pug file to insert data dynamically.
+		//Later, this data will be pulled from a database for true dynamic experiences
+		{ 
+			title: "Tournament 123", 
+			winner: "Tom"
 	});
 })
 
 app.get('/userdashboard', (req, res) => {
-	console.log('userdashboard requested');
 	res.render('userdashboard', { 
 		title: "Tournament 123", 
 		winner: "Tom"
 	});
 })
-
 
 // Start Server
 app.listen(8888, () => {
