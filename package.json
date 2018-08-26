@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build-client": "webpack --mode development src/client/js",
+    "copy-views-assets": "cp -R src/views dist/views && cp -R src/assets dist/assets",
     "build-prod": "webpack",
     "start-dev": "webpack-dev-server --config=webpack.config.js",
     "start-server": "nodemon --inspect --watch config --watch src/server src/server/main.js src/",
-    "build-server": "babel ./src/server --ignore test -d dist",
+    "build-server": "babel ./src/server --ignore test -d dist && npm run copy-views-assets",
     "test-client": "mocha --require babel-core/register src/client/test",
     "test-server": "mocha --require babel-core/register src/server/test"
   },
