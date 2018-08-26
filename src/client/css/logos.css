@@ -1,0 +1,49 @@
+fa{
+	font-family: fontawesome !important;
+}
+
+i{
+	font-family: fontawesome !important;
+}
+
+img{
+	width: 50%;
+}
+
+/* General Logo */
+.logo{
+	font-family: 'Roboto';
+	font-size: 2rem;
+	background: #333;
+	color: #fff;
+	text-align: center;
+	margin: 20px 0;
+}
+
+/*  Logo One*/
+.logo-one{
+	background: #292f36;
+	color: #ff6b6b;
+}
+
+.logo-one i{
+	color: #fff;
+}
+
+/* Logo Two */
+.logo-two{
+	background: #0c6291;
+	color: ;
+}
+
+
+/* Logo Three */
+
+.logo-three{
+	background: #292f36;
+	color: #4ecdc4;
+}
+
+.logo-three i{
+	color: #fff;
+}

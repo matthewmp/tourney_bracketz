@@ -55,6 +55,10 @@ app.get('/userdashboard', (req, res) => {
 	});
 })
 
+app.get('/logos', (req, res) => {
+	res.render('logo_test');
+});
+
 // Start Server
 app.listen(8888, () => {
 	console.log('Listening on 8888');

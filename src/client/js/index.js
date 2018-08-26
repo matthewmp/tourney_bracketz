@@ -5,6 +5,8 @@ require('webpack-hot-middleware/client'); // Webpack configuration
 import '../css/reset.css'; // Link rest.css.  This "resets" browser specific settings to achieve a common look across browsers
 import '../css/bootstrap.min.css'; // Link bootstrap css. Use for grid system & mobile responsiveness
 import '../css/main.css'; // Link main.css.  Any CSS files imported will be applied.
+import '../css/logos.css';
+
 
 // *** Start Test JS ***
 // This is to check that ES6 import and export is working so that we can include
