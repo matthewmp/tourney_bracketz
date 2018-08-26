@@ -7,9 +7,13 @@ body{
 	color: #fff;
 	margin: 0px;
 }
-.heroImage {
-	width: 100%
+.heroContainer {
+	text-align: center;
 }
 ul.showBullets {
 	list-style: disc;
+}
+.tableHeader {
+    font-weight: bold;
+    border-bottom: 1px solid black;
 }

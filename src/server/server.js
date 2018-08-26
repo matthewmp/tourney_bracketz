@@ -35,24 +35,36 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '../views'));
 
 // Setup up routes here
+
+//Create a dummy object to pass to the pages. This will become a database call eventually.
+const tournaments = { 
+	tournamentOneName: {
+		NumPlayers: "8", 
+		winner: "Tom"
+	},
+	tournamentTwoName: {
+		NumPlayers: "64", 
+		winner: "Matt"
+	},
+	tournamentThreeName: {
+		NumPlayers: "16", 
+		winner: "Brandon"
+	},
+	tournamentFourName: {
+		NumPlayers: "32", 
+		winner: "Dean"
+	}
+}
+
 // Do this if someone hits the domain
 app.get('/', (req, res) => {
 
 	// The first argument is the file to load. In this case, index.pug
-	res.render('index', 
-		//Create an object with two key value pairs. This object will be used by the pug file to insert data dynamically.
-		//Later, this data will be pulled from a database for true dynamic experiences
-		{ 
-			title: "Tournament 123", 
-			winner: "Tom"
-	});
+	res.render('index', {data: tournaments});
 })
 
 app.get('/userdashboard', (req, res) => {
-	res.render('userdashboard', { 
-		title: "Tournament 123", 
-		winner: "Tom"
-	});
+	res.render('userdashboard', {data: tournaments});
 })
 
 app.get('/logos', (req, res) => {
