@@ -2,15 +2,18 @@ body{
 	background: rgb(240, 240, 241);
 	filter: grayscale(50%);
 }
-/* style the navbar at the top of each page */
 .navbar {
     width: 100%;
 	color: #fff;
 	margin: 0px;
 }
-.heroImage {
-	width: 100%
+.heroContainer {
+	text-align: center;
 }
 ul.showBullets {
 	list-style: disc;
+}
+.tableHeader {
+    font-weight: bold;
+    border-bottom: 1px solid black;
 }
