@@ -1,3 +1,5 @@
+const expect = require('chai').expect;
+
 // This test is an integration test putting together all of the functions to generate the initial tournament brackets
 // The imports are simply all of the functions from the 'brackets.js' file so that they can be tested inside this file
 
@@ -42,3 +44,7 @@ console.log('BRACKET: ', brackets);
 // Run the following command at the command line:
 // npm run test-client
 // It should log all of the previous console.log calls
+
+it('shoudl generate the correct brackets and match ups', () => {
+	expect(brackets).to.deep.equal([ ['Tom', 'Buy'], ['Brandon', 'Buy'], ['Dean', 'Buy'], ['Matt', 'Jose'] ])
+});
