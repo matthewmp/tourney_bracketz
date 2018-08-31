@@ -20,6 +20,9 @@ export const ranSeeding = (arr) => {
 	return ranArray;
 }
 
+// Calculates # of brackets needed.  Call this function with the bracketArr above and with the array length of participants ie.
+// participants = ['Tom', 'Matt', 'Brandon', 'Dean'];
+// bracketGenerator(bracketArr, participants.length); => 
 export const bracketGenerator = (arr, participants, start=0, end=arr.length) => {
 
 	// Find middle of bracketArr
@@ -59,11 +62,17 @@ export const bracketGenerator = (arr, participants, start=0, end=arr.length) => 
 }
 
 // Calculate # of buys needed for tournament
+// Call getBuys with number of participants and number of brackets (which should come from the bracketGenerator function) ie.
+// participants = ['Tom', 'Matt', 'Brandon', 'Dean', 'Jose'];
+// getBuys(participants.length, 8)
 export const getBuys = (numParticipants, numBrackets) => {
 	return numBrackets - numParticipants;
 }
 
-// Matches the participants with correct buy or other participant
+// Matches the participants with correct buy or other participant.  This will return a 2D array with pairs inside each inner array.
+// Call function with the array of participants and # of buys (which should come from getBuys function) ie.
+// participants = ['Tom', 'Matt', 'Brandon', 'Dean', 'Jose'];
+// matchParticipants(participants, 3);
 export const matchParticipants = (participants, numOfBuys) => {
 	// 2D Array to hold pairs of opponents
 	let brackets = [];
@@ -78,15 +87,12 @@ export const matchParticipants = (participants, numOfBuys) => {
 
 	// Match up rest of participants against each other
 	for(let i = 0; i < participants.length + 1; i++){
-
-		console.log('PARTICIPANTS: ', participants);
 		let matchUp = participants.splice(0,1);
 		let last = participants.splice(participants.length - 1)[0]
 
 		matchUp.push(last);
 		brackets.push(matchUp);
 	}
-	console.log('\n\nBracket: ', brackets);
 	return brackets;
 }
 
