@@ -6,6 +6,19 @@ export const bracketArr = [2,4,8,16,32,64];
 // Call function with bracketArr (arr) and number of participants (participants)
 // Utilizing a binary search algorithm (of sorts)
 
+// Generate random seeding
+export const ranSeeding = (arr) => {
+	let ranArray = [];
+	let ranIndex = 0;
+	let len = arr.length;
+
+	while(len > 0){
+		ranIndex = Math.floor(Math.random() * arr.length);
+		ranArray.push(arr.splice(ranIndex,1)[0]);
+		len = arr.length;
+	}
+	return ranArray;
+}
 
 export const bracketGenerator = (arr, participants, start=0, end=arr.length) => {
 
