@@ -1,0 +1,52 @@
+//- index.pug
+extends main-layout
+block content
+	<div class="container">
+		<div class="row hero">
+			<div class="col heroContainer">
+				<img class="heroImage" src="https://via.placeholder.com/350x150"/>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				p Enter names below to create a tournament.
+
+				ul.showBullets
+					li The minimum allowed should be 4 users. 
+					li As the user hits enter/submit on the 4th player a 5th box should show up that is optional.
+					li This should continue up to 64 (the cap?)
+					li Should check for duplicate name(s)?
+
+				<label for="input01">1:</label>
+					<input type="text" id="input01"/>
+					| Delete<br/>
+				<label for="input02">2:</label>
+					<input type="text" id="input02"/>
+					| Delete<br/>
+				<label for="input03">3:</label>
+					<input type="text" id="input03"/>
+					| Delete<br/>
+				<label for="input04">4:</label>
+					<input type="text" id="input04"/>
+					| Delete<br/>
+
+			</div>
+			<div class="col-8">
+				<ul class="showBullets">
+					<li>
+						Insert dynamically generated brackets here as player names are being entered.
+					</li>
+					<li>
+						This should update on any change made in the player list.		
+					</li>
+					<li>
+						If 4 or more player names are entered, the user should be able to FINALIZE the tournament.		
+					</li>
+				</ul>
+				
+				<img class="bracketImage" src="https://via.placeholder.com/350x150"/>
+
+			</div>
+		</div>
+	</div>
