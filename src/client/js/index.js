@@ -8,15 +8,3 @@ import '../css/main.css'; // Link main.css.  Any CSS files imported will be appl
 import '../css/logos.css';
 
 
-// *** Start Test JS ***
-// This is to check that ES6 import and export is working so that we can include
-// JS/CSS modules as needed.
-// If the 2 strings below inside test.test log in the console, it is working
-import * as test from './test';
-
-
-test.test('Testing');
-
-test.test2('test2');
-
-// *** END Test JS ***
