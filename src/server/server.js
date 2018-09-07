@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+var dotenv = require('dotenv').config(); // Use environment variables
 
 // *** Start Webpack configuration ***
 /**/ const webpack = require('webpack');
@@ -34,6 +35,40 @@ app.set('view engine', 'pug');
 // Indicate that the view layer files are in the views directory
 app.set('views', path.join(__dirname, '../views'));
 
+// Create sequelize connection to the database
+const Sequelize = require('sequelize');
+var models = require('./../models');
+var sequelizeConnection = models.sequelize;
+
+// The database connection below works like this:
+// 'tomcariello' --> Your database name
+// 'root' --> Your database login/username
+// process.env.localpassword -- > Your database password
+// This should be coming from ../config/config.json but it's not working yet
+
+const sequelize = new Sequelize('tomcariello', 'root', process.env.localpassword, {
+  host: 'localhost',
+  dialect: 'mysql',
+  operatorsAliases: false,
+
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+
 // Setup up routes here
 
 //Create a dummy object to pass to the pages. This will become a database call eventually.
@@ -64,7 +99,15 @@ app.get('/', (req, res) => {
 })
 
 app.get('/userdashboard', (req, res) => {
-	res.render('userdashboard', {data: tournaments});
+
+	Tournaments.findAll({})
+	.then(function(data) {
+	  var payload = {dynamicData: data}
+	  
+	  res.render('index', {dynamicData: payload.dynamicData});
+	})
+
+	// res.render('userdashboard', {data: tournaments});
 })
 
 app.get('/logos', (req, res) => {
