@@ -45,6 +45,6 @@ console.log('BRACKET: ', brackets);
 // npm run test-client
 // It should log all of the previous console.log calls
 
-it('shoudl generate the correct brackets and match ups', () => {
+it('should generate the correct brackets and match ups', () => {
 	expect(brackets).to.deep.equal([ ['Tom', 'Buy'], ['Brandon', 'Buy'], ['Dean', 'Buy'], ['Matt', 'Jose'] ])
 });
