@@ -1,6 +1,6 @@
 
 // Array of available brackets
-export const bracketArr = [2,4,8,16,32,64];
+export const bracketArr = [4,8,16,32,64];
 
 // Function to find correct bracket
 // Call function with bracketArr (arr) and number of participants (participants)
@@ -61,30 +61,29 @@ export const bracketGenerator = (arr, participants, start=0, end=arr.length) => 
 	}
 }
 
-// Calculate # of buys needed for tournament
-// Call getBuys with number of participants and number of brackets (which should come from the bracketGenerator function) ie.
+// Calculate # of byes needed for tournament
+// Call getbyes with number of participants and number of brackets (which should come from the bracketGenerator function) ie.
 // participants = ['Tom', 'Matt', 'Brandon', 'Dean', 'Jose'];
-// getBuys(participants.length, 8)
-export const getBuys = (numParticipants, numBrackets) => {
+// getbyes(participants.length, 8)
+export const getbyes = (numParticipants, numBrackets) => {
 	return numBrackets - numParticipants;
 }
 
 // Matches the participants with correct buy or other participant.  This will return a 2D array with pairs inside each inner array.
-// Call function with the array of participants and # of buys (which should come from getBuys function) ie.
+// Call function with the array of participants and # of byes (which should come from getbyes function) ie.
 // participants = ['Tom', 'Matt', 'Brandon', 'Dean', 'Jose'];
 // matchParticipants(participants, 3);
-export const matchParticipants = (participants, numOfBuys) => {
+export const matchParticipants = (participants, numOfbyes) => {
 	// 2D Array to hold pairs of opponents
 	let brackets = [];
 
-	// Usurp all buys on top seeded participants and push into brackets array
-	for(let i = 0; i < numOfBuys; i++){
+	// Usurp all byes on top seeded participants and push into brackets array
+	for(let i = 0; i < numOfbyes; i++){
 		let matchUp = participants.splice(0,1);
 		matchUp.push('Buy');
 		brackets.push(matchUp);
 	}
 	
-
 	// Match up rest of participants against each other
 	for(let i = 0; i < participants.length + 1; i++){
 		let matchUp = participants.splice(0,1);
@@ -93,12 +92,24 @@ export const matchParticipants = (participants, numOfBuys) => {
 		matchUp.push(last);
 		brackets.push(matchUp);
 	}
-	return brackets;
+
+	// Reorder brackets
+	let orderedBrackets = [];
+
+	orderedBrackets.push(brackets.splice(0,1));
+	orderedBrackets.push(brackets.splice(brackets.length - 1, 1))
+
+	console.log(orderedBrackets);
+	while(brackets.length > 0){
+		let mid = Math.ceil((brackets.length / 2) - 1);
+		orderedBrackets.push(brackets.splice(mid,1));
+	}
+	return orderedBrackets;
 }
 
 
 
-
+// Brackets: 16, byes: 5
 
 
 

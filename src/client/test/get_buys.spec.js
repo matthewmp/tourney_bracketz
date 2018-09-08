@@ -1,16 +1,16 @@
 const expect = require('chai').expect;
-import { getBuys } from '../js/brackets';
+import { getByes } from '../js/brackets';
 
-let buys;
-describe('getBuys', () => {
-	it('Return correct number of buys', () => {
-		buys = getBuys(5, 8);
-		expect(buys).to.equal(3);
+let Byes;
+describe('getByes', () => {
+	it('Return correct number of Byes', () => {
+		Byes = getByes(5, 8);
+		expect(Byes).to.equal(3);
 
-		buys = getBuys(10, 16);
-		expect(buys).to.equal(6);
+		Byes = getByes(10, 16);
+		expect(Byes).to.equal(6);
 
-		buys = getBuys(2, 2);
-		expect(buys).to.equal(0);
+		Byes = getByes(2, 2);
+		expect(Byes).to.equal(0);
 	});
 });

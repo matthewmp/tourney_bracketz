@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 // This test is an integration test putting together all of the functions to generate the initial tournament brackets
 // The imports are simply all of the functions from the 'brackets.js' file so that they can be tested inside this file
 
-import { ranSeeding, bracketGenerator, bracketArr, getBuys, matchParticipants } from '../js/brackets';
+import { ranSeeding, bracketGenerator, bracketArr, getByes, matchParticipants } from '../js/brackets';
 
 // The initial list that will come from the users form when the enter the participants in order of seeding.
 // Assume the below list is in the correct order/seeding
@@ -23,16 +23,16 @@ let numOfBrackets = bracketGenerator(bracketArr, participants.length);
 console.log('NUMBER OF BRACKETS: ', numOfBrackets);
 
 // 2.
-// Next create a variable to store the # of buys we will need using the getBuys function
+// Next create a variable to store the # of Byes we will need using the getByes function
 // Call function with number of participants and # of brackets (which we have stored above in numOfBrackets)
-let numOfBuys = getBuys(participants.length, numOfBrackets)
-console.log('NUMBER OF BUYS: ', numOfBuys);
+let numOfByes = getByes(participants.length, numOfBrackets)
+console.log('NUMBER OF Byes: ', numOfByes);
 
 // 3.
-// Now we need to create the actual brackets with top seeded using up all the buys and the rest 
+// Now we need to create the actual brackets with top seeded using up all the Byes and the rest 
 // to match up accordingly [NextTopSeed, LowestSeed], [NextTopSeed, NextLowestSeed] as far as I know.
-// Call the matchParticipants function with array of participants and the # of buys.
-let brackets = matchParticipants(participants, numOfBuys);
+// Call the matchParticipants function with array of participants and the # of Byes.
+let brackets = matchParticipants(participants, numOfByes);
 console.log('BRACKET: ', brackets);
 
 // From my understanding, if we use the participants array above inside the function the returned 2D array should return
