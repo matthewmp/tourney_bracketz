@@ -1,4 +1,18 @@
 
+// Execute all functions below and return ordered array for Tourney Brackets
+export const createCompetitorPairs = (participantsArr, randomSeeding) => {
+	//let particiapants = randomSeeding === true ? ranSeeding(participantsArr) : participantsArr;
+
+	let numOfBrackets = bracketGenerator(bracketArr, participantsArr.length);
+
+	let numOfByes = getByes(participantsArr.length, numOfBrackets);
+
+	let brackets = matchParticipants(participantsArr, numOfByes);
+
+	return brackets;
+
+}
+
 // Array of available brackets
 export const bracketArr = [4,8,16,32,64];
 
@@ -65,7 +79,7 @@ export const bracketGenerator = (arr, participants, start=0, end=arr.length) => 
 // Call getbyes with number of participants and number of brackets (which should come from the bracketGenerator function) ie.
 // participants = ['Tom', 'Matt', 'Brandon', 'Dean', 'Jose'];
 // getbyes(participants.length, 8)
-export const getbyes = (numParticipants, numBrackets) => {
+export const getByes = (numParticipants, numBrackets) => {
 	return numBrackets - numParticipants;
 }
 
@@ -83,33 +97,34 @@ export const matchParticipants = (participants, numOfbyes) => {
 		matchUp.push('Buy');
 		brackets.push(matchUp);
 	}
-	
+	console.log('Brackets Byes: ', brackets)
 	// Match up rest of participants against each other
-	for(let i = 0; i < participants.length + 1; i++){
-		let matchUp = participants.splice(0,1);
+	//for(let i = 0; i < participants.length + 2; i++){
+	while(participants.length > 0){
+		let matchUp2 = participants.splice(0,1);
+		console.log('Matchup 1: ', matchUp2)
 		let last = participants.splice(participants.length - 1)[0]
-
-		matchUp.push(last);
-		brackets.push(matchUp);
+		matchUp2.push(last);
+		console.log('Matchup 2: ', matchUp2)
+		brackets.push(matchUp2);
 	}
-
+	console.log('BEFORE: ', brackets)
 	// Reorder brackets
 	let orderedBrackets = [];
 
 	orderedBrackets.push(brackets.splice(0,1));
 	orderedBrackets.push(brackets.splice(brackets.length - 1, 1))
 
-	console.log(orderedBrackets);
 	while(brackets.length > 0){
-		let mid = Math.ceil((brackets.length / 2) - 1);
-		orderedBrackets.push(brackets.splice(mid,1));
+
+		let mid = Math.ceil((brackets.length / 2));
+		let index = mid === 0 ? 0 : (mid - 1)
+		orderedBrackets.push(brackets.splice(index,1));
+		console.log(brackets)
 	}
 	return orderedBrackets;
 }
 
-
-
-// Brackets: 16, byes: 5
 
 
 

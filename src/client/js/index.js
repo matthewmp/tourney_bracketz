@@ -6,5 +6,5 @@ import '../css/reset.css'; // Link rest.css.  This "resets" browser specific set
 import '../css/bootstrap.min.css'; // Link bootstrap css. Use for grid system & mobile responsiveness
 import '../css/main.css'; // Link main.css.  Any CSS files imported will be applied.
 import '../css/logos.css';
-
-
+import '../css/test_bracket.css';
+import './view.js';
