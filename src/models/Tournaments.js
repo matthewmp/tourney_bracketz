@@ -1,16 +1,20 @@
+// Declare the table definitions for the tournament table.
 'use strict';
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   const Tournament = sequelize.define('Tournament', {
     userID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
     },
-    name: {
-      type: Sequelize.STRING
+    title: {
+      type: Sequelize.STRING,
+      allowNull: false
     },
     numPlayers: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
     },
     winner: {
         type: Sequelize.STRING
