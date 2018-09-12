@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+var dotenv = require('dotenv').config(); // Use environment variables
 
 // *** Start Webpack configuration ***
 /**/ const webpack = require('webpack');
@@ -34,10 +35,45 @@ app.set('view engine', 'pug');
 // Indicate that the view layer files are in the views directory
 app.set('views', path.join(__dirname, '../views'));
 
+const Sequelize = require('sequelize');
+var models  = require('../models');
+
+// var router  = express.Router();
+
+// Create sequelize connection to the database
+// import db from '../models/index.js'
+
+// Import all database models
+var models = require('../models');
+
+var sequelizeConnection = models.sequelize;
+
+const sequelize = new Sequelize(process.env.SCHEMA_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+  host: 'localhost',
+  dialect: 'mysql',
+  operatorsAliases: false,
+
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
 // Setup up routes here
 
 //Create a dummy object to pass to the pages. This will become a database call eventually.
-const tournaments = { 
+const dummyTournaments = { 
 	tournamentOneName: {
 		NumPlayers: "8", 
 		winner: "Tom"
@@ -60,11 +96,20 @@ const tournaments = {
 app.get('/', (req, res) => {
 
 	// The first argument is the file to load. In this case, index.pug
-	res.render('index', {data: tournaments});
+	res.render('index', {data: dummyTournaments});
 })
 
 app.get('/userdashboard', (req, res) => {
-	res.render('userdashboard', {data: tournaments});
+	
+	models.Tournament.findAll({})
+	.then(function(data) {
+	  var payload = {dynamicData: data}
+	//   console.log(payload.dynamicData);
+	  res.render('userdashboard', {dynamicData: payload.dynamicData});
+		
+	}).catch(function (err) {
+		console.log(err);
+	});
 })
 
 app.get('/logos', (req, res) => {

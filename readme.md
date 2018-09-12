@@ -21,6 +21,65 @@ Getting Started
 Clone the repository
 run NPM install from the root directory of this repository to install dependencies
 
+Database Initialization
+    We are using MySQL Server (I'm using version 5.6) as the backend for this project.
+
+    Install MySQL Server https://dev.mysql.com/downloads/mysql/
+        Note: I am using MySQL Server 5.6.40. That is NOT the current version.
+    
+    Install database visualization software. https://dev.mysql.com/downloads/workbench/
+        Note: I am using MySQL Workbench ver 6.3.10. That is NOT the current version.
+    
+    The following instructions assume you are using the tehcnologies mentioned above
+    
+    When you open MySQL Workbench you will need to make a connection to your MySQL server. Click "Setup New Connection" or click on the plus icon to pull up the dialogue box. Enter data into the fields:
+
+        Connection Name: This is the name of your database and can be whatever you like. This will be referenced as the db_name later.
+        Connection Method: Accept the default value (TCP/IP)
+        
+    On the parameters tab:
+        Hostname: Accept the default value (127.0.0.1)
+        Port: Accept the default value (3306)
+        Username: This is your username and can be whatever you like. It is "root" by default.
+        Password: This was set (or left blank) during the installation process
+        Default Schema: This indicates which table within your database will load when you open MySQL Workbench. You can leave it blank.
+
+    I leave the SSL & Advanced tabs at their default settings.
+
+    Now we're ready to test the connection. So, hit the "Test Connection" button on the bottom right. If this succeeds, move on. If not, double check your settings and make sure the MySQL Server is running.
+
+    Double click on the card that represents the connection that you just made.
+    Click on the Create New Schema icon in the taskbar (cylinder with 3 sections)
+    Enter a name ("tourney_bracketz")
+    Now you have an empty database on your MySQL server.
+
+    Open your code editor and navigate to the .env file in the root directory. Fill in the values you created in the previous steps. Do not change the names of the items, just the values. You do not need quotes around these values.
+
+        SCHEMA_NAME=the_name_of_your_schema (Connection Name you provided earlier)
+        DB_USERNAME=root
+        DB_PASSWORD=your_password
+        DB_DATABASE=tourney_bracketz
+    
+    On the command line, run npm install if you haven't already. Then, run this command from inside this project:
+
+   sequelize db:migrate
+
+   This will generate the tables that you need in your database. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Prerequisites:
 
 Running the tests
