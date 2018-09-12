@@ -71,6 +71,10 @@ app.get('/logos', (req, res) => {
 	res.render('logo_test');
 });
 
+app.get('/testbrackets', (req, res) => {
+	res.render('test_brackets');
+});
+
 // Start Server
 app.listen(8888, () => {
 	console.log('Listening on 8888');

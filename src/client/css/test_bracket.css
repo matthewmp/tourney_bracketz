@@ -1,0 +1,68 @@
+body{
+	font-size: 0.7rem;
+}
+
+.out-bracket-wrapper{
+	/*border: 3px solid beige;*/
+	margin: 0;
+}	
+
+.left{
+	/*border: 1px solid pink;*/
+}
+
+.ob-top{
+	margin-bottom: 10px;
+}
+
+.ob-bottom{
+	margin-top: 10px;
+}
+
+
+.ob-left, .ob-right{
+/*	width: 50%;*/
+	/*border: 1px solid #eee;*/
+}	
+
+.ob-right{
+	align-self: center;
+}
+
+.ob-right.top, .ob-right.bottom{
+	/*border: 1px solid gold;*/
+	height: 50%;
+	width: 100%;
+}
+
+.ob-right.top, .ob-right.bottom{
+	display: flex;
+}
+
+.ob-right .single-bracket {
+	align-self: center;
+	/*border: 1px solid #ccc;*/
+}
+
+.paired-bracket {
+    /*margin: 25px 0;*/
+}
+
+.single-bracket{
+	width: 100%;
+}
+
+input{
+	max-width: 80%;
+	max-height: 15px;
+	border-style: none;
+	border-bottom: 1px solid #ccc;
+	margin-top: 5px;
+}
+
+button{
+	width: 15%;
+	font-size: 50%;
+	vertical-align: text-bottom;
+	cursor: pointer;
+}
