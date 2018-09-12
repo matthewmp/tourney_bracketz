@@ -8,9 +8,9 @@ var basename  = path.basename(__filename);
 var env       = process.env.NODE_ENV || 'development';
 
 // By default, this will check config.json. 
-// This was switched to .js so we can take advantage of environmental variables.
+// This was switched to sequelize_config.js. Name change for clarity. .js so we can take advantage of environmental variables.
 // The path was also adjusted to accomodate our /src /dist file structure
-var config    = require(__dirname + './../config/config.js')[env];
+var config    = require(__dirname + './../config/sequelize_config.js')[env];
 var db        = {};
 
 if (config.use_env_variable) {

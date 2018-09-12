@@ -20,8 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING
     } 
   }, {});
-  // Tournament.associate = function(models) {
+  Tournament.associate = function(models) {
     // associations can be defined here
-  // };
+    // Tournament.belongsTo(User);
+  };
   return Tournament;
 };

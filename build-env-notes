@@ -33,7 +33,7 @@ Build Environment Notes
 2. Our Running Environment
    -----------------------
 
-   The run process is handled using scripts.  These scripts are listed in the 'package.json' under scripts.
+   The run process is handled using scripts. These scripts are listed in the 'package.json' under scripts.
 
    To start you would execute the "start-server" script using npm ie:
 

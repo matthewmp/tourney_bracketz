@@ -48,13 +48,7 @@ var models = require('../models');
 
 var sequelizeConnection = models.sequelize;
 
-// The database connection below works like this:
-// 'tomcariello' --> Your database name
-// 'root' --> Your database login/username
-// process.env.localpassword -- > Your database password
-// This should be coming from ../config/config.json but it's not working yet
-
-const sequelize = new Sequelize('tomcariello', 'root', process.env.localpassword, {
+const sequelize = new Sequelize(process.env.SCHEMA_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
   host: 'localhost',
   dialect: 'mysql',
   operatorsAliases: false,
@@ -106,7 +100,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/userdashboard', (req, res) => {
-	console.log("userdashboard requested");
 	
 	models.Tournament.findAll({})
 	.then(function(data) {
@@ -117,7 +110,6 @@ app.get('/userdashboard', (req, res) => {
 	}).catch(function (err) {
 		console.log(err);
 	});
-	// res.render('userdashboard', {data: dummyTournaments});
 })
 
 app.get('/logos', (req, res) => {
