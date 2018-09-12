@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
     userID: {
         type: Sequelize.INTEGER
     },
+    name: {
+      type: Sequelize.STRING
+    },
     numPlayers: {
         type: Sequelize.STRING
     },
@@ -13,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
         type: Sequelize.STRING
     } 
   }, {});
-  Tournament.associate = function(models) {
+  // Tournament.associate = function(models) {
     // associations can be defined here
-  };
+  // };
   return Tournament;
 };

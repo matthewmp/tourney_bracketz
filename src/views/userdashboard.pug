@@ -17,7 +17,7 @@ block content
 				p.tableHeader Number of Players
 			div.col-sm-4
 				p.tableHeader Winner
-			for item, key in data
-				div.col-sm-4= key
-				div.col-sm-4= item.NumPlayers
+			for item, key in dynamicData
+				div.col-sm-4= item.name
+				div.col-sm-4= item.numPlayers
 				div.col-sm-4= item.winner

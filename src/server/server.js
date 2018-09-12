@@ -35,9 +35,17 @@ app.set('view engine', 'pug');
 // Indicate that the view layer files are in the views directory
 app.set('views', path.join(__dirname, '../views'));
 
-// Create sequelize connection to the database
 const Sequelize = require('sequelize');
-var models = require('./../models');
+var models  = require('../models');
+
+// var router  = express.Router();
+
+// Create sequelize connection to the database
+// import db from '../models/index.js'
+
+// Import all database models
+var models = require('../models');
+
 var sequelizeConnection = models.sequelize;
 
 // The database connection below works like this:
@@ -68,11 +76,10 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-
 // Setup up routes here
 
 //Create a dummy object to pass to the pages. This will become a database call eventually.
-const tournaments = { 
+const dummyTournaments = { 
 	tournamentOneName: {
 		NumPlayers: "8", 
 		winner: "Tom"
@@ -95,19 +102,22 @@ const tournaments = {
 app.get('/', (req, res) => {
 
 	// The first argument is the file to load. In this case, index.pug
-	res.render('index', {data: tournaments});
+	res.render('index', {data: dummyTournaments});
 })
 
 app.get('/userdashboard', (req, res) => {
-
-	Tournaments.findAll({})
+	console.log("userdashboard requested");
+	
+	models.Tournament.findAll({})
 	.then(function(data) {
 	  var payload = {dynamicData: data}
-	  
-	  res.render('index', {dynamicData: payload.dynamicData});
-	})
-
-	// res.render('userdashboard', {data: tournaments});
+	//   console.log(payload.dynamicData);
+	  res.render('userdashboard', {dynamicData: payload.dynamicData});
+		
+	}).catch(function (err) {
+		console.log(err);
+	});
+	// res.render('userdashboard', {data: dummyTournaments});
 })
 
 app.get('/logos', (req, res) => {
