@@ -96,6 +96,7 @@ const dummyTournaments = {
 app.get('/', (req, res) => {
 
 	// The first argument is the file to load. In this case, index.pug
+	// Second argument is the data payload to be rendered
 	res.render('index', {data: dummyTournaments});
 })
 
