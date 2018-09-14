@@ -18,7 +18,7 @@
                 <a class="nav-link" href="testbrackets">Test Brackets</a>
             </li>
             <li class="nav-item">
-                <div class="signin">Sign In</div>
+                <div id="signinbutton">Sign In</div>
             </li>
         </ul>
         <span class="navbar-text">
@@ -26,3 +26,24 @@
         </span>
     </div>
 </nav>
+
+div.row#signincontainer
+    div.col-sm-12
+        div.row
+            div.col-sm-10
+                p.tableHeader Log In
+            div.col-sm-2 
+                button.btn#loginclosebutton Close
+        div.row
+            div.col-sm-12
+                <label class="signinform" id="usernamelabel">
+                    <input type="text" id="username"> Username
+                </label>
+        div.row
+            div.col-sm-12
+                <label class="signinform" id="passwordlabel">
+                    <input type="password" id="password" > Password
+                </label>
+        div.row
+            div.col-sm-12
+                button.btn#loginbutton Login
