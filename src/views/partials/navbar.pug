@@ -36,47 +36,49 @@ div.row#signincontainer
                 p.tableHeader Register
             div.col-sm-2 
                 button.btn#loginclosebutton Close
-        form#loginform
+        <form id="loginform" action="/login/" method="POST">
             div.row
                 div.col-sm-12
                     <label class="signinform" id="usernamelabel">
-                         | Username <input type="text" id="username" required>
+                         | Username <input type="text" name="username" id="username" required>
                     </label>
             div.row
                 div.col-sm-12
                     <label class="signinform" id="passwordlabel">
-                         | Password <input type="password" id="password" required>
+                         | Password <input type="password" name="password" id="password" required>
                     </label>
             div.row
                 div.col-sm-12
                     button.btn#loginbutton Login
+        </form>
     div.col-sm-12#registerContainer
-        form#registerform
+        <form id="registerform" action="/register/" method="POST">
             div.row
                 div.col-sm-12
-                    <label class="registerform" id="regusernamelabel">
-                         | Username <input type="text" id="regusername" required>
+                    <label class="registerelement" id="regusernamelabel">
+                         | Username <input type="text" name="regusername" id="regusername" required>
                     </label>
             div.row
                 div.col-sm-12
-                    <label class="registerform" id="regfirstnamelabel">
-                         | First name <input type="text" id="regfirstname" required>
+                    <label class="registerelement" id="regfirstnamelabel">
+                         | First name <input type="text" name="regfirstname" id="regfirstname" required>
                     </label>
             div.row
                 div.col-sm-12
-                    <label class="registerform" id="reglastnamelabel">
-                         | Last name <input type="text" id="reglastname" required>
+                    <label class="registerelement" id="reglastnamelabel">
+                         | Last name <input type="text" name="reglastname" id="reglastname" required>
                     </label>
             div.row
                 div.col-sm-12
-                    <label class="registerform" id="regemaillabel">
-                         | Email <input type="text" id="regemail" required>
+                    <label class="registerelement" id="regemaillabel">
+                         | Email <input type="text" name="regemail" id="regemail" required>
                     </label>
             div.row
                 div.col-sm-12
-                    <label class="registerform" id="regpasswordlabel">
-                         | Password <input type="password" id="regpassword" required>
+                    <label class="registerelement" id="regpasswordlabel">
+                         | Password <input type="password" name="regpassword" id="regpassword" required>
                     </label>
             div.row
                 div.col-sm-12
                     button.btn#registerbutton Register
+        </form>

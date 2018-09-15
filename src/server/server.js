@@ -35,13 +35,16 @@ app.set('view engine', 'pug');
 // Indicate that the view layer files are in the views directory
 app.set('views', path.join(__dirname, '../views'));
 
+// Configure body-parser for form data retrival
+var bodyParser = require('body-parser')
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+// Sequelize configuration
 const Sequelize = require('sequelize');
 var models  = require('../models');
-
-// var router  = express.Router();
-
-// Create sequelize connection to the database
-// import db from '../models/index.js'
 
 // Import all database models
 var models = require('../models');
@@ -70,9 +73,7 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-// Setup up routes here
-
-//Create a dummy object to pass to the pages. This will become a database call eventually.
+//Create a dummy object to pass to the pages. This will be replaced with a database call
 const dummyTournaments = { 
 	tournamentOneName: {
 		NumPlayers: "8", 
@@ -92,7 +93,9 @@ const dummyTournaments = {
 	}
 }
 
-// Do this if someone hits the domain
+// Setup up routes here
+
+// Do this if someone hits the root of the website
 app.get('/', (req, res) => {
 
 	// The first argument is the file to load. In this case, index.pug
@@ -102,11 +105,14 @@ app.get('/', (req, res) => {
 
 app.get('/userdashboard', (req, res) => {
 	
+	// Query the database for all Tournaments
 	models.Tournament.findAll({})
 	.then(function(data) {
-	  var payload = {dynamicData: data}
-	//   console.log(payload.dynamicData);
-	  res.render('userdashboard', {dynamicData: payload.dynamicData});
+		// Package the returned JSON file
+		var payload = {tournamentdata: data}
+		
+		// Instruct Node to parse the payload file within the userdashboard.pug template before sending the result to the client
+	  res.render('userdashboard', {tournamentdata: payload.tournamentdata});
 		
 	}).catch(function (err) {
 		console.log(err);
@@ -119,6 +125,28 @@ app.get('/logos', (req, res) => {
 
 app.get('/testbrackets', (req, res) => {
 	res.render('test_brackets');
+});
+
+// Post route to listen for user registration
+app.post('/register', (req, res) => {
+	var currentDate = new Date();
+	
+  //Use Sequelize to push to DB
+  models.User.create({
+		username: req.body.regusername,
+		firstname: req.body.regfirstname,
+		lastname: req.body.reglastname,
+		email: req.body.regemail,
+		password: req.body.regpassword,
+    createdAt: currentDate,
+    updatedAt: currentDate
+  }).then(function(){
+		res.redirect('/');
+  })
+  .catch(function(err) {
+    // print the error details
+    console.log(err);
+  });
 });
 
 // Start Server
