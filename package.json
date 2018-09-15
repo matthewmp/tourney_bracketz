@@ -11,7 +11,7 @@
     "start-server": "nodemon --inspect --watch config --watch src/server src/server/main.js src/",
     "build-server": "babel ./src/server --ignore test -d dist && npm run copy-views-assets",
     "test-client": "mocha --require babel-core/register src/client/test --watch",
-    "test-server": "mocha --require babel-core/register src/server/test",
+    "test-server": "mocha --require babel-core/register src/server/test --watch",
     "migrate": "sequelize db:migrate"
   },
   "repository": {
