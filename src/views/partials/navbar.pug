@@ -29,21 +29,22 @@
 
 div.row#signincontainer
     div.col-sm-12
-        div.row
-            div.col-sm-10
-                p.tableHeader Log In
-            div.col-sm-2 
-                button.btn#loginclosebutton Close
-        div.row
-            div.col-sm-12
-                <label class="signinform" id="usernamelabel">
-                    <input type="text" id="username"> Username
-                </label>
-        div.row
-            div.col-sm-12
-                <label class="signinform" id="passwordlabel">
-                    <input type="password" id="password" > Password
-                </label>
-        div.row
-            div.col-sm-12
-                button.btn#loginbutton Login
+        form 
+            div.row
+                div.col-sm-10
+                    p.tableHeader Log In
+                div.col-sm-2 
+                    button.btn#loginclosebutton Close
+            div.row
+                div.col-sm-12
+                    <label class="signinform" id="usernamelabel">
+                        <input type="text" id="username" required> Username
+                    </label>
+            div.row
+                div.col-sm-12
+                    <label class="signinform" id="passwordlabel">
+                        <input type="password" id="password" required> Password
+                    </label>
+            div.row
+                div.col-sm-12
+                    button.btn#loginbutton Login
