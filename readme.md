@@ -62,9 +62,13 @@ Database Initialization
     
     On the command line, run npm install if you haven't already. Then, run this command from inside this project:
 
-   sequelize db:migrate
+        sequelize db:migrate
 
    This will generate the tables that you need in your database. 
+   If you get an error saying that 'sequelize' command doesn't exist either:
+
+   1. Install sequelize globally with correct version.
+   2. Run 'npm run migrate' from the command line.
 
 
 
