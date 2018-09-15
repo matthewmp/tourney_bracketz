@@ -6,3 +6,9 @@
     background-color: #fff;
     z-index: 999;
 }
+#registerform {
+    display: none;
+}
+#registertitle {
+    opacity: .25;
+}
