@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "052b31142714697793ff";
+/******/ 	var hotCurrentHash = "84a3f9ba34383405255c";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -857,7 +857,7 @@ eval("exports = module.exports = __webpack_require__(/*! ../../../node_modules/c
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ \"./node_modules/css-loader/lib/css-base.js\")(false);\n// imports\n\n\n// module\nexports.push([module.i, \"body{\\n\\tfont-size: 0.7rem;\\n}\\n\\n.out-bracket-wrapper{\\n\\t/*border: 3px solid beige;*/\\n\\tmargin: 0;\\n}\\t\\n\\n.left{\\n\\t/*border: 1px solid pink;*/\\n}\\n\\n.ob-top{\\n\\tmargin-bottom: 10px;\\n}\\n\\n.ob-bottom{\\n\\tmargin-top: 10px;\\n}\\n\\n\\n.ob-left, .ob-right{\\n/*\\twidth: 50%;*/\\n\\t/*border: 1px solid #eee;*/\\n}\\t\\n\\n.ob-right{\\n\\talign-self: center;\\n}\\n\\n.ob-right.top, .ob-right.bottom{\\n\\t/*border: 1px solid gold;*/\\n\\theight: 50%;\\n\\twidth: 100%;\\n}\\n\\n.ob-right.top, .ob-right.bottom{\\n\\tdisplay: flex;\\n}\\n\\n.ob-right .single-bracket {\\n\\talign-self: center;\\n\\t/*border: 1px solid #ccc;*/\\n}\\n\\n.paired-bracket {\\n    /*margin: 25px 0;*/\\n}\\n\\n.single-bracket{\\n\\twidth: 100%;\\n}\\n\\ninput{\\n\\tmax-width: 80%;\\n\\tmax-height: 15px;\\n\\tborder-style: none;\\n\\tborder-bottom: 1px solid #ccc;\\n\\tmargin-top: 5px;\\n}\\n\\nbutton{\\n\\twidth: 15%;\\n\\tfont-size: 50%;\\n\\tvertical-align: text-bottom;\\n\\tcursor: pointer;\\n}\", \"\"]);\n\n// exports\n\n\n//# sourceURL=webpack:///./src/client/css/test_bracket.css?./node_modules/css-loader!./node_modules/postcss-loader/lib");
+eval("exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ \"./node_modules/css-loader/lib/css-base.js\")(false);\n// imports\n\n\n// module\nexports.push([module.i, \"body{\\n\\tfont-size: 0.7rem;\\n}\\n\\n.out-bracket-wrapper{\\n\\t/*border: 3px solid beige;*/\\n\\tmargin: 0;\\n}\\t\\n\\n.left{\\n\\t/*border: 1px solid pink;*/\\n}\\n\\n.ob-top{\\n\\tmargin-bottom: 10px;\\n}\\n\\n.ob-bottom{\\n\\tmargin-top: 10px;\\n}\\n\\n\\n.ob-left, .ob-right{\\n/*\\twidth: 50%;*/\\n\\t/*border: 1px solid #eee;*/\\n}\\t\\n\\n.ob-right{\\n\\talign-self: center;\\n}\\n\\n.ob-right.top, .ob-right.bottom{\\n\\t/*border: 1px solid gold;*/\\n\\theight: 50%;\\n\\twidth: 100%;\\n}\\n\\n.ob-right.top, .ob-right.bottom{\\n\\tdisplay: flex;\\n}\\n\\n.ob-right .single-bracket {\\n\\talign-self: center;\\n\\t/*border: 1px solid #ccc;*/\\n}\\n\\n.paired-bracket {\\n    /*margin: 25px 0;*/\\n}\\n\\n.single-bracket{\\n\\twidth: 100%;\\n}\\n\\n.brackets-wrapper input{\\n\\tmax-width: 80%;\\n\\tmax-height: 15px;\\n\\tborder-style: none;\\n\\tborder-bottom: 1px solid #ccc;\\n\\tmargin-top: 5px;\\n}\\n\\n.brackets-wrapper button{\\n\\twidth: 15%;\\n\\tfont-size: 50%;\\n\\tvertical-align: text-bottom;\\n\\tcursor: pointer;\\n}\", \"\"]);\n\n// exports\n\n\n//# sourceURL=webpack:///./src/client/css/test_bracket.css?./node_modules/css-loader!./node_modules/postcss-loader/lib");
 
 /***/ }),
 
