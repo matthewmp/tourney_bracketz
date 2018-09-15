@@ -52,7 +52,11 @@ body{
 	width: 100%;
 }
 
-input{
+.brackets-wrapper {
+	display: flex;
+}
+
+.brackets-wrapper input{
 	max-width: 80%;
 	max-height: 15px;
 	border-style: none;
@@ -60,7 +64,7 @@ input{
 	margin-top: 5px;
 }
 
-button{
+.brackets-wrapper button{
 	width: 15%;
 	font-size: 50%;
 	vertical-align: text-bottom;

@@ -56,7 +56,7 @@ export const createPairedBrackets = (competitorPairs) => {
 export const createOuterBrackets = (pairedBrackets) => { 
 	const outerBracketArr = [];
 
-	for(let i = 0; i < pairedBrackets.length; i = i + 2){
+	for(let i = 0; i < pairedBrackets.length - 1; i = i + 2){
 		// Create Outer Bracket Container
 		const outerBracket = document.createElement('div');
 		outerBracket.classList = 'out-bracket-wrapper row'
@@ -112,7 +112,7 @@ export const createOuterBrackets = (pairedBrackets) => {
 export const createAllOuterBrackets = (outerBrackets) => {
 	let totalBrackets = outerBrackets;
 	
-	while(totalBrackets.length !== 2) {
+	while(totalBrackets.length > 2) {
 		totalBrackets = createOuterBrackets(totalBrackets);
 	}
 	return totalBrackets;
@@ -120,6 +120,7 @@ export const createAllOuterBrackets = (outerBrackets) => {
 
 // Create Final Bracket
 export const createFinalBracket = (allOuterBrackets) => {
+
 	const winnerBracket = document.createElement('div');
 	winnerBracket.classList = 'brackets-wrapper';
 
@@ -148,30 +149,32 @@ export const createFinalBracket = (allOuterBrackets) => {
 }
 
 window.onload = () => {
+	
 	var sub = document.getElementById('btnS');
 	var txt = document.getElementById('txtArea');
 
-	sub.addEventListener('click', function(e){
-		e.preventDefault();
-		let initialParticipants = txt.value.split('\n');
-		let participants = initialParticipants.filter(function(el){
-			return el !== "";
-		});
-		
-		var CompetitorPairs = brackets.createCompetitorPairs(participants);
-		console.log(CompetitorPairs)
-		var pairedBrackets = createPairedBrackets(CompetitorPairs);
-		// console.log(pairedBrackets);
-		var outerBrackets = createOuterBrackets(pairedBrackets);
-		// console.log(outerBrackets);
-		var shellBrackets = createOuterBrackets(outerBrackets);
-		// console.log(shellBrackets);
-		// console.log(outerBrackets);
-		// console.log(shellBrackets);
-		var total = createAllOuterBrackets(outerBrackets)
-		// console.log('TOTAL: ', total);
-		var winner = createFinalBracket(total);
+	if(sub && txt){
+		sub.addEventListener('click', function(e){
+			e.preventDefault();
+			// Remove any existing bracket renderings
+			const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
+			if(oldBrackets){
+				oldBrackets.remove();
+			}
 
-		document.body.appendChild(winner);
-	});
+			let initialParticipants = txt.value.split('\n');
+			let participants = initialParticipants.filter(function(el){
+				return el !== "";
+			});
+			
+			var CompetitorPairs = brackets.createCompetitorPairs(participants);
+			var pairedBrackets = createPairedBrackets(CompetitorPairs);
+			var outerBrackets = createOuterBrackets(pairedBrackets);
+			var shellBrackets = createOuterBrackets(outerBrackets);
+			var total = createAllOuterBrackets(outerBrackets)
+			var winner = createFinalBracket(total);
+
+			document.body.appendChild(winner);
+		});
+	}
 }

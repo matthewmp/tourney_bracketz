@@ -14,7 +14,7 @@ export const createCompetitorPairs = (participantsArr, randomSeeding) => {
 }
 
 // Array of available brackets
-export const bracketArr = [4,8,16,32,64];
+export const bracketArr = [2,4,8,16,32,64];
 
 // Function to find correct bracket
 // Call function with bracketArr (arr) and number of participants (participants)
@@ -38,6 +38,9 @@ export const ranSeeding = (arr) => {
 // participants = ['Tom', 'Matt', 'Brandon', 'Dean'];
 // bracketGenerator(bracketArr, participants.length); => 
 export const bracketGenerator = (arr, participants, start=0, end=arr.length) => {
+	if(participants <= 2){
+		throw new Error('Must Enter More Than 2 Competitors');
+	}
 
 	// Find middle of bracketArr
 
@@ -97,18 +100,17 @@ export const matchParticipants = (participants, numOfbyes) => {
 		matchUp.push('Buy');
 		brackets.push(matchUp);
 	}
-	console.log('Brackets Byes: ', brackets)
+
 	// Match up rest of participants against each other
 	//for(let i = 0; i < participants.length + 2; i++){
 	while(participants.length > 0){
 		let matchUp2 = participants.splice(0,1);
-		console.log('Matchup 1: ', matchUp2)
 		let last = participants.splice(participants.length - 1)[0]
+		
 		matchUp2.push(last);
-		console.log('Matchup 2: ', matchUp2)
 		brackets.push(matchUp2);
 	}
-	console.log('BEFORE: ', brackets)
+	
 	// Reorder brackets
 	let orderedBrackets = [];
 
@@ -120,7 +122,6 @@ export const matchParticipants = (participants, numOfbyes) => {
 		let mid = Math.ceil((brackets.length / 2));
 		let index = mid === 0 ? 0 : (mid - 1)
 		orderedBrackets.push(brackets.splice(index,1));
-		console.log(brackets)
 	}
 	return orderedBrackets;
 }
