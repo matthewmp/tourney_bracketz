@@ -56,7 +56,7 @@ export const createPairedBrackets = (competitorPairs) => {
 export const createOuterBrackets = (pairedBrackets) => { 
 	const outerBracketArr = [];
 
-	for(let i = 0; i < pairedBrackets.length; i = i + 2){
+	for(let i = 0; i < pairedBrackets.length - 1; i = i + 2){
 		// Create Outer Bracket Container
 		const outerBracket = document.createElement('div');
 		outerBracket.classList = 'out-bracket-wrapper row'
@@ -83,9 +83,7 @@ export const createOuterBrackets = (pairedBrackets) => {
 		obBottomRight.classList = 'ob-right bottom';
 
 		obTopLeft.appendChild(pairedBrackets[i]);
-		if(pairedBrackets[i+1]){
-			obBottomLeft.appendChild(pairedBrackets[i + 1]);
-		}
+		obBottomLeft.appendChild(pairedBrackets[i + 1]);
 
 		// Fill in right side outer bracket with single brackets
 		const singleBracket1 = createSingleBracket('');

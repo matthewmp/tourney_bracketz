@@ -38,6 +38,9 @@ export const ranSeeding = (arr) => {
 // participants = ['Tom', 'Matt', 'Brandon', 'Dean'];
 // bracketGenerator(bracketArr, participants.length); => 
 export const bracketGenerator = (arr, participants, start=0, end=arr.length) => {
+	if(participants <= 2){
+		throw new Error('Must Enter More Than 2 Competitors');
+	}
 
 	// Find middle of bracketArr
 

@@ -52,6 +52,10 @@ body{
 	width: 100%;
 }
 
+.brackets-wrapper {
+	display: flex;
+}
+
 .brackets-wrapper input{
 	max-width: 80%;
 	max-height: 15px;
