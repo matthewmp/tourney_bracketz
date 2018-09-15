@@ -7,5 +7,6 @@ import '../css/bootstrap.min.css'; // Link bootstrap css. Use for grid system & 
 import '../css/main.css'; // Link main.css.  Any CSS files imported will be applied.
 import '../css/logos.css';
 import '../css/test_bracket.css';
+import '../css/signin.css';
 import './view.js';
 import './signin.js';
