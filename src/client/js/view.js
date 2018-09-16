@@ -148,8 +148,8 @@ export const createFinalBracket = (allOuterBrackets) => {
 	return winnerBracket;
 }
 
-window.onload = () => {
-	
+//window.onload = () => {
+export const initializeTestBracketz = () => {	
 	var sub = document.getElementById('btnS');
 	var txt = document.getElementById('txtArea');
 
