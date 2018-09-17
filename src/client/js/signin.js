@@ -1,3 +1,6 @@
+import { initializeTestBracketz } from './view';
+
+
 // Wait for DOM to finish loading before attaching listeners.
 window.onload = () => {
 
@@ -44,4 +47,7 @@ window.onload = () => {
     document.getElementById("registerbutton").onclick = function() {
         console.log('Register button clicked');
     };
+
+    // Test Brackets variables
+    initializeTestBracketz();
 }
