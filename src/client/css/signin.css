@@ -1,0 +1,14 @@
+#signincontainer {
+    display: none;
+    position: absolute;
+    left: 25%;
+    top: 50%;
+    background-color: #fff;
+    z-index: 999;
+}
+#registerform {
+    display: none;
+}
+#registertitle {
+    opacity: .25;
+}
