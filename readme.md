@@ -53,7 +53,7 @@ Database Initialization
     Enter a name ("tourney_bracketz")
     Now you have an empty database on your MySQL server.
 
-    Open your code editor and navigate to the .env file in the root directory. Fill in the values you created in the previous steps. Do not change the names of the items, just the values. You do not need quotes around these values.
+    Open your code editor and navigate to the .env file in the root directory. If you don't have it, create the file .env. Make sure to add this to your gitignore. Copy the fields below & Fill in the values you created in the previous steps. Do not change the names of the items, just the values. You do not need quotes around these values.
 
         SCHEMA_NAME=the_name_of_your_schema (Connection Name you provided earlier)
         DB_USERNAME=root
@@ -64,11 +64,22 @@ Database Initialization
 
         sequelize db:migrate
 
-   This will generate the tables that you need in your database. 
    If you get an error saying that 'sequelize' command doesn't exist either:
 
    1. Install sequelize globally with correct version.
    2. Run 'npm run migrate' from the command line.
+
+   When this runs it will generate the tables that you need in your database. Refresh your MySQL view and you should see the tables have been created.
+
+   If you need to run this again, in MySQL drop the sequelizemeta table.
+
+   To populate dummy data, run this command in the command line:
+
+   sequelize db:seed:all
+
+   This will generate data based on the files in the /migrations folder. If you run this multiple times you will get multiple entries of the dummy data. So, keep an eye on your database.
+
+   To access tournament data hit the http://localhost:8888/json/ route and append the tournamentID that you want to see. For instance, http://localhost:8888/json/1 will return all of the players associated with Tournament 1. If you enter an invalid tournament ID you will recieve back an empty object.
 
 
 
