@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function(models) {
     // associations can be defined here
+    // Each user can have many tournaments. The foreign key in the Tournament table is 'userID'
+    User.hasMany(models.Tournament, {foreignKey: 'userid'});
   };
   return User;
 };

@@ -127,6 +127,27 @@ app.get('/testbrackets', (req, res) => {
 	res.render('test_brackets');
 });
 
+
+// Prototype API to return the tournament data.
+app.get('/JSON/:tournamentID', (req, res) => {
+	models.Tournament.findAll({
+		include: [{
+			model: models.Players,
+			where: { 'tournamentID': req.params.tournamentID }
+		}]
+	})
+	.then(function(data) {
+		// Package the returned JSON file
+		var payload = {tournamentdata: data}
+		
+		// Send JSON to the user
+		res.json({payload});
+		
+	}).catch(function (err) {
+		console.log(err);
+	});	
+});
+
 // Post route to listen for user registration
 app.post('/register', (req, res) => {
 	var currentDate = new Date();
