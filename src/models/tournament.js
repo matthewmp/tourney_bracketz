@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    numPlayers: {
-      type: DataTypes.INTEGER,
+    publicURL: {
+      type: DataTypes.STRING,
       allowNull: false
     },
     winner: {
@@ -19,7 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   Tournament.associate = function(models) {
-    // associations can be defined here
+    // associations can be defined here 
+    // Each Tournaments has One User. The foreign key in the Tournament table (userID) is the 'id' from the User table
+    Tournament.hasOne(models.User, {foreignKey: 'id'});
+
+    // Each Tournaments has many Players. The foreign key in the Players table (tournamentID) is the 'id' from the Tournament table
+    Tournament.hasMany(models.Players, {foreignKey: 'tournamentID'});
   };
   return Tournament;
 };

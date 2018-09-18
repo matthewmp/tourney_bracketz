@@ -15,8 +15,7 @@ module.exports = {
         password: "password",
         createdAt: new Date(),
         updatedAt: new Date()
-
-      }], {});
+       }], {});
   },
 
   down: (queryInterface, Sequelize) => {
