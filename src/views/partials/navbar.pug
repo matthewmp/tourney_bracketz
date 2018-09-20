@@ -44,21 +44,23 @@ div.row#signincontainer
             div.row
                 div.col-sm-12
                     <label class="signinform" id="usernamelabel">
-                         | <input type="text" placeholder="Username" name="username" id="username" required>
+                         | <input type="text" placeholder="Username" name="username" id="username" style="font-size:14px;" required>
                     </label>
             div.row
                 div.col-sm-12
                     <label class="signinform" id="passwordlabel">
-                         | <input type="password" placeholder="Password" name="password" id="password" required>
+                         | <input type="password" placeholder="Password" name="password" id="password" style="font-size:14px;" required>
                     </label>
             div.row
                 div.col-sm-12
-                    <input type="checkbox" id="rememberMe" name="rememberMe"> Remember Me<br>  
+                    <label><input type="checkbox" value="None" id="rememberMe" name="check"> Remember Me</label> 
+                    
             div.row
                 div.col-sm-12
                     button.btn#loginbutton Login
             div.row
                 div.col-sm-12#emptyTable
+                    button.btn#forgotPasswordButton Forgot Password?
                     <input type="text" class="form-control" style="visibility:hidden">
         </form>
             
@@ -68,27 +70,30 @@ div.row#signincontainer
             div.row
                 div.col-sm-12
                     <label class="registerelement" id="regusernamelabel">
-                         | Username <input type="text" name="regusername" id="regusername" required>
+                        <input type="text" placeholder="Desired Username" name="regusername" id="regusername" required>
                     </label>
             div.row
-                div.col-sm-12
+                div.col-sm-4
                     <label class="registerelement" id="regfirstnamelabel">
-                         | First name <input type="text" name="regfirstname" id="regfirstname" required>
+                        <input type="text" placeholder="First Name" name="regfirstname" id="regfirstname" required>
                     </label>
-            div.row
-                div.col-sm-12
+                div.col-sm-6
                     <label class="registerelement" id="reglastnamelabel">
-                         | Last name <input type="text" name="reglastname" id="reglastname" required>
+                        <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
                     </label>
             div.row
                 div.col-sm-12
                     <label class="registerelement" id="regemaillabel">
-                         | Email <input type="text" name="regemail" id="regemail" required>
+                        <input type="text" placeholder="Email" name="regemail" id="regemail" required>
                     </label>
             div.row
-                div.col-sm-12
+                div.col-sm-4
                     <label class="registerelement" id="regpasswordlabel">
-                         | Password <input type="password" name="regpassword" id="regpassword" required>
+                        <input type="password" placeholder="Password" name="regpassword" id="regpassword" required>
+                    </label>
+                div.col-sm-6
+                    <label class="registerelement" id="regconfirmpasswordlabel">
+                        <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
                     </label>
             div.row
                 div.col-sm-12
