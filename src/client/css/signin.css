@@ -1,14 +1,120 @@
 #signincontainer {
     display: none;
     position: absolute;
-    left: 25%;
+    background-color: #A63446;
+    border: 2px groove black;
     top: 50%;
-    background-color: #fff;
-    z-index: 999;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    width: 25%;
+    height: 52%;
 }
 #registerform {
     display: none;
 }
 #registertitle {
     opacity: .25;
+}
+p.tableHeader {
+    cursor: pointer;
+    font-size: large;
+}
+
+#loginclosebutton {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.7;
+}
+#loginclosebutton:hover {
+    opacity: 1;
+}
+#loginclosebutton:before, #loginclosebutton:after {
+    position: absolute;
+    left: 14px;
+    top: -1px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+}
+#loginclosebutton:before {
+    transform: rotate(45deg);
+}
+#loginclosebutton:after {
+    transform: rotate(-45deg);
+}
+  
+input#username {
+    width: 100%;
+    padding: 10px 20px; 
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: black;
+    line-height: 1.42857143;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid black;
+}
+
+input#password {
+    width: 100%;
+    padding: 10px 20px; 
+    display: block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: black;
+    line-height: 1.42857143;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid black;
+}
+div#logintitle {
+    color: white;
+}
+div#registertitle {
+    color: white;
+}
+button#loginbutton{
+    background:#FBFEF9;
+    color:black;
+    border:none;
+    position:relative;
+    height:150%;
+    margin-left: 6%;
+    font-size:1.6em;
+    padding:0 2em;
+    cursor:pointer;
+    transition:800ms ease all;
+    outline:none;
+}
+    button#loginbutton:hover{
+    background:#fff;
+    color:#0C6291;
+}
+    button#loginbutton:before,button#loginbutton:after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    height:2px;
+    width:0;
+    background: #0C6291;
+    transition:400ms ease all;
+}
+    button#loginbutton:after{
+    right:inherit;
+    top:inherit;
+    left:0;
+    bottom:0;
+}
+    button#loginbutton:hover:before,button#loginbutton:hover:after{
+    width:100%;
+    transition:800ms ease all;
 }

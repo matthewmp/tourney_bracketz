@@ -1,0 +1,11 @@
+.navbar-dark .navbar-nav .nav-link {
+    /* color: rgba(255,255,255,.5); */
+    color: #FBFEF9;
+}
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark {
+    background-color: #0C6291!important;
+}
+div#signinbutton {
+    margin: 7px;
+    cursor: pointer;
+}
