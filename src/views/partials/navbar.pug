@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="client/css/nav_bar.css">
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Tourney Bracketz</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,8 +13,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="logos">Logos</a>
             </li>
+            <div id="dashboard">
             <li class="nav-item">
                 <a class="nav-link" href="userdashboard">Dashboard</a>
+            </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="testbrackets">Test Brackets</a>
@@ -35,48 +39,61 @@ div.row#signincontainer
             div.col-sm-5#registertitle
                 p.tableHeader Register
             div.col-sm-2 
-                button.btn#loginclosebutton Close
+                button.btn#loginclosebutton 
         <form id="loginform" action="/login/" method="POST">
             div.row
                 div.col-sm-12
                     <label class="signinform" id="usernamelabel">
-                         | Username <input type="text" name="username" id="username" required>
+                         | <input type="text" placeholder="Username" name="username" id="username" style="font-size:14px;" required>
                     </label>
             div.row
                 div.col-sm-12
                     <label class="signinform" id="passwordlabel">
-                         | Password <input type="password" name="password" id="password" required>
+                         | <input type="password" placeholder="Password" name="password" id="password" style="font-size:14px;" required>
                     </label>
             div.row
                 div.col-sm-12
+                    <label><input type="checkbox" value="None" id="rememberMe" name="check"> Remember Me</label> 
+                    
+            div.row
+                div.col-sm-12
                     button.btn#loginbutton Login
+            div.row
+                div.col-sm-12#emptyTable
+                    button.btn#forgotPasswordButton Forgot Password?
+                    <input type="text" class="form-control" style="visibility:hidden">
         </form>
+            
+                
     div.col-sm-12#registerContainer
         <form id="registerform" action="/register/" method="POST">
             div.row
                 div.col-sm-12
                     <label class="registerelement" id="regusernamelabel">
-                         | Username <input type="text" name="regusername" id="regusername" required>
+                        <input type="text" placeholder="Desired Username" name="regusername" id="regusername" required>
                     </label>
             div.row
-                div.col-sm-12
+                div.col-sm-4
                     <label class="registerelement" id="regfirstnamelabel">
-                         | First name <input type="text" name="regfirstname" id="regfirstname" required>
+                        <input type="text" placeholder="First Name" name="regfirstname" id="regfirstname" required>
                     </label>
-            div.row
-                div.col-sm-12
+                div.col-sm-6
                     <label class="registerelement" id="reglastnamelabel">
-                         | Last name <input type="text" name="reglastname" id="reglastname" required>
+                        <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
                     </label>
             div.row
                 div.col-sm-12
                     <label class="registerelement" id="regemaillabel">
-                         | Email <input type="text" name="regemail" id="regemail" required>
+                        <input type="text" placeholder="Email" name="regemail" id="regemail" required>
                     </label>
             div.row
-                div.col-sm-12
+                div.col-sm-4
                     <label class="registerelement" id="regpasswordlabel">
-                         | Password <input type="password" name="regpassword" id="regpassword" required>
+                        <input type="password" placeholder="Password" name="regpassword" id="regpassword" required>
+                    </label>
+                div.col-sm-6
+                    <label class="registerelement" id="regconfirmpasswordlabel">
+                        <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
                     </label>
             div.row
                 div.col-sm-12
