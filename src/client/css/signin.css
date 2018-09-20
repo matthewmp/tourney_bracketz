@@ -189,3 +189,6 @@ button#forgotPasswordButton {
     position: absolute;
     margin: 10px 0px 0px -6px;
 }
+.tableHeader{
+    border-bottom: 1px solid white;
+}
