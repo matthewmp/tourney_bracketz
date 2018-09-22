@@ -1,4 +1,19 @@
 body{
-	background: red;
-	filter: grayscale(50%);
+	background: rgb(240, 240, 241);
+	filter: grayscale(1%);
+}
+.navbar {
+    width: 100%;
+	color: #fff;
+	margin: 0px;
+}
+.heroContainer {
+	text-align: center;
+}
+ul.showBullets {
+	list-style: disc;
+}
+.tableHeader {
+    font-weight: bold;
+    border-bottom: 1px solid black;
 }

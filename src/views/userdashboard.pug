@@ -1,0 +1,23 @@
+//- index.pug
+extends main-layout
+block content
+	div.container
+		div.row.hero
+			div.col-sm-4
+				p Profile picture
+				img.profileImage(src="https://via.placeholder.com/200x200")
+			div.col-sm-8
+				p Username:
+				p Join Date:
+				p Tournaments Created:
+		div.row.tournamentList
+			div.col-sm-4
+				p.tableHeader Tournament Name
+			div.col-sm-4
+				p.tableHeader Number of Players
+			div.col-sm-4
+				p.tableHeader Winner
+			for item, key in tournamentdata
+				div.col-sm-4= item.title
+				div.col-sm-4= item.numPlayers
+				div.col-sm-4= item.winner

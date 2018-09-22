@@ -1,0 +1,6 @@
+Modify this script and run it on the command line.
+This will generate new models & migrations
+
+sequelize model:create --name Tournament --attributes userID:integer,title:string,numPlayers:integer,winner:string
+
+sequelize model:create --name Player --attributes tournamentID:integer,playername:string,seed:integer,wins:integer
