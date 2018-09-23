@@ -53,13 +53,20 @@ export const createPairedBrackets = (competitorPairs) => {
 }
 
 // Create Outer Brackets
-export const createOuterBrackets = (pairedBrackets) => { 
+export const createOuterBrackets = (pairedBrackets, counter) => { 
 	const outerBracketArr = [];
-
+	
 	for(let i = 0; i < pairedBrackets.length - 1; i = i + 2){
+		
 		// Create Outer Bracket Container
 		const outerBracket = document.createElement('div');
-		outerBracket.classList = 'out-bracket-wrapper row'
+		outerBracket.classList = 'out-bracket-wrapper row';
+		if(counter){
+			outerBracket.classList += ` outer-bracket-${counter}`;
+		} else {
+			outerBracket.classList += ' outer-bracket-1';
+		}
+		
 
 		// Create 2 sections of Outer Bracket (right/left)
 		const obLeft = document.createElement('div');
@@ -70,11 +77,11 @@ export const createOuterBrackets = (pairedBrackets) => {
 
 		// Create 2 sections for each left/right section (top/bottom)
 		const obTopLeft = document.createElement('div');
-		obTopLeft.classList = 'ob-top left';
+		obTopLeft.classList = 'ob-top top left';
 
 		// Fill in sections with paired brackets
 		const obBottomLeft = document.createElement('div');
-		obBottomLeft.classList = 'ob-bottom left';
+		obBottomLeft.classList = 'ob-bottom bottom left';
 
 		const obTopRight = document.createElement('div');
 		obTopRight.classList = 'ob-right top';
@@ -86,8 +93,18 @@ export const createOuterBrackets = (pairedBrackets) => {
 		obBottomLeft.appendChild(pairedBrackets[i + 1]);
 
 		// Fill in right side outer bracket with single brackets
-		const singleBracket1 = createSingleBracket('');
-		const singleBracket2 = createSingleBracket('');
+		let num = i;
+		const singleBracket1 = createSingleBracket(`${counter} ${num}`);
+		const singleBracket2 = createSingleBracket(`${counter} ${num+1}`);
+
+		if(counter){
+			singleBracket1.id = `round_${counter}__input_top`;
+			singleBracket2.id = `round_${counter}__input_bottom`;	
+		} else {
+			singleBracket1.id = 'round_1__input_top';
+			singleBracket2.id = 'round_1__input_bottom';
+		}
+		
 
 		// Attach children to parents
 		obTopRight.appendChild(singleBracket1);
@@ -111,9 +128,10 @@ export const createOuterBrackets = (pairedBrackets) => {
 // Wrapp all Outer Brackets within other Outer Brackets
 export const createAllOuterBrackets = (outerBrackets) => {
 	let totalBrackets = outerBrackets;
-	
+	let counter = 2;
 	while(totalBrackets.length > 2) {
-		totalBrackets = createOuterBrackets(totalBrackets);
+		totalBrackets = createOuterBrackets(totalBrackets, counter);
+		counter++;
 	}
 	return totalBrackets;
 }
@@ -176,5 +194,38 @@ export const initializeTestBracketz = () => {
 
 			document.body.appendChild(winner);
 		});
+	}
+}
+
+function advance(element){
+	// Get competitors name
+	const value = element.previousElementSibling.value;
+
+	if(element.parentElement.id === ''){
+		// Find if competitor is in the top/bottom bracket
+		const order = element.parentElement.parentElement.parentElement.className.search('top') > -1 ? 0 : 1;
+		console.log('Order: ' , order)
+
+		// Advance value to next round
+		btn.closest('.outer-bracket-1').children[1].children[order].children[0].children[0].value = value;
+	} else {
+		// Find if competitor is in the top/bottom bracket
+		const order = element.closest('.out-bracket-wrapper').parentElement.className.search('top') > -1 ? 0 : 1;
+		console.log('Order: ' , order)
+
+		// Get current round
+		const round = element.parentElement.id.slice(6,7);
+
+		const nextRound = parseInt(round) + 1 + '';
+		console.log(nextRound);
+		if(nextRound === '5'){
+			console.log('TRUE');
+			document.getElementsByClassName('final-bracket-input')[0].value = value;
+		}
+		else{
+			console.log('Next Round: ', nextRound);
+			// Traget next round
+			console.log(element.closest(`.outer-bracket-${nextRound}`).children[1].children[order].children[0].children[0].value = value)
+		}
 	}
 }
