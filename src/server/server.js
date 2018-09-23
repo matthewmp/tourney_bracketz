@@ -73,6 +73,9 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
+// Import bcryptjs
+var bcrypt = require('bcryptjs');
+
 //Create a dummy object to pass to the pages. This will be replaced with a database call
 const dummyTournaments = { 
 	tournamentOneName: {
@@ -152,13 +155,16 @@ app.get('/JSON/:tournamentID', (req, res) => {
 app.post('/register', (req, res) => {
 	var currentDate = new Date();
 	
+	var salt = bcrypt.genSaltSync(10);
+	var hash = bcrypt.hashSync(req.body.regpassword, salt);
+
   //Use Sequelize to push to DB
   models.User.create({
-		username: req.body.regusername,
+		// username: req.body.regusername,
 		firstname: req.body.regfirstname,
 		lastname: req.body.reglastname,
 		email: req.body.regemail,
-		password: req.body.regpassword,
+		password: hash,
     createdAt: currentDate,
     updatedAt: currentDate
   }).then(function(){
