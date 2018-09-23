@@ -1,6 +1,6 @@
 body{
 	background: rgb(240, 240, 241);
-	filter: grayscale(50%);
+	filter: grayscale(1%);
 }
 .navbar {
     width: 100%;
