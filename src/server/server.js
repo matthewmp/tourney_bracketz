@@ -75,6 +75,21 @@ sequelize
 
 // Import bcryptjs
 var bcrypt = require('bcryptjs');
+var salt = bcrypt.genSaltSync(10);
+
+// Configure Passport
+var passport = require('passport');
+var session = require('express-session');
+require('../config/passport-config.js');
+
+//Passport configuration
+app.use(session({ 
+  secret: 'tomtest', // session secret
+  resave: true,
+  saveUninitialized: true
+ })); 
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
 
 //Create a dummy object to pass to the pages. This will be replaced with a database call
 const dummyTournaments = { 
@@ -151,30 +166,54 @@ app.get('/JSON/:tournamentID', (req, res) => {
 	});	
 });
 
-// Post route to listen for user registration
-app.post('/register', (req, res) => {
-	var currentDate = new Date();
-	
-	var salt = bcrypt.genSaltSync(10);
-	var hash = bcrypt.hashSync(req.body.regpassword, salt);
+//Process registration requests using Passport
+app.post('/register', passport.authenticate('local-signup', {
+  successRedirect: ('../userdashboard'), //if authenticated, proceed to adminportal page
+  failureRedirect: ('/') //if failed, redirect to login page (consider options here!!)
+}));
 
-  //Use Sequelize to push to DB
-  models.User.create({
-		// username: req.body.regusername,
-		firstname: req.body.regfirstname,
-		lastname: req.body.reglastname,
-		email: req.body.regemail,
-		password: hash,
-    createdAt: currentDate,
-    updatedAt: currentDate
-  }).then(function(){
+// Post route to listen for user registration
+// app.post('/register', (req,res) => {
+	// var currentDate = new Date();
+	
+	// var hash = bcrypt.hashSync(req.body.regpassword, salt);
+	// }
+  // Use Sequelize to push to DB
+  // models.User.create({
+	// 	firstname: req.body.regfirstname,
+	// 	lastname: req.body.reglastname,
+	// 	email: req.body.regemail,
+	// 	password: hash,
+  //   createdAt: currentDate,
+  //   updatedAt: currentDate
+  // }).then(() => {
+	// 	res.redirect('/');
+  // })
+  // .catch((err) => {
+  //   // print the error details
+  //   console.log(err);
+  // });
+// });
+
+
+app.post('/login', (req, res) => {
+	
+	var hash = bcrypt.hashSync(req.body.password, salt);
+	// req.body.password
+	// password: hash,
+
+	models.User.findOne({
+		where: {
+			email: req.body.email
+		}
+  }).then(() => { // Continue if email is found
 		res.redirect('/');
-  })
-  .catch(function(err) {
-    // print the error details
-    console.log(err);
-  });
-});
+	}).catch((err) => { // Email is not registered
+
+	})
+
+})
+
 
 // Start Server
 app.listen(8888, () => {
