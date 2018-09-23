@@ -224,7 +224,9 @@ function advance(element){
 		const round = element.parentElement.id.slice(6,7);
 
 		const nextRound = parseInt(round) + 1 + '';
-		if(document.getElementsByClassName(`.outer-bracket-${nextRound}`).length === 0){
+		console.log('NextRound: ', nextRound);
+		console.log(`.outer-bracket-${nextRound}`);
+		if(document.getElementsByClassName(`outer-bracket-${nextRound}`).length === 0){
 			document.getElementsByClassName('final-bracket-input')[0].value = value;
 		}
 		else{
