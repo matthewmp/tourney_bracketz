@@ -22,6 +22,7 @@ export const createSingleBracket = (competitor) => {
 	const btn = document.createElement('button');
 	input.value = competitor;
 	btn.innerText = '=>';
+	btn.className = 'btn-advance';
 	singleBracket.appendChild(input);
 	singleBracket.appendChild(btn);
 
@@ -53,13 +54,20 @@ export const createPairedBrackets = (competitorPairs) => {
 }
 
 // Create Outer Brackets
-export const createOuterBrackets = (pairedBrackets) => { 
+export const createOuterBrackets = (pairedBrackets, counter) => { 
 	const outerBracketArr = [];
-
+	
 	for(let i = 0; i < pairedBrackets.length - 1; i = i + 2){
+		
 		// Create Outer Bracket Container
 		const outerBracket = document.createElement('div');
-		outerBracket.classList = 'out-bracket-wrapper row'
+		outerBracket.classList = 'out-bracket-wrapper row';
+		if(counter){
+			outerBracket.classList += ` outer-bracket-${counter}`;
+		} else {
+			outerBracket.classList += ' outer-bracket-1';
+		}
+		
 
 		// Create 2 sections of Outer Bracket (right/left)
 		const obLeft = document.createElement('div');
@@ -70,11 +78,11 @@ export const createOuterBrackets = (pairedBrackets) => {
 
 		// Create 2 sections for each left/right section (top/bottom)
 		const obTopLeft = document.createElement('div');
-		obTopLeft.classList = 'ob-top left';
+		obTopLeft.classList = 'ob-top top left';
 
 		// Fill in sections with paired brackets
 		const obBottomLeft = document.createElement('div');
-		obBottomLeft.classList = 'ob-bottom left';
+		obBottomLeft.classList = 'ob-bottom bottom left';
 
 		const obTopRight = document.createElement('div');
 		obTopRight.classList = 'ob-right top';
@@ -86,8 +94,18 @@ export const createOuterBrackets = (pairedBrackets) => {
 		obBottomLeft.appendChild(pairedBrackets[i + 1]);
 
 		// Fill in right side outer bracket with single brackets
+		let num = i;
 		const singleBracket1 = createSingleBracket('');
 		const singleBracket2 = createSingleBracket('');
+
+		if(counter){
+			singleBracket1.id = `round_${counter}__input_top`;
+			singleBracket2.id = `round_${counter}__input_bottom`;	
+		} else {
+			singleBracket1.id = 'round_1__input_top';
+			singleBracket2.id = 'round_1__input_bottom';
+		}
+		
 
 		// Attach children to parents
 		obTopRight.appendChild(singleBracket1);
@@ -111,9 +129,10 @@ export const createOuterBrackets = (pairedBrackets) => {
 // Wrapp all Outer Brackets within other Outer Brackets
 export const createAllOuterBrackets = (outerBrackets) => {
 	let totalBrackets = outerBrackets;
-	
+	let counter = 2;
 	while(totalBrackets.length > 2) {
-		totalBrackets = createOuterBrackets(totalBrackets);
+		totalBrackets = createOuterBrackets(totalBrackets, counter);
+		counter++;
 	}
 	return totalBrackets;
 }
@@ -175,6 +194,92 @@ export const initializeTestBracketz = () => {
 			var winner = createFinalBracket(total);
 
 			document.body.appendChild(winner);
+
+			const buttons = document.getElementsByClassName('btn-advance');
+			
+			for(let i = 0; i < buttons.length; i++){
+				let el = buttons[i];
+				el.addEventListener('click', advance);
+			}
 		});
+		highlightMatch();
 	}
+}
+
+function advance(element){
+	element = this;
+	// Get competitors name
+	const value = element.previousElementSibling.value;
+
+	if(element.parentElement.id === ''){
+		// Find if competitor is in the top/bottom bracket
+		const order = element.parentElement.parentElement.parentElement.className.search('top') > -1 ? 0 : 1;
+
+		// Advance value to next round
+		element.closest('.outer-bracket-1').children[1].children[order].children[0].children[0].value = value;
+	} else {
+		// Find if competitor is in the top/bottom bracket
+		const order = element.closest('.out-bracket-wrapper').parentElement.className.search('top') > -1 ? 0 : 1;
+
+		// Get current round
+		const round = element.parentElement.id.slice(6,7);
+
+		const nextRound = parseInt(round) + 1 + '';
+		console.log('NextRound: ', nextRound);
+		console.log(`.outer-bracket-${nextRound}`);
+		if(document.getElementsByClassName(`outer-bracket-${nextRound}`).length === 0){
+			document.getElementsByClassName('final-bracket-input')[0].value = value;
+		}
+		else{
+			// Traget next round
+			element.closest(`.outer-bracket-${nextRound}`).children[1].children[order].children[0].children[0].value = value;
+		}
+	}
+}
+
+export const highlightMatch = () => {
+
+
+  var txt = document.getElementById('txtArea');
+  var back = document.getElementById('backDrop');
+  var text;
+
+  txt.addEventListener('keyup', function(e){
+
+    text =  txt.value.split('\n').map(el => {
+        return `<span>${el}</span><br>`
+    });
+    
+    var indexes = [];
+      
+    for(let i = 0; i < text.length; i++){
+      for(let j = i+1; j < text.length; j++){
+        if(text[i] === text[j]){
+          indexes.push(i,j)
+        }
+      }
+    }
+
+
+    // Array to dedupe index array
+    let ind = [];
+
+    // If index is not in ind push it to ind array
+    indexes.forEach((el) => {
+      if(ind.indexOf(el) === -1){ind.push(el)}
+    });
+      
+    // Add 'match' class to every index (ind) of text array
+    ind.forEach(index => {
+      let snippet = text[index].slice(6);
+      text[index] = '<span class="match">' + snippet; 
+    });
+        
+    // Add all spans to name list div
+
+    back.innerHTML = text.join('')
+    // Clear indexes of matches
+    ind.length = 0;
+    
+  });
 }
