@@ -38,68 +38,59 @@
 div.row#signincontainer
     div.col-sm-12#loginContainer
         div.row
-            div.col-sm-5#logintitle
+            div.col#logintitle
                 p.tableHeader Log In
-            div.col-sm-5#registertitle
+            div.col#registertitle
                 p.tableHeader Register
-            div.col-sm-2 
+            div.col
                 button.btn#loginclosebutton 
         <form id="loginform" action="/login/" method="POST">
+            div.row.justify-content-center
+                div.col-sm-12
+                    <input type="text" placeholder="Username" name="username" id="username" style="font-size:14px;" required>
             div.row
                 div.col-sm-12
-                    <label class="signinform" id="usernamelabel">
-                         | <input type="text" placeholder="Username" name="username" id="username" style="font-size:14px;" required>
-                    </label>
-            div.row
-                div.col-sm-12
-                    <label class="signinform" id="passwordlabel">
-                         | <input type="password" placeholder="Password" name="password" id="password" style="font-size:14px;" required>
-                    </label>
-            div.row
-                div.col-sm-12
-                    <label><input type="checkbox" value="None" id="rememberMe" name="check"> Remember Me</label> 
-                    
-            div.row
-                div.col-sm-12
-                    button.btn#loginbutton Login
-            div.row
-                div.col-sm-12#emptyTable
-                    button.btn#forgotPasswordButton Forgot Password?
-                    <input type="text" class="form-control" style="visibility:hidden">
+                        <input type="password" placeholder="Password" name="password" id="password" style="font-size:14px;" required>
+            
+            div.login-tools
+                div
+                    div
+                        <label><input type="checkbox" value="None" id="rememberMe" name="check"> Remember Me</label> 
+                        
+                div
+                    div
+                        button.btn#loginbutton Login
+                div
+                    div#emptyTable
+                        button.btn#forgotPasswordButton Forgot Password?
+                        <input type="text" class="form-control" style="visibility:hidden">
         </form>
             
                 
     div.col-sm-12#registerContainer
         <form id="registerform" action="/register/" method="POST">
+            //- div.row 
+            //-     div.col-sm-12
+            //-         <input type="text" placeholder="Desired Username" name="regusername" id="regusername" required>
+                    
+            div.row
+                div.col-md-12
+                    <input type="text" placeholder="First Name" name="regfirstname" id="regfirstname" required>
+                div.col-md-12
+                    <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
+                    
             div.row
                 div.col-sm-12
-                    <label class="registerelement" id="regusernamelabel">
-                        <input type="text" placeholder="Desired Username" name="regusername" id="regusername" required>
-                    </label>
-            div.row
-                div.col-sm-4
-                    <label class="registerelement" id="regfirstnamelabel">
-                        <input type="text" placeholder="First Name" name="regfirstname" id="regfirstname" required>
-                    </label>
-                div.col-sm-6
-                    <label class="registerelement" id="reglastnamelabel">
-                        <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
-                    </label>
+                    <input type="text" placeholder="Email" name="regemail" id="regemail" required>
+                    
             div.row
                 div.col-sm-12
-                    <label class="registerelement" id="regemaillabel">
-                        <input type="text" placeholder="Email" name="regemail" id="regemail" required>
-                    </label>
-            div.row
-                div.col-sm-4
-                    <label class="registerelement" id="regpasswordlabel">
-                        <input type="password" placeholder="Password" name="regpassword" id="regpassword" required>
-                    </label>
-                div.col-sm-6
-                    <label class="registerelement" id="regconfirmpasswordlabel">
-                        <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
-                    </label>
-            div.row
+                    <input type="password" placeholder="Password" name="regpassword" id="regpassword" required>
+                    
                 div.col-sm-12
+                    <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
+                    
+            div.row
+                div.reg-btn-container
                     button.btn#registerbutton Register
         </form>
