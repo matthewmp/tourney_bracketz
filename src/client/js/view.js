@@ -22,6 +22,7 @@ export const createSingleBracket = (competitor) => {
 	const btn = document.createElement('button');
 	input.value = competitor;
 	btn.innerText = '=>';
+	btn.className = 'btn-advance';
 	singleBracket.appendChild(input);
 	singleBracket.appendChild(btn);
 
@@ -94,8 +95,8 @@ export const createOuterBrackets = (pairedBrackets, counter) => {
 
 		// Fill in right side outer bracket with single brackets
 		let num = i;
-		const singleBracket1 = createSingleBracket(`${counter} ${num}`);
-		const singleBracket2 = createSingleBracket(`${counter} ${num+1}`);
+		const singleBracket1 = createSingleBracket('');
+		const singleBracket2 = createSingleBracket('');
 
 		if(counter){
 			singleBracket1.id = `round_${counter}__input_top`;
@@ -193,39 +194,42 @@ export const initializeTestBracketz = () => {
 			var winner = createFinalBracket(total);
 
 			document.body.appendChild(winner);
+
+			const buttons = document.getElementsByClassName('btn-advance');
+			
+			for(let i = 0; i < buttons.length; i++){
+				let el = buttons[i];
+				el.addEventListener('click', advance);
+			}
 		});
 	}
 }
 
 function advance(element){
+	element = this;
 	// Get competitors name
 	const value = element.previousElementSibling.value;
 
 	if(element.parentElement.id === ''){
 		// Find if competitor is in the top/bottom bracket
 		const order = element.parentElement.parentElement.parentElement.className.search('top') > -1 ? 0 : 1;
-		console.log('Order: ' , order)
 
 		// Advance value to next round
-		btn.closest('.outer-bracket-1').children[1].children[order].children[0].children[0].value = value;
+		element.closest('.outer-bracket-1').children[1].children[order].children[0].children[0].value = value;
 	} else {
 		// Find if competitor is in the top/bottom bracket
 		const order = element.closest('.out-bracket-wrapper').parentElement.className.search('top') > -1 ? 0 : 1;
-		console.log('Order: ' , order)
 
 		// Get current round
 		const round = element.parentElement.id.slice(6,7);
 
 		const nextRound = parseInt(round) + 1 + '';
-		console.log(nextRound);
-		if(nextRound === '5'){
-			console.log('TRUE');
+		if(document.getElementsByClassName(`.outer-bracket-${nextRound}`).length === 0){
 			document.getElementsByClassName('final-bracket-input')[0].value = value;
 		}
 		else{
-			console.log('Next Round: ', nextRound);
 			// Traget next round
-			console.log(element.closest(`.outer-bracket-${nextRound}`).children[1].children[order].children[0].children[0].value = value)
+			element.closest(`.outer-bracket-${nextRound}`).children[1].children[order].children[0].children[0].value = value;
 		}
 	}
 }
