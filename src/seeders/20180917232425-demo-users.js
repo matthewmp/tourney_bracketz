@@ -8,7 +8,6 @@ module.exports = {
       Example:
     */
       return queryInterface.bulkInsert('Users', [{
-        username: "JohnDoe",
         firstname: "John",
         lastname: "Doe",
         email: "johndoe@fakegmail.com",
