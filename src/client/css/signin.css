@@ -189,3 +189,20 @@ button#forgotPasswordButton {
 .tableHeader{
     border-bottom: 1px solid white;
 }
+@media  screen and (max-width: 1920px) {
+    #signincontainer{
+    display: none;
+    position: absolute;
+    background-color: #0C6291;
+    border: 2px groove black;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%);
+    transform: translate(-50%);
+    z-index: 99;
+    min-width: 350px;
+    width: 25%;
+    height: 300px;
+    }
+
+}
