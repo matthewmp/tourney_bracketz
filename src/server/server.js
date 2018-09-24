@@ -44,7 +44,7 @@ app.use(bodyParser.urlencoded({
 
 // Configure Sequelize
 const Sequelize = require('sequelize');
-
+var models = require('../models');
 // var sequelizeConnection = models.sequelize;
 
 const sequelize = new Sequelize(process.env.SCHEMA_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
@@ -83,5 +83,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Import routes.js (and pass app to it)
-var authRoute = require('./routes.js')(app);
+var authRoute = require('./routes.js')(app,passport);
+
+//load passport strategies
+require('../config/passport-config.js')(passport, models.user);
 
