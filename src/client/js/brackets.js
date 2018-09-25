@@ -97,7 +97,7 @@ export const matchParticipants = (participants, numOfbyes) => {
 	// Usurp all byes on top seeded participants and push into brackets array
 	for(let i = 0; i < numOfbyes; i++){
 		let matchUp = participants.splice(0,1);
-		matchUp.push('Buy');
+		matchUp.push('Bye');
 		brackets.push(matchUp);
 	}
 
