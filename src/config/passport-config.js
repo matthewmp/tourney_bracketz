@@ -1,23 +1,37 @@
 var bCrypt = require('bcryptjs');
-var models = require('../models');
+var LocalStrategy = require('passport-local').Strategy;
+var User = require('../models/user.js');
 
-module.exports = function(passport, user) {
+module.exports = function(passport, User) {
+    // serialize the user for the session
+    passport.serializeUser(function(user, done) {
+        done(null, user.id);
+    });
 
-    var User = models.User;
-    var LocalStrategy = require('passport-local').Strategy;
-
+    // deserialize the user session
+    passport.deserializeUser(function(id, done) {
+        User.findById(id).then(function(user) {
+            if (user) {
+                done(null, user.get());
+            } else {
+                done(user.errors, null);
+            }
+        });
+    });
+    
     passport.use('local-signup', new LocalStrategy({
-            usernameField: 'email',
-            passwordField: 'password',
+            // Point Passports default fields to my form ids
+            usernameField: 'regemail',
+            passwordField: 'regpassword',
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) {
+            console.log(email);
             // Use bcrypt to encrypt the password
             var generateHash = function(password) {
                  return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
              };
             
-             console.log("hash created, looking for user");
             // Look up user by email
             User.findOne({
                 where: {
@@ -50,22 +64,9 @@ module.exports = function(passport, user) {
                         }
                     });
                 }
-            });
+            }).catch(function(err) {
+                console.log(err);
+            })
         }
     ));
-
-    //serialize
-    passport.serializeUser(function(user, done) {
-        done(null, user.id);
-    });
-    // deserialize user 
-    passport.deserializeUser(function(id, done) {
-        User.findById(id).then(function(user) {
-            if (user) {
-                done(null, user.get());
-            } else {
-                done(user.errors, null);
-            }
-        });
-    });
 }

@@ -1,9 +1,4 @@
-var passportController = require('./passportcontroller.js');
 var models = require('../models');
-
-// Import bcryptjs
-// var bcrypt = require('bcryptjs');
-// var salt = bcrypt.genSaltSync(10);
 
 //Create a dummy object to pass to the pages. This will be replaced with a database call
 const dummyTournaments = { 
@@ -26,18 +21,20 @@ const dummyTournaments = {
 }
 
 module.exports = function(app, passport) {
- 
-    app.post('/register', passport.authenticate('local-signup', {
-            successRedirect: '/userdashboard',
-            failureRedirect: '/userdashboard'
+    app.post('/register', 
+        passport.authenticate('local-signup', {
+            successRedirect: ('/userdashboard'),
+            failureRedirect: ('/')
         }
     ));
  
     // Post route to listen for user registration
     // app.post('/register', (req,res) => {
-        // var currentDate = new Date();
-        // var hash = bcrypt.hashSync(req.body.regpassword, salt);
-        // }
+     
+    //     var currentDate = new Date();
+    //     var hash = bcrypt.hashSync(req.body.regpassword, salt);
+    //     console.log(hash);
+    // })
     // models.User.create({
         // 	firstname: req.body.regfirstname,
         // 	lastname: req.body.reglastname,
@@ -53,11 +50,6 @@ module.exports = function(app, passport) {
     //   console.log(err);
     // });
     // });
-
-
-
-
-
 
     // app.post('/login', (req, res) => {
     //     var hash = bcrypt.hashSync(req.body.password, salt);

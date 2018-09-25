@@ -72,7 +72,9 @@ sequelize
 // Configure Passport
 var passport = require('passport');
 var session = require('express-session');
-require('../config/passport-config.js');
+// require('../config/passport-config.js');
+//load passport strategies
+require('../config/passport-config.js')(passport, models.User);
 
 app.use(session({ 
   secret: 'tom_session_test',
@@ -85,6 +87,4 @@ app.use(passport.session());
 // Import routes.js (and pass app to it)
 var authRoute = require('./routes.js')(app,passport);
 
-//load passport strategies
-require('../config/passport-config.js')(passport, models.user);
 
