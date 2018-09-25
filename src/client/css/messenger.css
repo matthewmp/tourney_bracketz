@@ -1,0 +1,33 @@
+.messenger{
+	display: none;
+	justify-content: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-10%);
+	width: 50%;
+	height: 50%;
+	background: #0C6291;
+	border-radius: 5px;
+}
+
+.close-messenger{
+	position: absolute;
+	align-self: center;
+	top: 0;
+	right: 20px;
+	height: 40px;
+	width: 40px;
+	font-family: arial, serif;
+	font-size: 3em;
+	line-height: 40px;
+	text-align: center;
+	color: #fff;
+	cursor: pointer;
+}
+
+.message{
+	font-size: 25px;
+	align-self: center;
+    color: #fff;
+}

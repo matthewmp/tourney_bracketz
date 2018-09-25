@@ -169,8 +169,9 @@ export const createFinalBracket = (allOuterBrackets) => {
 
 //window.onload = () => {
 export const initializeTestBracketz = () => {	
-	var sub = document.getElementById('btnS');
-	var txt = document.getElementById('txtArea');
+	// Grab participant entry elements
+	const sub = document.getElementById('btnS');
+	const txt = document.getElementById('txtArea');
 
 	if(sub && txt){
 		sub.addEventListener('click', function(e){
@@ -205,7 +206,7 @@ export const initializeTestBracketz = () => {
 				}
 			} else {
 				// There are dupes
-				alert('Duplicate players are not allowed');
+				messenger('Duplicate players are not allowed');
 			}
 		});
 		highlightMatch();
@@ -294,6 +295,34 @@ export const highlightMatch = () => {
     // Clear indexes of matches
     ind.length = 0;
   });
-
-  
 }
+
+// Activate Messenger 
+
+export const messenger = (text) => {
+	// Grab messenger & 'X' to close messenger
+	const msgr = document.getElementsByClassName('messenger')[0];
+	const msg = document.getElementsByClassName('message')[0];
+	const msgrX = document.getElementsByClassName('close-messenger')[0];
+
+	// Show messenger block
+	msgr.style.display = 'flex';
+
+	// Assign Text
+	msg.innerText = text;
+
+	// Name function to close messenger
+	const closeMessenger = () => {
+		console.log('close');
+		msg.innerText = '';
+		msgr.style.display = 'none';
+		msgrX.removeEventListener('click', closeMessenger);
+	}
+
+	// Add eventlistener to close messenger
+	msgrX.addEventListener('click', closeMessenger);
+
+	
+
+}
+
