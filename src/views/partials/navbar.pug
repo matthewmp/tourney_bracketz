@@ -55,8 +55,7 @@ div.row#signincontainer
             div.login-tools
                 div
                     div
-                        <label><input type="checkbox" value="None" id="rememberMe" name="check"> Remember Me</label> 
-                        
+                        <label><input type="checkbox" value="None" id="rememberMe" name="check">Remember Me</label> 
                 div
                     div
                         button.btn#loginbutton Login
@@ -65,8 +64,6 @@ div.row#signincontainer
                         button.btn#forgotPasswordButton Forgot Password?
                         <input type="text" class="form-control" style="visibility:hidden">
         </form>
-            
-                
     div.col-sm-12#registerContainer
         <form id="registerform" action="/register/" method="POST">
             //- div.row 
@@ -78,18 +75,15 @@ div.row#signincontainer
                     <input type="text" placeholder="First Name" name="regfirstname" id="regfirstname" required>
                 div.col-md-12
                     <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
-                    
             div.row
                 div.col-sm-12
                     <input type="text" placeholder="Email" name="regemail" id="regemail" required>
-                    
             div.row
                 div.col-sm-12
                     <input type="password" placeholder="Password" name="regpassword" id="regpassword" required>
                     
                 div.col-sm-12
                     <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
-                    
             div.row
                 div.reg-btn-container
                     button.btn#registerbutton Register

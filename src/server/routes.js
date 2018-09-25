@@ -33,32 +33,33 @@ module.exports = function(app, passport,models) {
             failureRedirect: ('/')
         }
     ));
- 
-    // app.post('/login', (req, res) => {
-    //     var hash = bcrypt.hashSync(req.body.password, salt);
-    //     models.User.findOne({
-    //         where: {
-    //             email: req.body.email
-    //         }
-    // }).then(() => { // Continue if email is found
-    //         res.redirect('/');
-    //     }).catch((err) => { // Email is not registered
-    //     })
-    // })
+    
+    // Handle login requests through Passport
+    app.post('/login', passport.authenticate('local-signin', {
+            successRedirect: '/userdashboard',
+            failureRedirect: '/'
+        }
+    ));
 
+    // Logout user
     app.get('/logout', (req,res) => {
         req.session.destroy((err) => {
             res.redirect('/');
         })
     });
 
+    // Middleware function to check if current user is logged in
+    function isLoggedIn(req, res, next) {
+         if ( req.isAuthenticated() ) {
+            return next();
+         }
+         res.redirect('/');
+     }
 
     // **************************
     // End Authorization Controls
     // **************************
     
-
-
     // Do this if someone hits the root of the website
     app.get('/', (req, res) => {
 
@@ -67,16 +68,24 @@ module.exports = function(app, passport,models) {
         res.render('index', {data: dummyTournaments});
     })
 
-    app.get('/userdashboard', (req, res) => {
-        
-        // Query the database for all Tournaments
-        models.Tournament.findAll({})
+    // Access the specific user dashboard. Only accessible when logged in.
+    app.get('/userdashboard', isLoggedIn, (req, res) => {
+        console.log(req.user.id)
+        // Query the database for all Tournaments for this user
+        models.Tournament.findAll({
+            // include: [{
+            //  model: models.User,
+                where: {userId: req.user.id}
+            // }]
+        })
         .then(function(data) {
             // Package the returned JSON file
             var payload = {tournamentdata: data}
+
+            // console.log(payload)
             
-            // Instruct Node to parse the payload file within the userdashboard.pug template before sending the result to the client
-        res.render('userdashboard', {tournamentdata: payload.tournamentdata});
+            // Parse the payload data within userdashboard.pug before sending the result to the client
+            res.render('userdashboard', {tournamentdata: payload.tournamentdata});
             
         }).catch(function (err) {
             console.log(err);
