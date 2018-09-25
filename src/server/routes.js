@@ -1,4 +1,4 @@
-var models = require('../models');
+// var models = require('../models');
 
 //Create a dummy object to pass to the pages. This will be replaced with a database call
 const dummyTournaments = { 
@@ -20,7 +20,13 @@ const dummyTournaments = {
 	}
 }
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport,models) {
+    
+    // **********************
+    // Authorization Controls
+    // **********************
+
+    // Handle registration requests through Passport
     app.post('/register', 
         passport.authenticate('local-signup', {
             successRedirect: ('/userdashboard'),
@@ -28,29 +34,6 @@ module.exports = function(app, passport) {
         }
     ));
  
-    // Post route to listen for user registration
-    // app.post('/register', (req,res) => {
-     
-    //     var currentDate = new Date();
-    //     var hash = bcrypt.hashSync(req.body.regpassword, salt);
-    //     console.log(hash);
-    // })
-    // models.User.create({
-        // 	firstname: req.body.regfirstname,
-        // 	lastname: req.body.reglastname,
-        // 	email: req.body.regemail,
-        // 	password: hash,
-    //   createdAt: currentDate,
-    //   updatedAt: currentDate
-    // }).then(() => {
-        // 	res.redirect('/');
-    // })
-    // .catch((err) => {
-    //   // print the error details
-    //   console.log(err);
-    // });
-    // });
-
     // app.post('/login', (req, res) => {
     //     var hash = bcrypt.hashSync(req.body.password, salt);
     //     models.User.findOne({
@@ -63,6 +46,17 @@ module.exports = function(app, passport) {
     //     })
     // })
 
+    app.get('/logout', (req,res) => {
+        req.session.destroy((err) => {
+            res.redirect('/');
+        })
+    });
+
+
+    // **************************
+    // End Authorization Controls
+    // **************************
+    
 
 
     // Do this if someone hits the root of the website

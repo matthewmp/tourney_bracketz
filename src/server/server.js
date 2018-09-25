@@ -85,6 +85,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Import routes.js (and pass app to it)
-var authRoute = require('./routes.js')(app,passport);
+var authRoute = require('./routes.js')(app,passport,models);
 
 

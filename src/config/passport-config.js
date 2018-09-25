@@ -1,16 +1,20 @@
-var bCrypt = require('bcryptjs');
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('../models/user.js');
+// Import bcryptjs so we can encrypt user passwords before storing to the database
+let bCrypt = require('bcryptjs');
 
-module.exports = function(passport, User) {
-    // serialize the user for the session
-    passport.serializeUser(function(user, done) {
+// Import passport Strategy (boilerplate Passport element with the passport-local package)
+let LocalStrategy = require('passport-local').Strategy;
+
+module.exports = (passport, User) => {
+    // Serialize the user for the session. This will plant an ID on the session for reference
+    // Boilerplate Passport Code
+    passport.serializeUser( (user, done) => {
         done(null, user.id);
     });
 
-    // deserialize the user session
-    passport.deserializeUser(function(id, done) {
-        User.findById(id).then(function(user) {
+    // Deserialize the user session. This will effectively log the user out
+    // Boilerplate Passport Code
+    passport.deserializeUser((id, done) =>{
+        User.findById(id).then((user) =>{
             if (user) {
                 done(null, user.get());
             } else {
@@ -19,35 +23,34 @@ module.exports = function(passport, User) {
         });
     });
     
+    // Create a LocalStrategy to handle registrations. 
+    // This function is called from the register post route in routes.js
     passport.use('local-signup', new LocalStrategy({
-            // Point Passports default fields to my form ids
+            // Point Passports default fields to the **ids from the registration form**
             usernameField: 'regemail',
             passwordField: 'regpassword',
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
-        function(req, email, password, done) {
-            console.log(email);
+        (req, email, password, done) => {
             // Use bcrypt to encrypt the password
-            var generateHash = function(password) {
+            let generateHash = (password) => {
                  return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
              };
             
             // Look up user by email
-            User.findOne({
-                where: {
-                    email: email
-                }
-            }).then(function(user) { // Email found
-                console.log('email found in database');
+            User.findOne({ where: { email: email }
+            }).then((user) => { // Email found
                 if (user) {
+                    console.log('email found in database. Registration denied.');
                     return done(null, false, {
                         message: 'That email is already taken'
                     });
                 } else {
-                    console.log('email not found in database');
-                    var userPassword = generateHash(password);
-                    var currentDate = new Date();
-                    var data = {
+                    console.log('email not found in database. Proceed');
+                    // Create object to send to the server
+                    let userPassword = generateHash(password);
+                    let currentDate = new Date();
+                    let data = {
                             email: email,
                             password: userPassword,
                             firstname: req.body.regfirstname,
@@ -55,7 +58,7 @@ module.exports = function(passport, User) {
                             createdAt: currentDate,
                             updatedAt: currentDate
                         };
-                    User.create(data).then(function(newUser, created) {
+                    User.create(data).then((newUser, created) => {
                         if (!newUser) {
                             return done(null, false);
                         }
@@ -64,7 +67,7 @@ module.exports = function(passport, User) {
                         }
                     });
                 }
-            }).catch(function(err) {
+            }).catch((err) => {
                 console.log(err);
             })
         }
