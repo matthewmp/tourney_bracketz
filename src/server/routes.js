@@ -104,6 +104,9 @@ module.exports = function(app, passport,models) {
     // Prototype API to return the tournament data.
     app.get('/JSON/:tournamentID', (req, res) => {
         models.Tournament.findAll({
+            where: {
+                id: req.params.tournamentID
+            },
             include: [{
                 model: models.Players,
                 where: { 'tournamentID': req.params.tournamentID }
