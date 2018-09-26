@@ -27,9 +27,14 @@
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <div id="signinbutton">Sign In</div>
-        </li>
+        if !tournamentdata[0].User
+            <li class="nav-item">
+                <div id="signinbutton">Sign In</div>
+            </li>
+        if tournamentdata[0].User
+            <li class="nav-item">
+                <a href="logout">Logout</a>
+            </li>
     </ul>
     <span class="navbar-text">
     Login
