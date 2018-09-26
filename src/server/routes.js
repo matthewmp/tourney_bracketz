@@ -48,13 +48,24 @@ module.exports = function(app, passport,models) {
         })
     });
 
-    // Middleware function to check if current user is logged in
+    // Passport Middleware function to check if current user is logged in
+    // Used to protect routes from anonymous access
     function isLoggedIn(req, res, next) {
          if ( req.isAuthenticated() ) {
             return next();
          }
          res.redirect('/');
-     }
+    }
+
+    // This simply checks if the user is in a session. This is used to modify objects to turn on/off elements that
+    // are only for users that are logged in
+    function confirmUserSession(req) {
+        if ( req.user != undefined ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     // **************************
     // End Authorization Controls
@@ -62,10 +73,15 @@ module.exports = function(app, passport,models) {
     
     // Do this if someone hits the root of the website
     app.get('/', (req, res) => {
+        let data = [{User: false}];
+
+        if ( confirmUserSession(req) == true ) {
+            data = [{User: true}]
+        }
 
         // The first argument is the file to load. In this case, index.pug
         // Second argument is the data payload to be rendered
-        res.render('index', {data: dummyTournaments});
+        res.render('index', {tournamentdata: data});
     })
 
     // Access the specific user dashboard. Only accessible when logged in.
@@ -98,7 +114,13 @@ module.exports = function(app, passport,models) {
     });
 
     app.get('/testbrackets', (req, res) => {
-        res.render('test_brackets');
+        let data = [{User: false}];
+
+        if ( confirmUserSession(req) ) {
+            data = [{User: true}]
+        }
+
+        res.render('test_brackets', {tournamentdata: data});
     });
 
     // Prototype API to return the tournament data.
