@@ -7,17 +7,17 @@ block content
 				p Profile picture
 				img.profileImage(src="https://via.placeholder.com/200x200")
 			div.col-sm-8
-				p Username:
-				p Join Date:
+				p Name: #{tournamentdata[0].User.firstname} #{tournamentdata[0].User.lastname}
+				p Join Date: #{tournamentdata[0].User.createdAt}
 				p Tournaments Created:
 		div.row.tournamentList
 			div.col-sm-4
 				p.tableHeader Tournament Name
 			div.col-sm-4
-				p.tableHeader Number of Players
+				p.tableHeader Date Created
 			div.col-sm-4
 				p.tableHeader Winner
 			for item, key in tournamentdata
 				div.col-sm-4= item.title
-				div.col-sm-4= item.numPlayers
+				div.col-sm-4= item.createdAt
 				div.col-sm-4= item.winner

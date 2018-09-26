@@ -73,17 +73,18 @@ module.exports = function(app, passport,models) {
         console.log(req.user.id)
         // Query the database for all Tournaments for this user
         models.Tournament.findAll({
-            // include: [{
-            //  model: models.User,
-                where: {userId: req.user.id}
-            // }]
+            where: {
+                UserId: req.user.id
+            },
+            include: [{
+                model: models.User,
+                attributes: ['firstname', 'lastname', 'createdAt']
+            }]
         })
         .then(function(data) {
             // Package the returned JSON file
             var payload = {tournamentdata: data}
 
-            // console.log(payload)
-            
             // Parse the payload data within userdashboard.pug before sending the result to the client
             res.render('userdashboard', {tournamentdata: payload.tournamentdata});
             

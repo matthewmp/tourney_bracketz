@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   Players.associate = function(models) {
     // associations can be defined here
     // Each Player has One Tournament. The foreign key in the Players table (tournamentId) is the 'id' from the Tournament table
-    Players.hasOne(models.Tournament, {foreignKey: 'id'});
+    // Players.hasOne(models.Tournament, {foreignKey: 'id'});
   };
   return Players;
 };

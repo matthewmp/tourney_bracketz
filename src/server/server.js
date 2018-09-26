@@ -72,7 +72,7 @@ sequelize
 // Configure Passport
 var passport = require('passport');
 var session = require('express-session');
-// require('../config/passport-config.js');
+
 //load passport strategies
 require('../config/passport-config.js')(passport, models.User);
 
