@@ -3,13 +3,10 @@ extends main-layout
 block content
 	div.container
 		div.row.hero
-			div.col-sm-4
-				p Profile picture
-				img.profileImage(src="https://via.placeholder.com/200x200")
-			div.col-sm-8
+			div.col-sm-12
 				p Name: #{tournamentdata[0].User.firstname} #{tournamentdata[0].User.lastname}
 				p Join Date: #{tournamentdata[0].User.createdAt}
-				p Tournaments Created:
+				p Tournaments Created: #{tournamentdata.length}
 		div.row.tournamentList
 			div.col-sm-4
 				p.tableHeader Tournament Name
