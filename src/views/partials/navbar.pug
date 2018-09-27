@@ -82,7 +82,7 @@ div.row#signincontainer
                     
             div.row
                 div.col-sm-12
-                    <input type="password" placeholder="Password" name="regpassword" id="regpassword" required>
+                    <input type="password" placeholder="Password" name="regpassword" id="regpassword" pattern=".{6,}" required title="6 characters minimum" required>
                     
                 div.col-sm-12
                     <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
