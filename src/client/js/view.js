@@ -169,43 +169,51 @@ export const createFinalBracket = (allOuterBrackets) => {
 
 //window.onload = () => {
 export const initializeTestBracketz = () => {	
-	var sub = document.getElementById('btnS');
-	var txt = document.getElementById('txtArea');
+	// Grab participant entry elements
+	const sub = document.getElementById('btnS');
+	const txt = document.getElementById('txtArea');
 
 	if(sub && txt){
 		sub.addEventListener('click', function(e){
-			e.preventDefault();
-			// Remove any existing bracket renderings
-			const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
-			if(oldBrackets){
-				oldBrackets.remove();
-			}
+			if(!dupe){
+				e.preventDefault();
+				// Remove any existing bracket renderings
+				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
+				if(oldBrackets){
+					oldBrackets.remove();
+				}
 
-			let initialParticipants = txt.value.split('\n');
-			let participants = initialParticipants.filter(function(el){
-				return el !== "";
-			});
-			
-			var CompetitorPairs = brackets.createCompetitorPairs(participants);
-			var pairedBrackets = createPairedBrackets(CompetitorPairs);
-			var outerBrackets = createOuterBrackets(pairedBrackets);
-			var shellBrackets = createOuterBrackets(outerBrackets);
-			var total = createAllOuterBrackets(outerBrackets)
-			var winner = createFinalBracket(total);
+				let initialParticipants = txt.value.split('\n');
+				let participants = initialParticipants.filter(function(el){
+					return el !== "";
+				});
+				
+				var CompetitorPairs = brackets.createCompetitorPairs(participants);
+				var pairedBrackets = createPairedBrackets(CompetitorPairs);
+				var outerBrackets = createOuterBrackets(pairedBrackets);
+				var shellBrackets = createOuterBrackets(outerBrackets);
+				var total = createAllOuterBrackets(outerBrackets)
+				var winner = createFinalBracket(total);
 
-			document.body.appendChild(winner);
+				document.body.appendChild(winner);
 
-			const buttons = document.getElementsByClassName('btn-advance');
-			
-			for(let i = 0; i < buttons.length; i++){
-				let el = buttons[i];
-				el.addEventListener('click', advance);
+				// Add event listeners to all buttons to advance competitors
+				const buttons = document.getElementsByClassName('btn-advance');
+				
+				for(let i = 0; i < buttons.length; i++){
+					let el = buttons[i];
+					el.addEventListener('click', advance);
+				}
+			} else {
+				// There are dupes
+				messenger('Duplicate players are not allowed');
 			}
 		});
 		highlightMatch();
 	}
 }
 
+// Advance competitor to next bracket
 function advance(element){
 	element = this;
 	// Get competitors name
@@ -237,9 +245,11 @@ function advance(element){
 	}
 }
 
+// Flag for dupes and prevent ability to generate brackets
+export let dupe = false;
+
+// Detect/Highlight duplicate entries
 export const highlightMatch = () => {
-
-
   var txt = document.getElementById('txtArea');
   var back = document.getElementById('backDrop');
   var text;
@@ -274,12 +284,45 @@ export const highlightMatch = () => {
       let snippet = text[index].slice(6);
       text[index] = '<span class="match">' + snippet; 
     });
-        
-    // Add all spans to name list div
 
+    console.log(dupe);
+    console.log(ind);
+    // Flag app for dupes
+    dupe = ind.length > 0 ? true : false;
+
+    // Add all spans to name list div
     back.innerHTML = text.join('')
     // Clear indexes of matches
     ind.length = 0;
-    
   });
 }
+
+// Activate Messenger 
+
+export const messenger = (text) => {
+	// Grab messenger & 'X' to close messenger
+	const msgr = document.getElementsByClassName('messenger')[0];
+	const msg = document.getElementsByClassName('message')[0];
+	const msgrX = document.getElementsByClassName('close-messenger')[0];
+
+	// Show messenger block
+	msgr.style.display = 'flex';
+
+	// Assign Text
+	msg.innerText = text;
+
+	// Name function to close messenger
+	const closeMessenger = () => {
+		console.log('close');
+		msg.innerText = '';
+		msgr.style.display = 'none';
+		msgrX.removeEventListener('click', closeMessenger);
+	}
+
+	// Add eventlistener to close messenger
+	msgrX.addEventListener('click', closeMessenger);
+
+	
+
+}
+
