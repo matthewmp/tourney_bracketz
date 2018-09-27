@@ -6,28 +6,28 @@ module.exports = {
         {
         userID: 2,
         title: "Tom's Tournament",
-        publicURL: "TomsTournament",
+        publicURL: "123456",
         winner: "",
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         userID: 2,
         title: "Matt's Tournament",
-        publicURL: "MattsTournament",
+        publicURL: "456789",
         winner: "",
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         userID: 2,
         title: "Brandon's Tournament",
-        publicURL: "BrandonsTournament",
+        publicURL: "159482",
         winner: "",
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         userID: 2,
         title: "Dean's Tournament",
-        publicURL: "DeansTournament",
+        publicURL: "987654",
         winner: "",
         createdAt: new Date(),
         updatedAt: new Date()

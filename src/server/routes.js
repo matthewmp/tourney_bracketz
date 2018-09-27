@@ -1,25 +1,5 @@
 // var models = require('../models');
 
-//Create a dummy object to pass to the pages. This will be replaced with a database call
-const dummyTournaments = { 
-	tournamentOneName: {
-		NumPlayers: "8", 
-		winner: "Tom"
-	},
-	tournamentTwoName: {
-		NumPlayers: "64", 
-		winner: "Matt"
-	},
-	tournamentThreeName: {
-		NumPlayers: "16", 
-		winner: "Brandon"
-	},
-	tournamentFourName: {
-		NumPlayers: "32", 
-		winner: "Dean"
-	}
-}
-
 module.exports = function(app, passport,models) {
     
     // **********************
@@ -74,7 +54,7 @@ module.exports = function(app, passport,models) {
     // Do this if someone hits the root of the website
     app.get('/', (req, res) => {
         let data = [{User: false}];
-
+        // Check if the user is logged in. This is added to the JSON object and used to toggle page elements
         if ( confirmUserSession(req) == true ) {
             data = [{User: true}]
         }
@@ -111,16 +91,6 @@ module.exports = function(app, passport,models) {
 
     app.get('/logos', (req, res) => {
         res.render('logo_test');
-    });
-
-    app.get('/testbrackets', (req, res) => {
-        let data = [{User: false}];
-
-        if ( confirmUserSession(req) ) {
-            data = [{User: true}]
-        }
-
-        res.render('test_brackets', {tournamentdata: data});
     });
 
     // Prototype API to return the tournament data.
