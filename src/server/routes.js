@@ -1,29 +1,7 @@
-// var models = require('../models');
-
-//Create a dummy object to pass to the pages. This will be replaced with a database call
-const dummyTournaments = { 
-	tournamentOneName: {
-		NumPlayers: "8", 
-		winner: "Tom"
-	},
-	tournamentTwoName: {
-		NumPlayers: "64", 
-		winner: "Matt"
-	},
-	tournamentThreeName: {
-		NumPlayers: "16", 
-		winner: "Brandon"
-	},
-	tournamentFourName: {
-		NumPlayers: "32", 
-		winner: "Dean"
-	}
-}
-
 module.exports = function(app, passport,models) {
     
     // **********************
-    // Authorization Controls
+    // Authentication Controls
     // **********************
 
     // Handle registration requests through Passport
@@ -57,8 +35,8 @@ module.exports = function(app, passport,models) {
          res.redirect('/');
     }
 
-    // This simply checks if the user is in a session. This is used to modify objects to turn on/off elements that
-    // are only for users that are logged in
+    // This simply checks if the user is in a session. 
+    // This is used to modify objects to turn on/off elements that are only for users that are logged in
     function confirmUserSession(req) {
         if ( req.user != undefined ) {
             return true;
@@ -74,7 +52,7 @@ module.exports = function(app, passport,models) {
     // Do this if someone hits the root of the website
     app.get('/', (req, res) => {
         let data = [{User: false}];
-
+        
         if ( confirmUserSession(req) == true ) {
             data = [{User: true}]
         }
@@ -86,7 +64,6 @@ module.exports = function(app, passport,models) {
 
     // Access the specific user dashboard. Only accessible when logged in.
     app.get('/userdashboard', isLoggedIn, (req, res) => {
-        console.log(req.user.id)
         // Query the database for all Tournaments for this user
         models.Tournament.findAll({
             where: {
@@ -103,24 +80,41 @@ module.exports = function(app, passport,models) {
 
             // Parse the payload data within userdashboard.pug before sending the result to the client
             res.render('userdashboard', {tournamentdata: payload.tournamentdata});
-            
         }).catch(function (err) {
             console.log(err);
         });
     })
 
     app.get('/logos', (req, res) => {
-        res.render('logo_test');
-    });
-
-    app.get('/testbrackets', (req, res) => {
         let data = [{User: false}];
-
-        if ( confirmUserSession(req) ) {
+        
+        if ( confirmUserSession(req) == true ) {
             data = [{User: true}]
         }
+        res.render('logo_test', {tournamentdata: data});
+    });
 
-        res.render('test_brackets', {tournamentdata: data});
+    app.get('/public/:uniqueURL', (req, res) => {
+        console.log(req.params.uniqueURL);
+        models.Tournament.findAll({
+            where: {
+                publicURL: req.params.uniqueURL
+            },
+            include: [{
+                model: models.Players,
+            }]
+        })
+        .then(function(data) {
+            // Package the returned JSON file
+            var payload = {tournamentdata: data}
+            
+            // Load the page
+            res.render('public', {tournamentdata: payload.tournamentdata});
+            // res.json({payload});
+            
+        }).catch(function (err) {
+            console.log(err);
+        });	
     });
 
     // Prototype API to return the tournament data.
