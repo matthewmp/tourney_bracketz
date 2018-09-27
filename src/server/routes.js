@@ -94,6 +94,29 @@ module.exports = function(app, passport,models) {
         res.render('logo_test', {tournamentdata: data});
     });
 
+    app.get('/public/:uniqueURL', (req, res) => {
+        console.log(req.params.uniqueURL);
+        models.Tournament.findAll({
+            where: {
+                publicURL: req.params.uniqueURL
+            },
+            include: [{
+                model: models.Players,
+            }]
+        })
+        .then(function(data) {
+            // Package the returned JSON file
+            var payload = {tournamentdata: data}
+            
+            // Load the page
+            res.render('public', {tournamentdata: payload.tournamentdata});
+            // res.json({payload});
+            
+        }).catch(function (err) {
+            console.log(err);
+        });	
+    });
+
     // Prototype API to return the tournament data.
     app.get('/JSON/:tournamentID', (req, res) => {
         models.Tournament.findAll({
