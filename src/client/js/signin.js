@@ -50,4 +50,20 @@ window.onload = () => {
 
     // Test Brackets variables
     initializeTestBracketz();
+
+    // Password fields must match
+    var password = document.getElementById("regpassword"), confirm_password = document.getElementById("confirmpassword");
+
+    function validatePassword() {
+        // if the text value of first password field is not equal to the text value of the confirm password field, set validation text
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+    // everytime the password is updated this function will re-run
+    password.onchange = validatePassword;
+    // will validate as soon as password is typed in rather than waiting for user to click register
+    confirm_password.onkeyup = validatePassword;
 }
