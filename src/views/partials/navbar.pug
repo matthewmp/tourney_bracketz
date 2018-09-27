@@ -22,9 +22,6 @@
                 <a class="nav-link" href="userdashboard">Dashboard</a>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="testbrackets">Test Brackets</a>
-        </li>
     </ul>
     <ul class="navbar-nav ml-auto">
         if !tournamentdata[0].User
@@ -84,10 +81,10 @@ div.row#signincontainer
                     <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
             div.row
                 div.col-sm-12
-                    <input type="text" placeholder="Email" name="regemail" id="regemail" required>
+                    <input type="email" placeholder="Email" name="regemail" id="regemail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required title="Please enter a valid email address." required>
             div.row
                 div.col-sm-12
-                    <input type="password" placeholder="Password" name="regpassword" id="regpassword" required>
+                    <input type="password" placeholder="Password" name="regpassword" id="regpassword" pattern=".{6,}" required title="6 characters minimum" required>
                     
                 div.col-sm-12
                     <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
