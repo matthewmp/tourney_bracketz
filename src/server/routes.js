@@ -1,9 +1,7 @@
-// var models = require('../models');
-
 module.exports = function(app, passport,models) {
     
     // **********************
-    // Authorization Controls
+    // Authentication Controls
     // **********************
 
     // Handle registration requests through Passport
@@ -37,8 +35,8 @@ module.exports = function(app, passport,models) {
          res.redirect('/');
     }
 
-    // This simply checks if the user is in a session. This is used to modify objects to turn on/off elements that
-    // are only for users that are logged in
+    // This simply checks if the user is in a session. 
+    // This is used to modify objects to turn on/off elements that are only for users that are logged in
     function confirmUserSession(req) {
         if ( req.user != undefined ) {
             return true;
@@ -54,7 +52,7 @@ module.exports = function(app, passport,models) {
     // Do this if someone hits the root of the website
     app.get('/', (req, res) => {
         let data = [{User: false}];
-        // Check if the user is logged in. This is added to the JSON object and used to toggle page elements
+        
         if ( confirmUserSession(req) == true ) {
             data = [{User: true}]
         }
@@ -66,7 +64,6 @@ module.exports = function(app, passport,models) {
 
     // Access the specific user dashboard. Only accessible when logged in.
     app.get('/userdashboard', isLoggedIn, (req, res) => {
-        console.log(req.user.id)
         // Query the database for all Tournaments for this user
         models.Tournament.findAll({
             where: {
@@ -83,14 +80,18 @@ module.exports = function(app, passport,models) {
 
             // Parse the payload data within userdashboard.pug before sending the result to the client
             res.render('userdashboard', {tournamentdata: payload.tournamentdata});
-            
         }).catch(function (err) {
             console.log(err);
         });
     })
 
     app.get('/logos', (req, res) => {
-        res.render('logo_test');
+        let data = [{User: false}];
+        
+        if ( confirmUserSession(req) == true ) {
+            data = [{User: true}]
+        }
+        res.render('logo_test', {tournamentdata: data});
     });
 
     // Prototype API to return the tournament data.
