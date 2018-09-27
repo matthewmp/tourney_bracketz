@@ -16,15 +16,22 @@
         //-     <a class="nav-link" href="logos">Logos</a>
         //- </li>
         <div id="dashboard">
-        <li class="nav-item">
-            <a class="nav-link" href="userdashboard">Dashboard</a>
-        </div>
+        //- tournamentdata[0].User is the structure I want
+        if tournamentdata[0].User
+            <li class="nav-item">
+                <a class="nav-link" href="userdashboard">Dashboard</a>
+            </div>
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <div id="signinbutton">Sign In</div>
-        </li>
+        if !tournamentdata[0].User
+            <li class="nav-item">
+                <div id="signinbutton">Sign In</div>
+            </li>
+        if tournamentdata[0].User
+            <li class="nav-item">
+                <a href="logout">Logout</a>
+            </li>
     </ul>
     <span class="navbar-text">
     Login
@@ -44,7 +51,7 @@ div.row#signincontainer
         <form id="loginform" action="/login/" method="POST">
             div.row.justify-content-center
                 div.col-sm-12
-                    <input type="text" placeholder="Username" name="username" id="username" style="font-size:14px;" required>
+                    <input type="text" placeholder="E-Mail" name="email" id="email" style="font-size:14px;" required>
             div.row
                 div.col-sm-12
                         <input type="password" placeholder="Password" name="password" id="password" style="font-size:14px;" required>
@@ -52,8 +59,7 @@ div.row#signincontainer
             div.login-tools
                 div
                     div
-                        <label><input type="checkbox" value="None" id="rememberMe" name="check"> Remember Me</label> 
-                        
+                        <label><input type="checkbox" value="None" id="rememberMe" name="check">Remember Me</label> 
                 div
                     div
                         button.btn#loginbutton Login
@@ -62,8 +68,6 @@ div.row#signincontainer
                         button.btn#forgotPasswordButton Forgot Password?
                         <input type="text" class="form-control" style="visibility:hidden">
         </form>
-            
-                
     div.col-sm-12#registerContainer
         <form id="registerform" action="/register/" method="POST">
             //- div.row 
@@ -75,18 +79,15 @@ div.row#signincontainer
                     <input type="text" placeholder="First Name" name="regfirstname" id="regfirstname" required>
                 div.col-md-12
                     <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
-                    
             div.row
                 div.col-sm-12
                     <input type="email" placeholder="Email" name="regemail" id="regemail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required title="Please enter a valid email address." required>
-                    
             div.row
                 div.col-sm-12
                     <input type="password" placeholder="Password" name="regpassword" id="regpassword" pattern=".{6,}" required title="6 characters minimum" required>
                     
                 div.col-sm-12
                     <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
-                    
             div.row
                 div.reg-btn-container
                     button.btn#registerbutton Register

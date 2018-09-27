@@ -42,14 +42,10 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// Sequelize configuration
+// Configure Sequelize
 const Sequelize = require('sequelize');
-var models  = require('../models');
-
-// Import all database models
 var models = require('../models');
-
-var sequelizeConnection = models.sequelize;
+// var sequelizeConnection = models.sequelize;
 
 const sequelize = new Sequelize(process.env.SCHEMA_NAME, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
   host: 'localhost',
@@ -73,104 +69,22 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-//Create a dummy object to pass to the pages. This will be replaced with a database call
-const dummyTournaments = { 
-	tournamentOneName: {
-		NumPlayers: "8", 
-		winner: "Tom"
-	},
-	tournamentTwoName: {
-		NumPlayers: "64", 
-		winner: "Matt"
-	},
-	tournamentThreeName: {
-		NumPlayers: "16", 
-		winner: "Brandon"
-	},
-	tournamentFourName: {
-		NumPlayers: "32", 
-		winner: "Dean"
-	}
-}
+// Configure Passport
+var passport = require('passport');
+var session = require('express-session');
 
-// Setup up routes here
+//load passport strategies
+require('../config/passport-config.js')(passport, models.User);
 
-// Do this if someone hits the root of the website
-app.get('/', (req, res) => {
+app.use(session({ 
+  secret: 'tom_session_test',
+  resave: true,
+  saveUninitialized: true
+ })); 
+app.use(passport.initialize());
+app.use(passport.session());
 
-	// The first argument is the file to load. In this case, index.pug
-	// Second argument is the data payload to be rendered
-	res.render('index', {data: dummyTournaments});
-})
-
-app.get('/userdashboard', (req, res) => {
-	
-	// Query the database for all Tournaments
-	models.Tournament.findAll({})
-	.then(function(data) {
-		// Package the returned JSON file
-		var payload = {tournamentdata: data}
-		
-		// Instruct Node to parse the payload file within the userdashboard.pug template before sending the result to the client
-	  res.render('userdashboard', {tournamentdata: payload.tournamentdata});
-		
-	}).catch(function (err) {
-		console.log(err);
-	});
-})
-
-app.get('/logos', (req, res) => {
-	res.render('logo_test');
-});
-
-app.get('/testbrackets', (req, res) => {
-	res.render('test_brackets');
-});
+// Import routes.js (and pass app to it)
+var authRoute = require('./routes.js')(app,passport,models);
 
 
-// Prototype API to return the tournament data.
-app.get('/JSON/:tournamentID', (req, res) => {
-	models.Tournament.findAll({
-		include: [{
-			model: models.Players,
-			where: { 'tournamentID': req.params.tournamentID }
-		}]
-	})
-	.then(function(data) {
-		// Package the returned JSON file
-		var payload = {tournamentdata: data}
-		
-		// Send JSON to the user
-		res.json({payload});
-		
-	}).catch(function (err) {
-		console.log(err);
-	});	
-});
-
-// Post route to listen for user registration
-app.post('/register', (req, res) => {
-	var currentDate = new Date();
-	
-  //Use Sequelize to push to DB
-  models.User.create({
-		username: req.body.regusername,
-		firstname: req.body.regfirstname,
-		lastname: req.body.reglastname,
-		email: req.body.regemail,
-		password: req.body.regpassword,
-    createdAt: currentDate,
-    updatedAt: currentDate
-  }).then(function(){
-		res.redirect('/');
-  })
-  .catch(function(err) {
-    // print the error details
-    console.log(err);
-  });
-});
-
-// Start Server
-app.listen(8888, () => {
-	console.log('Listening on 8888');
-});
