@@ -91,7 +91,9 @@ div#logintitle {
 div#registertitle {
     color: white;
 }
-
+#loginform > div.login-tools > div:nth-child(2) > div {
+    min-height: 50px;
+}
 /* Login Button */
 button#loginbutton{
     background:#FBFEF9;
@@ -101,7 +103,7 @@ button#loginbutton{
     height:150%;
     /* margin-left: 6%; */
     font-size:1.6em;
-    padding:0 2em;
+    padding: 10px 2em;
     cursor:pointer;
     transition:800ms ease all;
     outline:none;
