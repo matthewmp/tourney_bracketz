@@ -187,8 +187,9 @@ export const initializeTestBracketz = () => {
 				let participants = initialParticipants.filter(function(el){
 					return el !== "";
 				});
-				
-				var CompetitorPairs = brackets.createCompetitorPairs(participants);
+
+				let checked = document.getElementById('randomize').checked;
+				var CompetitorPairs = brackets.createCompetitorPairs(participants, checked);
 				var pairedBrackets = createPairedBrackets(CompetitorPairs);
 				var outerBrackets = createOuterBrackets(pairedBrackets);
 				var shellBrackets = createOuterBrackets(outerBrackets);
