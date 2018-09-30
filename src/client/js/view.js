@@ -130,7 +130,7 @@ export const createOuterBrackets = (pairedBrackets, counter) => {
 export const createAllOuterBrackets = (outerBrackets) => {
 	let totalBrackets = outerBrackets;
 	let counter = 2;
-	while(totalBrackets.length > 2) {
+	while(totalBrackets.length > 1) {
 		totalBrackets = createOuterBrackets(totalBrackets, counter);
 		counter++;
 	}
@@ -233,8 +233,6 @@ function advance(element){
 		const round = element.parentElement.id.slice(6,7);
 
 		const nextRound = parseInt(round) + 1 + '';
-		console.log('NextRound: ', nextRound);
-		console.log(`.outer-bracket-${nextRound}`);
 		if(document.getElementsByClassName(`outer-bracket-${nextRound}`).length === 0){
 			document.getElementsByClassName('final-bracket-input')[0].value = value;
 		}
@@ -285,8 +283,6 @@ export const highlightMatch = () => {
       text[index] = '<span class="match">' + snippet; 
     });
 
-    console.log(dupe);
-    console.log(ind);
     // Flag app for dupes
     dupe = ind.length > 0 ? true : false;
 
@@ -294,7 +290,15 @@ export const highlightMatch = () => {
     back.innerHTML = text.join('')
     // Clear indexes of matches
     ind.length = 0;
+
+    // Handle scroll of backdrop to textarea to match onkeydown
+    back.scrollTop = e.target.scrollTop;
   });
+
+  // Handle scroll of backdrop to textarea to match onscroll
+  txt.onscroll = (e) => {
+  	back.scrollTop = e.target.scrollTop;
+  };
 }
 
 // Activate Messenger 
@@ -313,7 +317,6 @@ export const messenger = (text) => {
 
 	// Name function to close messenger
 	const closeMessenger = () => {
-		console.log('close');
 		msg.innerText = '';
 		msgr.style.display = 'none';
 		msgrX.removeEventListener('click', closeMessenger);
@@ -321,8 +324,4 @@ export const messenger = (text) => {
 
 	// Add eventlistener to close messenger
 	msgrX.addEventListener('click', closeMessenger);
-
-	
-
 }
-
