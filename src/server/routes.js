@@ -143,7 +143,25 @@ module.exports = function(app, passport,models) {
 
     // Handle tournament saving
     app.post('/saveTournament', isLoggedIn, (req,res) => {
-        console.log(req.body);
+        // players are in req.body.playerNameEntry
+
+        var currentDate = new Date();
+        
+        //Use Sequelize to push to DB
+        models.Tournament.create({
+          userID: req.session.passport.user,
+          title: req.body.tName,
+          publicURL: "to-do",
+          winner: "winner",
+          createdAt: currentDate,
+          updatedAt: currentDate
+        }).then(function(){
+          res.redirect('../userdashboard');
+        })
+        .catch(function(err) {
+          // print the error details
+          console.log(err);
+        });
     
     });
 
