@@ -5,10 +5,12 @@ import { initializeTestBracketz } from './view';
 window.onload = () => {
 
     // Listen for clicks on the sign in button in the navbar
-    document.getElementById("signinbutton").onclick = function() {
-        // Show the modal in the LOGIN format
-        document.getElementById("signincontainer").style.display = "block"
-    };
+    if (document.getElementById("signinbutton") != null) {
+        document.getElementById("signinbutton").onclick = function() {
+            // Show the modal in the LOGIN format
+            document.getElementById("signincontainer").style.display = "block"
+        };
+    }
 
     // Listen for clicks on the modal close button
     document.getElementById("loginclosebutton").onclick = function() {
