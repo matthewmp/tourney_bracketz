@@ -58,11 +58,4 @@ window.onload = () => {
     password.onchange = validatePassword;
     // will validate as soon as password is typed in rather than waiting for user to click register
     confirm_password.onkeyup = validatePassword;
-
-    // let saveButton = document.getElementById('btnSave');
-
-    // saveButton.addEventListener('click', function(e){
-    //     e.preventDefault();
-    //     console.log("save clicked");
-    // })
 }
