@@ -106,7 +106,7 @@ p#instruction {
   line-height: 15px;
 }
 
-button#btnS {
+button#btnSubmit {
   justify-content: center;
   align-self: center;
   font-weight: bold;
@@ -121,7 +121,7 @@ button#btnS {
   width: 6%;
   min-width: 100px;
   }
-button#btnS:hover {
+button#btnSubmit:hover {
     color: #ffffff !important;
     background: #A63446;
     border-color: #A63446 !important;

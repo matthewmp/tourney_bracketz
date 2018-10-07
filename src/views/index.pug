@@ -1,24 +1,29 @@
 //- index.pug
 extends main-layout
 block content
-	<div class="container">
+	div.container
 		//- <div class="row hero">
 		//- 	<div class="col heroContainer">
 		//- 		<img class="heroImage" src="https://via.placeholder.com/350x150"/>
 		//- 	</div>
 		</div>
-		<div class="application">
-			p#instruction Enter names below to create a tournament.
-			div#container
-				div#backDrop
-				<textarea id="txtArea" cols="50" rows="10"></textarea>				
-		</div>
-				div.submitContainer
-					<label for="randomize" class="lbl-randomize">Check box to randomize order</label>
-					input#randomize(type="checkbox", name="randomize")
-				<button id="btnS" type="submit">Generate Tournament</button>
-	</div>
-			div.messenger
-					div.close-messenger X
-					p.message
+		form#saveTournament
+			div.application
+				p#instruction Enter names below to create a tournament.
+				p#instruction Seperate each name with a line break
+				p#instruction Order of players will be the seed order unless you click the 'randomize' button
+				| Tournament Name
+				input#tName.nameInput( type=text )
+				div#container
+					div#backDrop
+					textarea#txtArea( cols="50" rows="10")
+			div.submitContainer
+				<label for="randomize" class="lbl-randomize">Check box to randomize order</label>
+				input#randomize(type="checkbox", name="randomize")
+				
+			<button id="btnSubmit" type="submit">Generate Tournament</button>
+			<button id="btnSave" type="button">Save Tournament</button>
+	div.messenger
+			div.close-messenger X
+			p.message
 

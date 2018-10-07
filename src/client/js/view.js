@@ -170,7 +170,7 @@ export const createFinalBracket = (allOuterBrackets) => {
 //window.onload = () => {
 export const initializeTestBracketz = () => {	
 	// Grab participant entry elements
-	const sub = document.getElementById('btnS');
+	const sub = document.getElementById('btnSubmit');
 	const txt = document.getElementById('txtArea');
 
 	if(sub && txt){
