@@ -56,7 +56,7 @@ module.exports = function(app, passport,models) {
         if ( confirmUserSession(req) == true ) {
             data = [{User: true}]
         }
-
+        
         // The first argument is the file to load. In this case, index.pug
         // Second argument is the data payload to be rendered
         res.render('index', {tournamentdata: data});

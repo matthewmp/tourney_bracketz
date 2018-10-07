@@ -175,8 +175,8 @@ export const initializeTestBracketz = () => {
 
 	if(sub && txt){
 		sub.addEventListener('click', function(e){
+			e.preventDefault();
 			if(!dupe){
-				e.preventDefault();
 				// Remove any existing bracket renderings
 				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
 				if(oldBrackets){
