@@ -7,23 +7,24 @@ block content
 		//- 		<img class="heroImage" src="https://via.placeholder.com/350x150"/>
 		//- 	</div>
 		</div>
-		form#saveTournament
+		<form id="saveTournament" action="/saveTournament" method="POST">
 			div.application
 				p#instruction Enter names below to create a tournament.
 				p#instruction Seperate each name with a line break
 				p#instruction Order of players will be the seed order unless you click the 'randomize' button
 				| Tournament Name
-				input#tName.nameInput( type=text )
+				input#tName.nameInput( type=text required name="tName")
 				div#container
 					div#backDrop
-					textarea#txtArea( cols="50" rows="10")
+					textarea#playerNameEntry( cols="50" rows="10" name="players")
 			div.submitContainer
 				<label for="randomize" class="lbl-randomize">Check box to randomize order</label>
 				input#randomize(type="checkbox", name="randomize")
 				
-			<button id="btnSubmit" type="submit">Generate Tournament</button>
+			<button id="btnSubmit" type="button">Generate Tournament</button>
 			if tournamentdata[0].User
-				<button id="btnSave" type="button">Save Tournament</button>
+				<button id="btnSave" type="submit">Save Tournament</button>
+		</form>
 	div.messenger
 			div.close-messenger X
 			p.message

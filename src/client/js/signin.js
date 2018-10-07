@@ -40,16 +40,6 @@ window.onload = () => {
         document.getElementById("loginform").style.display = "block";
     };
 
-    // Listen for clicks on the log in button in the sign in modal
-    document.getElementById("loginbutton").onclick = function() {
-        console.log('log in button clicked');
-    };
-
-    // Listen for clicks on the Register button in the sign in modal
-    document.getElementById("registerbutton").onclick = function() {
-        console.log('Register button clicked');
-    };
-
     // Test Brackets variables
     initializeTestBracketz();
 
@@ -68,4 +58,11 @@ window.onload = () => {
     password.onchange = validatePassword;
     // will validate as soon as password is typed in rather than waiting for user to click register
     confirm_password.onkeyup = validatePassword;
+
+    // let saveButton = document.getElementById('btnSave');
+
+    // saveButton.addEventListener('click', function(e){
+    //     e.preventDefault();
+    //     console.log("save clicked");
+    // })
 }
