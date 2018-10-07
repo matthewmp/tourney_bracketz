@@ -170,13 +170,13 @@ export const createFinalBracket = (allOuterBrackets) => {
 //window.onload = () => {
 export const initializeTestBracketz = () => {	
 	// Grab participant entry elements
-	const sub = document.getElementById('btnS');
-	const txt = document.getElementById('txtArea');
+	const sub = document.getElementById('btnSubmit');
+	const txt = document.getElementById('playerNameEntry');
 
 	if(sub && txt){
 		sub.addEventListener('click', function(e){
+			e.preventDefault();
 			if(!dupe){
-				e.preventDefault();
 				// Remove any existing bracket renderings
 				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
 				if(oldBrackets){
@@ -249,7 +249,7 @@ export let dupe = false;
 
 // Detect/Highlight duplicate entries
 export const highlightMatch = () => {
-  var txt = document.getElementById('txtArea');
+  var txt = document.getElementById('playerNameEntry');
   var back = document.getElementById('backDrop');
   var text;
 

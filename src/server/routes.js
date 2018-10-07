@@ -140,6 +140,13 @@ module.exports = function(app, passport,models) {
         });	
     });
 
+
+    // Handle tournament saving
+    app.post('/saveTournament', isLoggedIn, (req,res) => {
+        console.log(req.body);
+    
+    });
+
     // Start Server
     app.listen(8888, () => {
         console.log('Listening on 8888');
