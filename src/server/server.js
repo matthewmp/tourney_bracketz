@@ -77,7 +77,7 @@ var session = require('express-session');
 require('../config/passport-config.js')(passport, models.User);
 
 app.use(session({ 
-  secret: 'tom_session_test',
+  secret: 'tom_session_test', // What does this do?
   resave: true,
   saveUninitialized: true
  })); 
