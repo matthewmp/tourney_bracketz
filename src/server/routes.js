@@ -15,10 +15,16 @@ module.exports = function(app, passport,models) {
     // Handle login requests through Passport
     app.post('/login', passport.authenticate('local-signin', {
             successRedirect: '/userdashboard',
-            failureRedirect: '/'
+            failureRedirect: '/',
+            // failureFlash : true
         }
     ));
 
+    // Logout user
+    app.get('/loginfailed', (req,res) => {
+        res.json({ message: "Login failed."});
+    });
+    
     // Logout user
     app.get('/logout', (req,res) => {
         req.session.destroy((err) => {
