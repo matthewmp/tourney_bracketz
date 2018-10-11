@@ -192,6 +192,7 @@ export const initializeTestBracketz = () => {
 
 				let checked = document.getElementById('randomize').checked;
 				var CompetitorPairs = brackets.createCompetitorPairs(participants, checked);
+				randomizeTextArea(CompetitorPairs);
 				var pairedBrackets = createPairedBrackets(CompetitorPairs);
 				var outerBrackets = createOuterBrackets(pairedBrackets);
 				var shellBrackets = createOuterBrackets(outerBrackets);
@@ -214,6 +215,26 @@ export const initializeTestBracketz = () => {
 		});
 		highlightMatch();
 	}
+}
+
+// Clear and fill textarea with seeded list on randomize
+export const randomizeTextArea = (competitorPairs) => {
+	let newText = '';
+	competitorPairs.forEach((firstPairArr) => {
+		firstPairArr.forEach((competitor) => {
+			newText += competitor[0];
+			newText += '\n';
+			newText += competitor[1];
+			newText += '\n';
+		});
+	});
+
+	const txtArea = document.getElementById('playerNameEntry');
+	const back = document.getElementById('backDrop');
+	txtArea.value = newText;
+	back.innerText = newText;
+
+
 }
 
 // Advance competitor to next bracket
@@ -251,9 +272,9 @@ export let dupe = false;
 
 // Detect/Highlight duplicate entries
 export const highlightMatch = () => {
-  var txt = document.getElementById('playerNameEntry');
-  var back = document.getElementById('backDrop');
-  var text;
+  const txt = document.getElementById('playerNameEntry');
+  const back = document.getElementById('backDrop');
+  let text;
 
   txt.addEventListener('keyup', function(e){
 
@@ -265,7 +286,7 @@ export const highlightMatch = () => {
       
     for(let i = 0; i < text.length; i++){
       for(let j = i+1; j < text.length; j++){
-        if(text[i] === text[j] && text[i] !== "<span></span><br>"){
+        if(text[i] === text[j] && text[i] !== "<span></span><br>" && text[i] !== "<span>Bye</span><br>") {
           indexes.push(i,j)
         }
       }
