@@ -40,9 +40,6 @@ window.onload = () => {
         document.getElementById("loginform").style.display = "block";
     };
 
-    // Test Brackets variables
-    initializeTestBracketz();
-
     // Password fields must match
     var password = document.getElementById("regpassword"), confirm_password = document.getElementById("confirmpassword");
 
@@ -58,4 +55,8 @@ window.onload = () => {
     password.onchange = validatePassword;
     // will validate as soon as password is typed in rather than waiting for user to click register
     confirm_password.onkeyup = validatePassword;
+
+    // Test Brackets variables
+    initializeTestBracketz();
+
 }

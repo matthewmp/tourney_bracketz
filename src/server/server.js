@@ -42,6 +42,10 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+// Configure flash. This allows data/messages to be sent
+const flash = require('connect-flash');
+app.use(flash());
+
 // Configure Sequelize
 const Sequelize = require('sequelize');
 var models = require('../models');
