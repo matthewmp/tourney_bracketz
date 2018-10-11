@@ -266,13 +266,10 @@ export const highlightMatch = () => {
     for(let i = 0; i < text.length; i++){
       for(let j = i+1; j < text.length; j++){
         if(text[i] === text[j] && text[i] !== "<span></span><br>"){
-          console.log('Ifed: ', text[i], text[j])
           indexes.push(i,j)
         }
       }
     }
-
-    console.log('Indexes: ', indexes)
 
     // Array to dedupe index array
     let ind = [];
