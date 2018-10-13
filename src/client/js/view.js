@@ -130,7 +130,7 @@ export const createOuterBrackets = (pairedBrackets, counter) => {
 export const createAllOuterBrackets = (outerBrackets) => {
 	let totalBrackets = outerBrackets;
 	let counter = 2;
-	while(totalBrackets.length > 2) {
+	while(totalBrackets.length > 1) {
 		totalBrackets = createOuterBrackets(totalBrackets, counter);
 		counter++;
 	}
@@ -170,13 +170,13 @@ export const createFinalBracket = (allOuterBrackets) => {
 //window.onload = () => {
 export const initializeTestBracketz = () => {	
 	// Grab participant entry elements
-	const sub = document.getElementById('btnS');
-	const txt = document.getElementById('txtArea');
+	const sub = document.getElementById('btnSubmit');
+	const txt = document.getElementById('playerNameEntry');
 
 	if(sub && txt){
 		sub.addEventListener('click', function(e){
+			e.preventDefault();
 			if(!dupe){
-				e.preventDefault();
 				// Remove any existing bracket renderings
 				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
 				if(oldBrackets){
@@ -184,11 +184,15 @@ export const initializeTestBracketz = () => {
 				}
 
 				let initialParticipants = txt.value.split('\n');
+
+				// Remove any empty characters from initialParticipants
 				let participants = initialParticipants.filter(function(el){
 					return el !== "";
 				});
-				
-				var CompetitorPairs = brackets.createCompetitorPairs(participants);
+
+				let checked = document.getElementById('randomize').checked;
+				var CompetitorPairs = brackets.createCompetitorPairs(participants, checked);
+				randomizeTextArea(CompetitorPairs);
 				var pairedBrackets = createPairedBrackets(CompetitorPairs);
 				var outerBrackets = createOuterBrackets(pairedBrackets);
 				var shellBrackets = createOuterBrackets(outerBrackets);
@@ -213,6 +217,26 @@ export const initializeTestBracketz = () => {
 	}
 }
 
+// Clear and fill textarea with seeded list on randomize
+export const randomizeTextArea = (competitorPairs) => {
+	let newText = '';
+	competitorPairs.forEach((firstPairArr) => {
+		firstPairArr.forEach((competitor) => {
+			newText += competitor[0];
+			newText += '\n';
+			newText += competitor[1];
+			newText += '\n';
+		});
+	});
+
+	const txtArea = document.getElementById('playerNameEntry');
+	const back = document.getElementById('backDrop');
+	txtArea.value = newText;
+	back.innerText = newText;
+
+
+}
+
 // Advance competitor to next bracket
 function advance(element){
 	element = this;
@@ -233,8 +257,6 @@ function advance(element){
 		const round = element.parentElement.id.slice(6,7);
 
 		const nextRound = parseInt(round) + 1 + '';
-		console.log('NextRound: ', nextRound);
-		console.log(`.outer-bracket-${nextRound}`);
 		if(document.getElementsByClassName(`outer-bracket-${nextRound}`).length === 0){
 			document.getElementsByClassName('final-bracket-input')[0].value = value;
 		}
@@ -250,9 +272,9 @@ export let dupe = false;
 
 // Detect/Highlight duplicate entries
 export const highlightMatch = () => {
-  var txt = document.getElementById('txtArea');
-  var back = document.getElementById('backDrop');
-  var text;
+  const txt = document.getElementById('playerNameEntry');
+  const back = document.getElementById('backDrop');
+  let text;
 
   txt.addEventListener('keyup', function(e){
 
@@ -264,12 +286,11 @@ export const highlightMatch = () => {
       
     for(let i = 0; i < text.length; i++){
       for(let j = i+1; j < text.length; j++){
-        if(text[i] === text[j]){
+        if(text[i] === text[j] && text[i] !== "<span></span><br>" && text[i] !== "<span>Bye</span><br>") {
           indexes.push(i,j)
         }
       }
     }
-
 
     // Array to dedupe index array
     let ind = [];
@@ -285,8 +306,6 @@ export const highlightMatch = () => {
       text[index] = '<span class="match">' + snippet; 
     });
 
-    console.log(dupe);
-    console.log(ind);
     // Flag app for dupes
     dupe = ind.length > 0 ? true : false;
 
@@ -294,7 +313,15 @@ export const highlightMatch = () => {
     back.innerHTML = text.join('')
     // Clear indexes of matches
     ind.length = 0;
+
+    // Handle scroll of backdrop to textarea to match onkeydown
+    back.scrollTop = e.target.scrollTop;
   });
+
+  // Handle scroll of backdrop to textarea to match onscroll
+  txt.onscroll = (e) => {
+  	back.scrollTop = e.target.scrollTop;
+  };
 }
 
 // Activate Messenger 
@@ -313,7 +340,6 @@ export const messenger = (text) => {
 
 	// Name function to close messenger
 	const closeMessenger = () => {
-		console.log('close');
 		msg.innerText = '';
 		msgr.style.display = 'none';
 		msgrX.removeEventListener('click', closeMessenger);
@@ -321,8 +347,4 @@ export const messenger = (text) => {
 
 	// Add eventlistener to close messenger
 	msgrX.addEventListener('click', closeMessenger);
-
-	
-
 }
-

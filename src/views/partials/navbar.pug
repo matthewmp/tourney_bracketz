@@ -1,44 +1,27 @@
-<link rel="stylesheet" type="text/css" href="client/css/nav_bar.css">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Tourney Bracketz</a>
-    //- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    //-     <span class="navbar-toggler-icon"></span>
-    //- </button>
-    //-<div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav">
-        <div id="Home">
-        <li class="nav-item active">
-            <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
-        </div>
-        </li>
-        //- <li class="nav-item">
-        //-     <a class="nav-link" href="logos">Logos</a>
-        //- </li>
-        <div id="dashboard">
-        //- tournamentdata[0].User is the structure I want
-        if tournamentdata[0].User
-            <li class="nav-item">
-                <a class="nav-link" href="userdashboard">Dashboard</a>
-            </div>
-        </li>
-    </ul>
-    <ul class="navbar-nav ml-auto">
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    a.navbar-brand(href="#") Tourney Bracketz
+    ul.navbar-nav
+        div#Home
+            li.nav-item.active
+                a.nav-link(href="/") Home
+                    span.sr-only (current)
+        li.nav-item
+            a.nav-link(href="logos") Logos
+        div#dashboard
+            if tournamentdata
+                if tournamentdata[0].User
+                    li.nav-item
+                        a.nav-link(href="userdashboard") Dashboard
+    ul.navbar-nav.ml-auto
         if !tournamentdata[0].User
-            <li class="nav-item">
-                <div id="signinbutton">Sign In</div>
-            </li>
+            li.nav-item
+                div#signinbutton Sign In
         if tournamentdata[0].User
-            <li class="nav-item">
-                <a href="logout">Logout</a>
-            </li>
-    </ul>
-    <span class="navbar-text">
-    Login
-    </span>
-    //- </div>
-</nav>
-
+            li.nav-item
+                a(href="logout") Logout
+    span.navbar-text
+        Login
 div.row#signincontainer
     div.col-sm-12#loginContainer
         div.row
@@ -48,47 +31,41 @@ div.row#signincontainer
                 p.tableHeader Register
             div.col
                 button.btn#loginclosebutton 
-        <form id="loginform" action="/login/" method="POST">
+        form#loginform(action="/login/" method="POST")
             div.row.justify-content-center
                 div.col-sm-12
-                    <input type="text" placeholder="E-Mail" name="email" id="email" style="font-size:14px;" required>
+                    input#email(type="text" placeholder="E-Mail" name="email" style="font-size:14px;" required)
             div.row
                 div.col-sm-12
-                        <input type="password" placeholder="Password" name="password" id="password" style="font-size:14px;" required>
-            
+                        input#password(type="password" placeholder="Password" name="password" style="font-size:14px;" required)
             div.login-tools
                 div
                     div
-                        <label><input type="checkbox" value="None" id="rememberMe" name="check">Remember Me</label> 
+                        label
+                            input#rememberMe(type="checkbox" value="None" name="check") 
+                            | Remember Me
                 div
                     div
                         button.btn#loginbutton Login
                 div
                     div#emptyTable
                         button.btn#forgotPasswordButton Forgot Password?
-                        <input type="text" class="form-control" style="visibility:hidden">
-        </form>
+                        input(type="text" class="form-control" style="visibility:hidden")
     div.col-sm-12#registerContainer
-        <form id="registerform" action="/register/" method="POST">
-            //- div.row 
-            //-     div.col-sm-12
-            //-         <input type="text" placeholder="Desired Username" name="regusername" id="regusername" required>
-                    
+        form#registerform(action="/register/" method="POST")
             div.row
                 div.col-md-12
-                    <input type="text" placeholder="First Name" name="regfirstname" id="regfirstname" required>
+                    input#regfirstname(type="text" placeholder="First Name" name="regfirstname" required)
                 div.col-md-12
-                    <input type="text" placeholder="Last Name" name="reglastname" id="reglastname" required>
+                    input#reglastname(type="text" placeholder="Last Name" name="reglastname" required)
             div.row
                 div.col-sm-12
-                    <input type="email" placeholder="Email" name="regemail" id="regemail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required title="Please enter a valid email address." required>
+                    input#regemail(type="email" placeholder="Email" name="regemail" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" title="Please enter a valid email address." required)
             div.row
                 div.col-sm-12
-                    <input type="password" placeholder="Password" name="regpassword" id="regpassword" pattern=".{6,}" required title="6 characters minimum" required>
-                    
+                    input#regpassword(type="password" placeholder="Password" name="regpassword" pattern=".{6,}" title="6 characters minimum" required)
                 div.col-sm-12
-                    <input type="password" placeholder="Confirm Password" name="confirmpassword" id="confirmpassword" required>
+                    input#confirmpassword(type="password" placeholder="Confirm Password" name="confirmpassword" required)
             div.row
                 div.reg-btn-container
                     button.btn#registerbutton Register
-        </form>

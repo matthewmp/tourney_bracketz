@@ -15,6 +15,7 @@ block content
 			div.col-sm-4
 				p.tableHeader Winner
 			for item, key in tournamentdata
-				div.col-sm-4= item.title
+				div.col-sm-4
+					a(href="/public/" + item.publicURL) #{item.title}
 				div.col-sm-4= item.createdAt
 				div.col-sm-4= item.winner

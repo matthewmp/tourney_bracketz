@@ -5,10 +5,12 @@ import { initializeTestBracketz } from './view';
 window.onload = () => {
 
     // Listen for clicks on the sign in button in the navbar
-    document.getElementById("signinbutton").onclick = function() {
-        // Show the modal in the LOGIN format
-        document.getElementById("signincontainer").style.display = "block"
-    };
+    if (document.getElementById("signinbutton") != null) {
+        document.getElementById("signinbutton").onclick = function() {
+            // Show the modal in the LOGIN format
+            document.getElementById("signincontainer").style.display = "block"
+        };
+    }
 
     // Listen for clicks on the modal close button
     document.getElementById("loginclosebutton").onclick = function() {
@@ -38,19 +40,6 @@ window.onload = () => {
         document.getElementById("loginform").style.display = "block";
     };
 
-    // Listen for clicks on the log in button in the sign in modal
-    document.getElementById("loginbutton").onclick = function() {
-        console.log('log in button clicked');
-    };
-
-    // Listen for clicks on the Register button in the sign in modal
-    document.getElementById("registerbutton").onclick = function() {
-        console.log('Register button clicked');
-    };
-
-    // Test Brackets variables
-    initializeTestBracketz();
-
     // Password fields must match
     var password = document.getElementById("regpassword"), confirm_password = document.getElementById("confirmpassword");
 
@@ -66,4 +55,8 @@ window.onload = () => {
     password.onchange = validatePassword;
     // will validate as soon as password is typed in rather than waiting for user to click register
     confirm_password.onkeyup = validatePassword;
+
+    // Test Brackets variables
+    initializeTestBracketz();
+
 }

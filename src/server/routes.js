@@ -15,10 +15,16 @@ module.exports = function(app, passport,models) {
     // Handle login requests through Passport
     app.post('/login', passport.authenticate('local-signin', {
             successRedirect: '/userdashboard',
-            failureRedirect: '/'
+            failureRedirect: '/',
+            // failureFlash : true
         }
     ));
 
+    // Logout user
+    app.get('/loginfailed', (req,res) => {
+        res.json({ message: "Login failed."});
+    });
+    
     // Logout user
     app.get('/logout', (req,res) => {
         req.session.destroy((err) => {
@@ -138,6 +144,51 @@ module.exports = function(app, passport,models) {
         }).catch(function (err) {
             console.log(err);
         });	
+    });
+
+    // Handle tournament saving
+    app.post('/saveTournament', isLoggedIn, (req,res) => {
+        
+        // Split all names by line breaks
+        var tournamentPlayers = req.body.playerNameEntry.split("\r\n");
+        var currentDate = new Date();
+        
+        // Create the *Tournament* from the form
+        models.Tournament.create({
+          userID: req.session.passport.user,
+          title: req.body.tName,
+          publicURL: "to-do",
+          winner: "winner",
+          createdAt: currentDate,
+          updatedAt: currentDate
+        }).then(data => {
+            models.sequelize.transaction(function (t) {
+                let promises = []; // Array to store all player info to be processed
+                
+                // Iterate through all players and create a promise for each one
+                for (var i = 0; i < tournamentPlayers.length; i++) {
+                    var newPromise = models.Players.create({
+                        tournamentID: data.id,
+                        playername: tournamentPlayers[i], // Player name from array
+                        seed: i + 1, // Seed in order (1st player is the top seed )
+                        wins: 0,
+                        createdAt: currentDate,
+                        updatedAt: currentDate
+                    });
+                    promises.push(newPromise);
+                }
+                return Promise.all(promises); // Execute all promises
+            }).then(function (result) {
+                // On success route to dashboard
+                res.redirect('../userdashboard');
+            }).catch(function(err) {
+            // print the error details on the player creation
+            console.log(err);
+            });
+        }).catch(function(err) {
+            // print the error details on the tournament creation
+            console.log(err);
+        });
     });
 
     // Start Server

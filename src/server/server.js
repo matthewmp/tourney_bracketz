@@ -15,19 +15,19 @@ var dotenv = require('dotenv').config(); // Use environment variables
 /**/ );
 /**/ 
 /**/ const webpackHotMiddleware = require('webpack-hot-middleware')(compiler);
-/**/ 
+ 
 /**/ app.use(webpackDevMiddleware);
 /**/ app.use(webpackHotMiddleware);
 // *** END Webpack configuration ***
 
 // Serve Static Files
 const staticMiddleware = express.static(path.resolve(__dirname, "../../dist"));
-//app.use(staticMiddleware);
+app.use(staticMiddleware);
 
 
 // **Probably not what we want to do long term
 // This allows access of static files to be served from the src folder.
-app.use(express.static('src'))
+//app.use(express.static('src'))
 
 // Set the default file type for non-static files
 app.set('view engine', 'pug');
@@ -41,6 +41,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+// Configure flash. This allows data/messages to be sent
+const flash = require('connect-flash');
+app.use(flash());
 
 // Configure Sequelize
 const Sequelize = require('sequelize');
@@ -77,7 +81,7 @@ var session = require('express-session');
 require('../config/passport-config.js')(passport, models.User);
 
 app.use(session({ 
-  secret: 'tom_session_test',
+  secret: 'tom_session_test', // What does this do?
   resave: true,
   saveUninitialized: true
  })); 

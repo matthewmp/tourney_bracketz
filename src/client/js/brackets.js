@@ -1,13 +1,13 @@
 
 // Execute all functions below and return ordered array for Tourney Brackets
 export const createCompetitorPairs = (participantsArr, randomSeeding) => {
-	//let particiapants = randomSeeding === true ? ranSeeding(participantsArr) : participantsArr;
+	let participants = randomSeeding === true ? ranSeeding(participantsArr) : participantsArr;
+	
+	let numOfBrackets = bracketGenerator(bracketArr, participants.length);
 
-	let numOfBrackets = bracketGenerator(bracketArr, participantsArr.length);
+	let numOfByes = getByes(participants.length, numOfBrackets);
 
-	let numOfByes = getByes(participantsArr.length, numOfBrackets);
-
-	let brackets = matchParticipants(participantsArr, numOfByes);
+	let brackets = matchParticipants(participants, numOfByes);
 
 	return brackets;
 

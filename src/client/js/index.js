@@ -9,5 +9,6 @@ import '../css/logos.css';
 import '../css/test_bracket.css';
 import '../css/signin.css';
 import '../css/messenger.css';
+import '../css/nav_bar.css';
 import './view.js';
 import './signin.js';

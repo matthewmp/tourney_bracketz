@@ -1,7 +1,6 @@
 body{
-	background: rgb(240, 240, 241);
-  filter: grayscale(1%);
-  background-size:100% 100%;
+	background: linear-gradient( rgba(12,98,145,0.6), rgba(12,98,145,0.6) ),url("http://localhost:8888/Mockups/collage.jpg");
+  background-size: 100% 100%;
 }
 .navbar {
     width: 100%;
@@ -19,15 +18,78 @@ ul.showBullets {
     border-bottom: 1px solid black;
 }
 
+/*  Landing Page */
 
-#container {
+.landing-wrapper{
+  margin: 10% auto;
+}
+
+.landing-left{
+  display: flex;
+  border-right: 5px solid #000;
+}
+
+.application{
+  align-self: center;
+  background: rgba(10,10,10,0.5);
+  padding: 10px;
+}
+
+.instruction{
+  color: #92d2f6;
+  text-align: left;
+  margin-top: 20px;
+  padding: 5px;
+  font-size: large;
+  text-decoration: underline;
+  border-radius: 5px;
+}
+
+.instruction:last-child{
+  color: orangered;
+}
+
+.instruction:first-child{
+  animation: fadeBG 5s;
+}
+
+.instruction:nth-child(2){
+  animation: fadeBG 5s;
+  animation-delay: 4s;
+}
+
+.instruction:nth-child(3){
+  animation: fadeBG 5s;
+  animation-delay: 8s;
+}
+
+.instruction:last-child{
+  animation: fadeBG 5s;
+  animation-delay: 12s;
+}
+
+.nameInput{
+  width: 50%;
+  display: block;
+  margin: 10px auto;
+  height: 40px;
+  text-align: center;
+  border-style: none;
+  border-radius: 5px;
+  font-size: large;
+}
+
+label.nameInput{
+  color: #fff;
+}
+
+#competitorEntrycontainer {
   margin: auto;
   position: relative;
-  width: 30%;
+  width: 50%;
   height: 50%;
   min-height: 300px;
   min-width: 200px;
-  border: 1px solid black;
 }
 
 #backDrop{
@@ -35,18 +97,25 @@ ul.showBullets {
   top: 3px;
   left: 3px;
   width: 100%;
-  height: 100%;
+  height: 98%;
+  overflow: scroll;
+  background: #fff;
 }
 
-#txtArea{
+#playerNameEntry{
   position: absolute;
+  resize: none;
   width: 100%;
   height: 100%;
   opacity: 0.2;
   background-color: white;
 }
 
-#backDrop, #txtArea{
+textarea#playerNameEntry::-webkit-scrollbar {
+    display: none;
+}
+
+#backDrop, #playerNameEntry{
   font-size: 15px;
   font-family: monospace;
   letter-spacing: 0px;
@@ -55,18 +124,52 @@ ul.showBullets {
 .match{
   background: lightblue;
 }
-p#instruction {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 1rem;
-  font-size: x-large;
-}
-button#btnS{
+
+.submitContainer{
+  width: 150px;
+  margin: 20px auto;
+  min-width: 325px;
   display: flex;
   justify-content: center;
 }
 
-button#btnS {
+.lbl-randomize{
+  align-self: center;
+  margin: 10px 10px;
+  color: #fff;
+  font-size: 1.5em;
+  background: #0C6291;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+#randomize{
+  align-self: center;
+  -webkit-appearance: none;
+  border: 1px solid #0C6291;
+  width: 20px;
+  height: 20px;
+  background: #ccc;
+}
+
+#randomize:checked{
+  background: #0C6291;
+  border: 1px solid #222;
+}
+
+#randomize:checked:after{
+  content: "X";
+  color: #fff;
+  position: relative;
+  left: 4px;
+  top: 1px;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+button#btnSubmit {
+  justify-content: center;
+  align-self: center;
   font-weight: bold;
   color: #494949 !important;
   text-transform: uppercase;
@@ -76,13 +179,37 @@ button#btnS {
   border-radius: 6px;
   display: flex;
   margin: auto;
-  margin-top: 20px;
   width: 6%;
   min-width: 100px;
+  cursor: pointer;
   }
-button#btnS:hover {
+button#btnSubmit:hover {
     color: #ffffff !important;
     background: #A63446;
     border-color: #A63446 !important;
     transition: all 0.4s ease 0s;
+}
+
+
+@media only screen and (max-width: 770px) {
+  .landing-left {
+      border: none;
+  }
+}
+
+@keyframes fadeBG{
+  0%{
+    background: rgba(47,169,237,0);
+  }
+
+  50%{
+    background: rgba(47,169,237,1);
+    color: #fff;
+  }
+
+  80%{
+    background: rgba(47,169,237,1);
+    color: #fff;
+  }
+  
 }
