@@ -21,10 +21,15 @@ module.exports = (sequelize, DataTypes) => {
   Tournament.associate = function(models) {
     // Database associations can be defined here 
     // Each Tournaments belongs to one User. The foreign key in the Tournament table (userID) is the 'id' from the User table
-    Tournament.belongsTo(models.User, {foreignKey: 'userID'});
+    Tournament.belongsTo(models.User, {
+      foreignKey: 'userID',
+      onDelete: 'cascade' //Delete tournament if user is deleted
+    });
 
     // Each Tournaments has many Players. The foreign key in the Players table (tournamentID) is the 'id' from the Tournament table
-    Tournament.hasMany(models.Players, {foreignKey: 'tournamentID'});
+    Tournament.hasMany(models.Players, {
+      foreignKey: 'tournamentID'
+    });
   };
   return Tournament;
 };

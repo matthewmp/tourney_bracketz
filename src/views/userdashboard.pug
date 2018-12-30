@@ -3,19 +3,25 @@ extends main-layout
 block content
 	div.container
 		div.row.hero
+			//- Print User Info
 			div.col-sm-12
 				p Name: #{tournamentdata[0].User.firstname} #{tournamentdata[0].User.lastname}
 				p Join Date: #{tournamentdata[0].User.createdAt}
 				p Tournaments Created: #{tournamentdata.length}
 		div.row.tournamentList
+			div.col-sm-1
+				p.tableHeader Delete
 			div.col-sm-4
 				p.tableHeader Tournament Name
 			div.col-sm-4
 				p.tableHeader Date Created
-			div.col-sm-4
+			div.col-sm-3
 				p.tableHeader Winner
 			for item, key in tournamentdata
+				div.col-sm-1 
+					a(href="/deletetournament/" + item.id)
+						<i class="fa fa-trash" aria-hidden="true"></i>
 				div.col-sm-4
 					a(href="/public/" + item.publicURL) #{item.title}
 				div.col-sm-4= item.createdAt
-				div.col-sm-4= item.winner
+				div.col-sm-3= item.winner
