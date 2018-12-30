@@ -55,7 +55,7 @@ module.exports = function(app, passport,models) {
     // End Authorization Controls
     // **************************
     
-    // Do this if someone hits the root of the website
+    // Do this if someone hits the root of the website. They will not be logged in.
     app.get('/', (req, res) => {
         let data = [{User: false}];
         
@@ -91,6 +91,7 @@ module.exports = function(app, passport,models) {
         });
     })
 
+    // Route for the logos page. Remove before launch
     app.get('/logos', (req, res) => {
         let data = [{User: false}];
         
@@ -100,8 +101,9 @@ module.exports = function(app, passport,models) {
         res.render('logo_test', {tournamentdata: data});
     });
 
+    // Route for the public URL. This is a accessible to anyone with the correct Tournament ID
     app.get('/public/:uniqueURL', (req, res) => {
-        console.log(req.params.uniqueURL);
+        // console.log(req.params.uniqueURL);
         models.Tournament.findAll({
             where: {
                 publicURL: req.params.uniqueURL
@@ -123,7 +125,7 @@ module.exports = function(app, passport,models) {
         });	
     });
 
-    // Prototype API to return the tournament data.
+    // API to return the tournament data in JSON format.
     app.get('/JSON/:tournamentID', (req, res) => {
         models.Tournament.findAll({
             where: {
@@ -146,7 +148,7 @@ module.exports = function(app, passport,models) {
         });	
     });
 
-    // Handle tournament saving
+    // Route to save a new tournament
     app.post('/saveTournament', isLoggedIn, (req,res) => {
         
         // Split all names by line breaks
@@ -189,6 +191,33 @@ module.exports = function(app, passport,models) {
             // print the error details on the tournament creation
             console.log(err);
         });
+    });
+
+    // Route to save a new tournament
+    app.get('/deletetournament/:tournamentID', isLoggedIn, (req,res) => {
+        
+        // This should be done in one command; research & fix to remove the second execution
+
+
+        // Delete the *Tournament*
+        models.Tournament.destroy({
+            where: {
+                id: req.params.tournamentID
+            }
+        }).catch(function(err) {
+            console.log(err);
+        })
+
+        // Delete the *Players* associated with this tournament
+        models.Players.destroy({
+            where: {
+                tournamentID: req.params.tournamentID
+            }
+        }).catch(function(err) {
+            console.log(err);
+        })
+
+        res.redirect('../userdashboard');
     });
 
     // Start Server
