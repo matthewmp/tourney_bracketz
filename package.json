@@ -1,7 +1,7 @@
 {
   "name": "tourney_bracketz",
   "version": "1.0.0",
-  "description": "Tounrament bracket generator",
+  "description": "Tournament bracket generator",
   "main": "index.js",
   "scripts": {
     "build-client": "webpack --mode production src/client/js",

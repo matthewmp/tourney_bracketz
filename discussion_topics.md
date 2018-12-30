@@ -7,12 +7,12 @@ Technology being used:
     Webpack
     Babel
     Pug - For templating the webpages served to the users
+    MySQL: Our backend database
+    Sequelize (ORM for database communication)
+    Passport: Session Management. This verifies users are logged in & have access to requests.
+    BCrypt: Encrypts data to be stored into the database
 
 Technology likely to be added:
-    Passport: Session Management. This tracks a logged in user & verifies they have access to what is being requested.
-    BCrypt: Encrypts data to be stored into the database
-    MySQL: Our backend database
-    Sequelize: Our ORM (most likely).
     Heroku: A git-direct deployment option.
 
 To Do (Research):
