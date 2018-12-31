@@ -28,32 +28,12 @@ p.tableHeader {
     margin: 15px auto;
     text-align: center;
 }
-
-#loginclosebutton {
-    position: absolute;
-    right: 1px;
-    top: 1px;
-    width: 28px;
-    height: 28px;
-    opacity: 0.7;
-}
 #loginclosebutton:hover {
     opacity: 1;
 }
-#loginclosebutton:before, #loginclosebutton:after {
-    position: absolute;
-    left: 11.5px;
-    top: -3.5px;
-    content: ' ';
-    height: 33px;
-    width: 2px;
-    background-color: #333;
-}
-#loginclosebutton:before {
-    transform: rotate(45deg);
-}
-#loginclosebutton:after {
-    transform: rotate(-45deg);
+.close-sign-in {
+    text-align: right;
+    font-size: 20px;
 }
 input#regemail {
     width: 60%;

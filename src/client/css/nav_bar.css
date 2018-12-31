@@ -1,5 +1,4 @@
 .navbar-dark .navbar-nav .nav-link {
-    /* color: rgba(255,255,255,.5); */
     color: #FBFEF9;
 }
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark {
@@ -11,13 +10,10 @@ li.nav-item {
     font-size: initial;
     display: inline-block;
     vertical-align: middle;
-    /* -webkit-transform: perspective(1px) translateZ(0); */
     transform: perspective(1px) translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
     overflow: hidden;
-    /* -webkit-transition-duration: 0.3s; */
     transition-duration: 0.3s;
-    /* -webkit-transition-property: color, background-color; */
     transition-property: color, background-color;
     cursor: pointer;
 }
@@ -31,13 +27,10 @@ a.nav-link{
     font-size: initial;
     display: inline-block;
     vertical-align: middle;
-    /* -webkit-transform: perspective(1px) translateZ(0); */
     transform: perspective(1px) translateZ(0);
     box-shadow: 0 0 1px rgba(0, 0, 0, 0);
     overflow: hidden;
-    /* -webkit-transition-duration: 0.3s; */
     transition-duration: 0.3s;
-    /* -webkit-transition-property: color, background-color; */
     transition-property: color, background-color;
 }
 a.nav-link:hover {
@@ -50,4 +43,42 @@ a.nav-link:hover {
 }
 #forgot-pw-input {
     visibility: hidden;
+}
+#signinbutton {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+#errormodalcontainer {
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    background-color: gray;
+    top: 0;
+    left: 0;
+    opacity: .5;
+    z-index: 5;
+}
+#errormodal {
+    width: 50%;
+    height: 200px;
+    background-color: #ffffff;
+    border: 2px solid gray;
+    border-radius: 5px;
+    position: absolute;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 26px;
+}
+#closemodal {
+    text-align: right;
+    padding-right: 20px;
 }
