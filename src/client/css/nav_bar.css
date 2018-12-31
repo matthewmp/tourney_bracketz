@@ -45,4 +45,9 @@ a.nav-link:hover {
     opacity: .85;
     color: black!important;
 }
-
+#email, #password {
+    font-size: 14px;
+}
+#forgot-pw-input {
+    visibility: hidden;
+}
