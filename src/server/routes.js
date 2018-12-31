@@ -59,6 +59,7 @@ module.exports = function(app, passport,models) {
     app.get('/', (req, res) => {
         let data = [{User: false}];
         
+        // If user is logged in, use the user info to generate the object
         if ( confirmUserSession(req) == true ) {
             // Find the User
             models.User.findOne({
@@ -75,8 +76,7 @@ module.exports = function(app, passport,models) {
                 console.log(err);
             });
         } else {
-            // The first argument is the file to load. In this case, index.pug
-            // Second argument is the data payload to be rendered
+            // If the user is not logged in, pass a dummy object
             res.render('index', {tournamentdata: data});
         }
     })
