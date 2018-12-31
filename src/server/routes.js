@@ -1,6 +1,6 @@
 module.exports = function(app, passport,models) {
-    
-    var dictionary = require('./dictionary');
+
+    var generatePublicURL = require('./generatePublicURL');
 
     // **********************
     // Authentication Controls
@@ -177,7 +177,7 @@ module.exports = function(app, passport,models) {
         var tournamentPlayers = req.body.playerNameEntry.split("\r\n");
         var currentDate = new Date();
 
-        var generatedpublicURL = dictionary[55];
+        var generatedpublicURL = generatePublicURL();
         
         // Create the *Tournament* from the form
         models.Tournament.create({
