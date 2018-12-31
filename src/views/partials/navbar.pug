@@ -1,4 +1,11 @@
-
+//- Check if there is a message to display
+if message
+    -if (message.length > 0)
+        div#errormodalcontainer
+        div#errormodal.error 
+            div#closemodal
+                i#errorclosebutton.far.fa-times-circle
+            | #{message}
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
     a.navbar-brand(href="#") Tourney Bracketz
     ul.navbar-nav
@@ -33,8 +40,8 @@ div.row#signincontainer
                 p.tableHeader Log In
             div.col#registertitle
                 p.tableHeader Register
-            div.col
-                button.btn#loginclosebutton 
+            div.col.close-sign-in
+                i#loginclosebutton.far.fa-times-circle
         form#loginform(action="/login/" method="POST")
             div.row.justify-content-center
                 div.col-sm-12

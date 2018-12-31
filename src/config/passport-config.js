@@ -42,7 +42,7 @@ module.exports = (passport, User) => {
             }).then((user) => { // Email found
                 if (user) {
                     console.log('email found in database. Registration denied.');
-                    return done(null, false, req.flash('signupMessage', 'That email is already taken'))
+                    return done(null, false, req.flash('signupMessage', 'That email is already registered. Please use a different email to register.'))
                 } else {
                     console.log('email not found in database. Proceed');
                     // Create object to send to the server
@@ -85,18 +85,18 @@ module.exports = (passport, User) => {
             User.findOne({ where: { email: email } })
             .then(function(user) {
                 if (!user) {
-                    console.log('Email is not registered here.')
-                    return done(null, false, req.flash('signupMessage', 'Email is incorrect.'))
+                    console.log('The email provided is not a registered user. Please try again.')
+                    return done(null, false, req.flash('signupMessage', 'The email provided is not a registered user. Please try again.'))
                 }
                 if (!isValidPassword(user.password, password)) {
                     console.log('Incorrect password provided.')
-                    return done(null, false, req.flash('signupMessage', 'Incorrect password.'))
+                    return done(null, false, req.flash('signupMessage', 'The username & password provided is not valid. Please try again.'))
                 }
                 var userinfo = user.get();
                 return done(null, userinfo);
             }).catch(function(err) {
                 console.log("Error:", err);
-                return done(null, false, req.flash('signupMessage', 'Something went wrong with your Signin'))
+                return done(null, false, req.flash('signupMessage', 'Something went wrong with your Signin. Please try again later. If the problem persists, contact support.'))
             });
         }
     ));

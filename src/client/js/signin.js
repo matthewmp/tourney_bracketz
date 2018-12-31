@@ -1,9 +1,7 @@
 import { initializeTestBracketz } from './view';
 
-
 // Wait for DOM to finish loading before attaching listeners.
 window.onload = () => {
-
     // Listen for clicks on the sign in button in the navbar
     if (document.getElementById("signinbutton") != null) {
         document.getElementById("signinbutton").onclick = function() {
@@ -12,11 +10,21 @@ window.onload = () => {
         };
     }
 
-    // Listen for clicks on the modal close button
+    // Listen for clicks on the singin modal close button
     document.getElementById("loginclosebutton").onclick = function() {
         // Close the modal
         document.getElementById("signincontainer").style.display = "none"
     };
+
+    // Listen for clicks on the error modal close button. This only exists if a message is sent
+    
+    if (document.getElementById("errorclosebutton") != null) {
+        document.getElementById("errorclosebutton").onclick = function() {
+            // Close the modal
+            document.getElementById("errormodal").style.display = "none";
+            document.getElementById("errormodalcontainer").style.display = "none";
+        };
+    }
 
     // Listen for clicks on the Register Title at the top of the modal
     document.getElementById("registertitle").onclick = function() {
@@ -58,5 +66,4 @@ window.onload = () => {
 
     // Test Brackets variables
     initializeTestBracketz();
-
 }

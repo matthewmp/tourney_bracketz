@@ -54,9 +54,7 @@ module.exports = function(app, passport,models) {
     // **************************
 
     // Do this if someone hits the root of the website. They will not be logged in.
-    app.get('/', (req, res) => {
-        let data = [{User: false}];
-        
+    app.get('/', (req, res) => {        
         // If user is logged in, use the user info to generate the object
         if ( confirmUserSession(req) == true ) {
             // Find the User
@@ -75,6 +73,7 @@ module.exports = function(app, passport,models) {
             });
         } else {
             // If the user is not logged in, pass a dummy object
+            // console.log("Flash message is " + req.flash('signupMessage'))
             res.render('index', { message: req.flash('signupMessage') });
         }
     })
