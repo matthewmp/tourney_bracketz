@@ -42,10 +42,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// Configure flash. This allows data/messages to be sent
-const flash = require('connect-flash');
-app.use(flash());
-
 // Configure Sequelize
 const Sequelize = require('sequelize');
 var models = require('../models');
@@ -80,15 +76,25 @@ var session = require('express-session');
 //load passport strategies
 require('../config/passport-config.js')(passport, models.User);
 
+// Include connect-flash. This allows error messages to be sent to the DOM
+const flash = require('connect-flash');
+app.use(flash());
+
+// Include cookie parser. This is required to read flash error messages
+const cookieParser = require('cookie-parser')
+app.use(cookieParser('keyboard cat'));
+
 app.use(session({ 
   secret: 'tom_session_test', // What does this do?
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { 
+    // secure: true,
+    maxAge: 60000
+  }
  })); 
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Import routes.js (and pass app to it)
 var authRoute = require('./routes.js')(app,passport,models);
-
-

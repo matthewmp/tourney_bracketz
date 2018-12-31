@@ -42,9 +42,7 @@ module.exports = (passport, User) => {
             }).then((user) => { // Email found
                 if (user) {
                     console.log('email found in database. Registration denied.');
-                    return done(null, false, {
-                        message: 'That email is already taken'
-                    });
+                    return done(null, false, req.flash('signupMessage', 'That email is already taken'))
                 } else {
                     console.log('email not found in database. Proceed');
                     // Create object to send to the server
@@ -81,8 +79,6 @@ module.exports = (passport, User) => {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) {
-            console.log("in function");
-            // var User = user;
             var isValidPassword = function(userpass, password) {
                 return bCrypt.compareSync(password, userpass);
             }
@@ -90,23 +86,17 @@ module.exports = (passport, User) => {
             .then(function(user) {
                 if (!user) {
                     console.log('Email is not registered here.')
-                    return done(null, false, {
-                        message: 'Email does not exist'
-                    });
+                    return done(null, false, req.flash('signupMessage', 'Email is incorrect.'))
                 }
                 if (!isValidPassword(user.password, password)) {
-                    console.log('Incorrect password.')
-                    return done(null, false, {
-                        message: 'Incorrect password.'
-                    });
+                    console.log('Incorrect password provided.')
+                    return done(null, false, req.flash('signupMessage', 'Incorrect password.'))
                 }
                 var userinfo = user.get();
                 return done(null, userinfo);
             }).catch(function(err) {
                 console.log("Error:", err);
-                return done(null, false, {
-                    message: 'Something went wrong with your Signin'
-                });
+                return done(null, false, req.flash('signupMessage', 'Something went wrong with your Signin'))
             });
         }
     ));

@@ -15,7 +15,7 @@ module.exports = function(app, passport,models) {
     app.post('/login',passport.authenticate('local-signin', { 
         successRedirect: '/userdashboard',
         failureRedirect: '/',
-        failureFlash: 'Invalid username or password.' })
+        failureFlash: true })
     );
 
     // Route if login is rejected
@@ -75,7 +75,7 @@ module.exports = function(app, passport,models) {
             });
         } else {
             // If the user is not logged in, pass a dummy object
-            res.render('index');
+            res.render('index', { message: req.flash('signupMessage') });
         }
     })
 
