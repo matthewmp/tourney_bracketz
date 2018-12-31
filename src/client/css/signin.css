@@ -91,7 +91,7 @@ div#logintitle {
 div#registertitle {
     color: white;
 }
-#loginform > div.login-tools > div:nth-child(2) > div {
+.login-button-container {
     min-height: 50px;
 }
 /* Login Button */

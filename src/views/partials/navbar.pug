@@ -34,10 +34,10 @@ div.row#signincontainer
         form#loginform(action="/login/" method="POST")
             div.row.justify-content-center
                 div.col-sm-12
-                    input#email(type="text" placeholder="E-Mail" name="email" style="font-size:14px;" required)
+                    input#email(type="text" placeholder="E-Mail" name="email" required)
             div.row
                 div.col-sm-12
-                        input#password(type="password" placeholder="Password" name="password" style="font-size:14px;" required)
+                        input#password(type="password" placeholder="Password" name="password" required)
             div.login-tools
                 div
                     div
@@ -45,12 +45,12 @@ div.row#signincontainer
                             input#rememberMe(type="checkbox" value="None" name="check") 
                             | Remember Me
                 div
-                    div
+                    div.login-button-container
                         button.btn#loginbutton Login
                 div
                     div#emptyTable
                         button.btn#forgotPasswordButton Forgot Password?
-                        input(type="text" class="form-control" style="visibility:hidden")
+                        input(type="text" id="forgot-pw-input" class="form-control")
     div.col-sm-12#registerContainer
         form#registerform(action="/register/" method="POST")
             div.row
