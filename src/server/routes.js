@@ -12,15 +12,13 @@ module.exports = function(app, passport,models) {
         }
     ));
     
-    // Handle login requests through Passport
-    app.post('/login', passport.authenticate('local-signin', {
-            successRedirect: '/userdashboard',
-            failureRedirect: '/',
-            // failureFlash : true
-        }
-    ));
+    app.post('/login',passport.authenticate('local-signin', { 
+        successRedirect: '/userdashboard',
+        failureRedirect: '/',
+        failureFlash: 'Invalid username or password.' })
+    );
 
-    // Logout user
+    // Route if login is rejected
     app.get('/loginfailed', (req,res) => {
         res.json({ message: "Login failed."});
     });
@@ -54,7 +52,7 @@ module.exports = function(app, passport,models) {
     // **************************
     // End Authorization Controls
     // **************************
-    
+
     // Do this if someone hits the root of the website. They will not be logged in.
     app.get('/', (req, res) => {
         let data = [{User: false}];
@@ -77,7 +75,7 @@ module.exports = function(app, passport,models) {
             });
         } else {
             // If the user is not logged in, pass a dummy object
-            res.render('index', {tournamentdata: data});
+            res.render('index');
         }
     })
 
@@ -107,12 +105,21 @@ module.exports = function(app, passport,models) {
 
     // Route for the logos page. Remove before launch
     app.get('/logos', (req, res) => {
-        let data = [{User: false}];
-        
+         
         if ( confirmUserSession(req) == true ) {
-            data = [{User: true}]
+            // Find the User
+            models.User.findOne({
+                where: {
+                    id: req.user.id
+                }
+            }).then(function(data) {
+                res.render('logo_test', {tournamentdata: data});
+            }).catch(function (err) {
+                console.log(err);
+            });
+        } else {
+            res.render('logo_test');
         }
-        res.render('logo_test', {tournamentdata: data});
     });
 
     // Route for the public URL. This is a accessible to anyone with the correct Tournament ID

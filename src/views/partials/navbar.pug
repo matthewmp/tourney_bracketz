@@ -14,12 +14,14 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
                     li.nav-item
                         a.nav-link(href="userdashboard") Dashboard
     ul.navbar-nav.ml-auto
-        if !tournamentdata.id
-            li.nav-item
+        if tournamentdata
+            if tournamentdata.id
+                li.nav-item
+                    a(href="logout") Logout
+            else 
                 div#signinbutton Sign In
-        if tournamentdata.id
-            li.nav-item
-                a(href="logout") Logout
+        else 
+            div#signinbutton Sign In
     span.navbar-text
         Login
 div.row#signincontainer

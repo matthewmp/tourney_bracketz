@@ -23,8 +23,9 @@ block content
 							input#randomize(type="checkbox", name="randomize")
 					
 				<button id="btnSubmit" type="button">Generate Tournament</button>
-				if tournamentdata.id
-					<button id="btnSave" type="submit">Save Tournament</button>
+				if tournamentdata
+					if tournamentdata.id
+						<button id="btnSave" type="submit">Save Tournament</button>
 				</form>
 	div.messenger
 			div.close-messenger X
