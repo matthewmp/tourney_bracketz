@@ -5,8 +5,8 @@ block content
 		div.row.hero
 			//- Print User Info
 			div.col-sm-12
-				p Name: #{tournamentdata[0].User.firstname} #{tournamentdata[0].User.lastname}
-				p Join Date: #{tournamentdata[0].User.createdAt}
+				p Name: #{tournamentdata.firstname} #{tournamentdata.lastname}
+				p Join Date: #{tournamentdata.createdAt}
 				p Tournaments Created: #{tournamentdata.length}
 		div.row.tournamentList
 			div.col-sm-1
@@ -17,7 +17,7 @@ block content
 				p.tableHeader Date Created
 			div.col-sm-3
 				p.tableHeader Winner
-			for item, key in tournamentdata
+			for item, key in tournamentdata.Tournaments
 				div.col-sm-1 
 					a(href="/deletetournament/" + item.id)
 						<i class="fa fa-trash" aria-hidden="true"></i>

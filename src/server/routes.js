@@ -60,29 +60,43 @@ module.exports = function(app, passport,models) {
         let data = [{User: false}];
         
         if ( confirmUserSession(req) == true ) {
-            data = [{User: true}]
-        }
+            // Find the User
+            models.User.findOne({
+                where: {
+                    id: req.user.id
+                }
+            }).then(function(data) {
+                // Package the returned JSON file
+                var payload = {tournamentdata: data};
 
-        // The first argument is the file to load. In this case, index.pug
-        // Second argument is the data payload to be rendered
-        res.render('index', {tournamentdata: data});
+                // Parse the payload data within userdashboard.pug before sending the result to the client
+                res.render('index', {tournamentdata: payload.tournamentdata});
+            }).catch(function (err) {
+                console.log(err);
+            });
+        } else {
+            // The first argument is the file to load. In this case, index.pug
+            // Second argument is the data payload to be rendered
+            res.render('index', {tournamentdata: data});
+        }
     })
 
     // Access the specific user dashboard. Only accessible when logged in.
     app.get('/userdashboard', isLoggedIn, (req, res) => {
-        // Query the database for all Tournaments for this user
-        models.Tournament.findAll({
+
+        // Find the User
+        models.User.findOne({
             where: {
-                UserId: req.user.id
+                id: req.user.id
             },
+            // Include all tournaments for this user
             include: [{
-                model: models.User,
-                attributes: ['firstname', 'lastname', 'createdAt']
+                model: models.Tournament
             }]
         })
         .then(function(data) {
             // Package the returned JSON file
-            var payload = {tournamentdata: data}
+            var payload = {tournamentdata: data};
 
             // Parse the payload data within userdashboard.pug before sending the result to the client
             res.render('userdashboard', {tournamentdata: payload.tournamentdata});
@@ -197,7 +211,6 @@ module.exports = function(app, passport,models) {
     app.get('/deletetournament/:tournamentID', isLoggedIn, (req,res) => {
         
         // This should be done in one command; research & fix to remove the second execution
-
 
         // Delete the *Tournament*
         models.Tournament.destroy({
