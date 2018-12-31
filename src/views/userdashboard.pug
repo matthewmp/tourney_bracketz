@@ -1,27 +1,50 @@
 //- index.pug
 extends main-layout
 block content
+	//- Function to format the dates from SQL into something readable
+	-function prettyDate(dateString){
+		-var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+		-var date = new Date(dateString);
+		-var d = date.getDate(dateString);
+		-var m = monthNames[date.getMonth()];
+		-var y = date.getFullYear();
+		-return m+' '+d+', '+y;
+	-} 
 	div.container
 		div.row.hero
 			//- Print User Info
-			div.col-sm-12
-				p Name: #{tournamentdata.firstname} #{tournamentdata.lastname}
-				p Join Date: #{tournamentdata.createdAt}
-				p Tournaments Created: #{tournamentdata.length}
+			div.col-sm-3
+				p Name: 
+			div.col-sm-9
+				| #{tournamentdata.firstname} #{tournamentdata.lastname}
+			div.col-sm-3
+				p Join Date: 
+			div.col-sm-9
+				| #{prettyDate(tournamentdata.createdAt)}
+			div.col-sm-3
+				p Tournaments Created: 
+			div.col-sm-9
+				| #{tournamentdata.length}
 		div.row.tournamentList
 			div.col-sm-1
 				p.tableHeader Delete
 			div.col-sm-4
 				p.tableHeader Tournament Name
-			div.col-sm-4
+			div.col-sm-2
 				p.tableHeader Date Created
-			div.col-sm-3
+			div.col-sm-5
 				p.tableHeader Winner
-			for item, key in tournamentdata.Tournaments
+		for item, key in tournamentdata.Tournaments
+			div.row.tournamentList
 				div.col-sm-1 
 					a(href="/deletetournament/" + item.id)
 						<i class="fa fa-trash" aria-hidden="true"></i>
 				div.col-sm-4
 					a(href="/public/" + item.publicURL) #{item.title}
-				div.col-sm-4= item.createdAt
-				div.col-sm-3= item.winner
+				div.col-sm-2
+					| #{prettyDate(item.createdAt)}
+				div.col-sm-5
+					if item.winner
+						| #{item.winner}
+					else 
+						| TBD
