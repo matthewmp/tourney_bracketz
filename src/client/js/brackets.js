@@ -10,7 +10,6 @@ export const createCompetitorPairs = (participantsArr, randomSeeding) => {
 	let brackets = matchParticipants(participants, numOfByes);
 
 	return brackets;
-
 }
 
 // Array of available brackets
