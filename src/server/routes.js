@@ -177,44 +177,53 @@ module.exports = function(app, passport,models) {
         var tournamentPlayers = req.body.playerNameEntry.split("\r\n");
         var currentDate = new Date();
 
-        var generatedpublicURL = generatePublicURL();
+        getGeneratedpublicURL();
+        
+        // Create the URL string. This needs to be a promise; confirm String before continuing.
+        function getGeneratedpublicURL() {
+            var getURL = generatePublicURL(); 
+            console.log("getGeneratedpublicURL called");
+            getURL.then(createTournament);
+        }
         
         // Create the *Tournament* from the form
-        models.Tournament.create({
-          userID: req.session.passport.user,
-          title: req.body.tName,
-          publicURL: generatedpublicURL,
-          winner: "winner",
-          createdAt: currentDate,
-          updatedAt: currentDate
-        }).then(data => {
-            models.sequelize.transaction(function (t) {
-                let promises = []; // Array to store all player info to be processed
-                
-                // Iterate through all players and create a promise for each one
-                for (var i = 0; i < tournamentPlayers.length; i++) {
-                    var newPromise = models.Players.create({
-                        tournamentID: data.id,
-                        playername: tournamentPlayers[i], // Player name from array
-                        seed: i + 1, // Seed in order (1st player is the top seed )
-                        wins: 0,
-                        createdAt: currentDate,
-                        updatedAt: currentDate
-                    });
-                    promises.push(newPromise);
-                }
-                return Promise.all(promises); // Execute all promises
-            }).then(function (result) {
-                // On success route to dashboard
-                res.redirect('../userdashboard');
+        function createTournament() {
+            models.Tournament.create({
+                userID: req.session.passport.user,
+                title: req.body.tName,
+                publicURL: result,
+                winner: "winner",
+                createdAt: currentDate,
+                updatedAt: currentDate
+            }).then(data => {
+                models.sequelize.transaction(function (t) {
+                    let promises = []; // Array to store all player info to be processed
+                    
+                    // Iterate through all players and create a promise for each one
+                    for (var i = 0; i < tournamentPlayers.length; i++) {
+                        var newPromise = models.Players.create({
+                            tournamentID: data.id,
+                            playername: tournamentPlayers[i], // Player name from array
+                            seed: i + 1, // Seed in order (1st player is the top seed )
+                            wins: 0,
+                            createdAt: currentDate,
+                            updatedAt: currentDate
+                        });
+                        promises.push(newPromise);
+                    }
+                    return Promise.all(promises); // Execute all promises
+                }).then(function (result) {
+                    // On success route to dashboard
+                    res.redirect('../userdashboard');
+                }).catch(function(err) {
+                // print the error details on the player creation
+                console.log(err);
+                });
             }).catch(function(err) {
-            // print the error details on the player creation
-            console.log(err);
+                // print the error details on the tournament creation
+                console.log(err);
             });
-        }).catch(function(err) {
-            // print the error details on the tournament creation
-            console.log(err);
-        });
+        }
     });
 
     // Route to save a new tournament
