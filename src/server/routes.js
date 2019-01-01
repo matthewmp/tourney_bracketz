@@ -1,5 +1,7 @@
 module.exports = function(app, passport,models) {
-    
+
+    var generatePublicURL = require('./generatePublicURL');
+
     // **********************
     // Authentication Controls
     // **********************
@@ -174,12 +176,14 @@ module.exports = function(app, passport,models) {
         // Split all names by line breaks
         var tournamentPlayers = req.body.playerNameEntry.split("\r\n");
         var currentDate = new Date();
+
+        var generatedpublicURL = generatePublicURL();
         
         // Create the *Tournament* from the form
         models.Tournament.create({
           userID: req.session.passport.user,
           title: req.body.tName,
-          publicURL: "to-do",
+          publicURL: generatedpublicURL,
           winner: "winner",
           createdAt: currentDate,
           updatedAt: currentDate

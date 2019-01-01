@@ -82,7 +82,7 @@ app.use(flash());
 
 // Include cookie parser. This is required to read flash error messages
 const cookieParser = require('cookie-parser')
-app.use(cookieParser('keyboard cat'));
+app.use(cookieParser('keyboard cat'));// Why keyboard cat? This is from the docs...?
 
 app.use(session({ 
   secret: 'tom_session_test', // What does this do?
