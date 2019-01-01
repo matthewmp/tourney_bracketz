@@ -1,6 +1,7 @@
 module.exports = function(app, passport,models) {
 
-    var generatePublicURL = require('./generatePublicURL');
+    // var generatePublicURL = require('./generatePublicURL');
+    const dictionary = require('./dictionary');
 
     // **********************
     // Authentication Controls
@@ -173,49 +174,87 @@ module.exports = function(app, passport,models) {
     // Route to save a new tournament
     app.post('/saveTournament', isLoggedIn, (req,res) => {
         
-        // Split all names by line breaks
+        // Split all names from the form by line breaks
         var tournamentPlayers = req.body.playerNameEntry.split("\r\n");
         var currentDate = new Date();
 
-        var generatedpublicURL = generatePublicURL();
+        // Begin processing the unique URL generation. Pass the saveTournament function as a callback
+        getAndCheckURLString(saveTournament);
         
-        // Create the *Tournament* from the form
-        models.Tournament.create({
-          userID: req.session.passport.user,
-          title: req.body.tName,
-          publicURL: generatedpublicURL,
-          winner: "winner",
-          createdAt: currentDate,
-          updatedAt: currentDate
-        }).then(data => {
-            models.sequelize.transaction(function (t) {
-                let promises = []; // Array to store all player info to be processed
-                
-                // Iterate through all players and create a promise for each one
-                for (var i = 0; i < tournamentPlayers.length; i++) {
-                    var newPromise = models.Players.create({
-                        tournamentID: data.id,
-                        playername: tournamentPlayers[i], // Player name from array
-                        seed: i + 1, // Seed in order (1st player is the top seed )
-                        wins: 0,
-                        createdAt: currentDate,
-                        updatedAt: currentDate
-                    });
-                    promises.push(newPromise);
+        // This function will requests unique strings, validate that they are unique & then continue to save the tournament
+        function getAndCheckURLString(saveTournament) {
+            // Get string combination 
+            var tempString = createURLString();
+    
+            // Check if this combination is already in use
+            models.Tournament.findOne({
+                where: {
+                    publicURL: tempString
                 }
-                return Promise.all(promises); // Execute all promises
-            }).then(function (result) {
-                // On success route to dashboard
-                res.redirect('../userdashboard');
+            }).then(data => {
+                if (data == null) {
+                    // The string is unique. Save the tournament
+                    saveTournament(tempString);
+                } else {       
+                    //Recursively call the function to generate a new string
+                    getAndCheckURLString();
+                }
+            })
+        }
+
+        function createURLString() {
+            // The length of the dictionary array is 1000 and not changing.
+            var dictionarylength = 1000;
+    
+            // Select three words randomly. 
+            var firstWord = dictionary[Math.floor(Math.random() * dictionarylength)];
+            var secondWord = dictionary[Math.floor(Math.random() * dictionarylength)];
+            var thirdWord = dictionary[Math.floor(Math.random() * dictionarylength)];
+    
+            // Return the resulting string
+            return firstWord + "-" + secondWord + "-" + thirdWord;
+        }
+
+        // Save the tournament after the unique URL is created & verified
+        function saveTournament(url) {
+            // Create the Tournament from the form data
+            models.Tournament.create({
+                userID: req.session.passport.user,
+                title: req.body.tName,
+                publicURL: url,
+                winner: "TBD",
+                createdAt: currentDate,
+                updatedAt: currentDate
+            }).then(data => {
+                models.sequelize.transaction(function (t) {
+                    let promises = []; // Array to store all player(s) info
+                    
+                    // Iterate through all players and create a promise for each one
+                    for (let i = 0; i < tournamentPlayers.length; i++) {
+                        let newPromise = models.Players.create({
+                            tournamentID: data.id,
+                            playername: tournamentPlayers[i], // Player name from array
+                            seed: i + 1, // Seed in order (1st player is the top seed )
+                            wins: 0,
+                            createdAt: currentDate,
+                            updatedAt: currentDate
+                        });
+                        promises.push(newPromise);
+                    }
+                    return Promise.all(promises); // Execute all promises
+                }).then(function (result) {
+                    // On success route to dashboard
+                    res.redirect('../userdashboard');
+                }).catch(function(err) {
+                    // print the error details on the player creation
+                    console.log(err);
+                });
             }).catch(function(err) {
-            // print the error details on the player creation
-            console.log(err);
+                // print the error details on the tournament creation
+                console.log(err);
             });
-        }).catch(function(err) {
-            // print the error details on the tournament creation
-            console.log(err);
-        });
-    });
+        }  
+    })
 
     // Route to save a new tournament
     app.get('/deletetournament/:tournamentID', isLoggedIn, (req,res) => {

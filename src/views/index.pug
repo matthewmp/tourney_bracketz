@@ -13,10 +13,10 @@ block content
 				<form id="saveTournament" action="/saveTournament" method="POST">
 					div.landing-page-content-container
 						//- <label class="nameInput" for="tName">Tournament Name</label>
-						input#tName.nameInput( type=text required name="tName" placeholder="Tournament Name")
+						input#tName.nameInput( type=text required name="tName" placeholder="Tournament Name" value="testing")
 						div#competitorEntrycontainer
 							div#backDrop
-							textarea#playerNameEntry( cols="50" rows="10" name="playerNameEntry")
+							textarea#playerNameEntry( cols="50" rows="10" name="playerNameEntry" value="1")
 						div.submitContainer
 							<label for="randomize" class="lbl-randomize">Check box to randomize order</label>
 							input#randomize(type="checkbox", name="randomize")
