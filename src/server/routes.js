@@ -123,10 +123,9 @@ module.exports = function(app, passport,models) {
             res.render('logo_test');
         }
     });
-
+    
     // Route for the public URL. This is a accessible to anyone with the correct Tournament ID
     app.get('/public/:uniqueURL', (req, res) => {
-        // console.log(req.params.uniqueURL);
         models.Tournament.findAll({
             where: {
                 publicURL: req.params.uniqueURL
@@ -141,8 +140,6 @@ module.exports = function(app, passport,models) {
             
             // Load the page
             res.render('public', {tournamentdata: payload.tournamentdata});
-            // res.json({payload});
-            
         }).catch(function (err) {
             console.log(err);
         });	
