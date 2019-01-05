@@ -106,7 +106,7 @@ module.exports = function(app, passport,models) {
     })
 
     // Route for the logos page. Remove before launch
-    app.get('/logos', (req, res) => {
+    app.get('/logos', isLoggedIn, (req, res) => {
          
         if ( confirmUserSession(req) == true ) {
             // Find the User
@@ -125,24 +125,54 @@ module.exports = function(app, passport,models) {
     });
     
     // Route for the public URL. This is a accessible to anyone with the correct Tournament ID
-    app.get('/public/:uniqueURL', (req, res) => {
-        models.Tournament.findAll({
-            where: {
-                publicURL: req.params.uniqueURL
-            },
-            include: [{
-                model: models.Players,
-            }]
-        })
-        .then(function(data) {
-            // Package the returned JSON file
-            var payload = {tournamentdata: data}
-            
-            // Load the page
-            res.render('public', {tournamentdata: payload.tournamentdata});
-        }).catch(function (err) {
-            console.log(err);
-        });	
+    app.get('/public/:uniqueURL', isLoggedIn, (req, res) => {
+        // Proceed is user is logged in 
+        if ( confirmUserSession(req) == true ) {
+            // Get the tournament info
+            models.Tournament.findAll({
+                where: {
+                    publicURL: req.params.uniqueURL
+                },
+                include: [{
+                    model: models.Players,
+                }]
+            })
+            // Lookup the user
+            // models.User.findOne({
+            //     where: {
+            //         id: req.user.id
+            //     }
+            // })
+            .then(function(data) {
+                // Package the returned JSON file
+                var payload = {tournamentdata: data}
+                
+                console.log(payload)
+
+                // Load the page
+                res.render('public', {tournamentdata: payload.tournamentdata});
+            }).catch(function (err) {
+                console.log(err);
+            });
+        } else {
+            models.Tournament.findAll({
+                where: {
+                    publicURL: req.params.uniqueURL
+                },
+                include: [{
+                    model: models.Players,
+                }]
+            })
+            .then(function(data) {
+                // Package the returned JSON file
+                var payload = {tournamentdata: data}
+                
+                // Load the page
+                res.render('public', {tournamentdata: payload.tournamentdata});
+            }).catch(function (err) {
+                console.log(err);
+            });	
+        }
     });
 
     // API to return the tournament data in JSON format.
