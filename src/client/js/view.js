@@ -167,6 +167,14 @@ export const createFinalBracket = (allOuterBrackets) => {
 	return winnerBracket;
 }
 
+export const createResetButton = () => {
+	const resetButton = document.createElement('button');
+	resetButton.innerText = 'Reset';
+	resetButton.className = 'resetButton';
+	
+	return resetButton;
+}
+
 //window.onload = () => {
 export const initializeTestBracketz = () => {	
 	// Grab participant entry elements
@@ -199,8 +207,10 @@ export const initializeTestBracketz = () => {
 				var total = createAllOuterBrackets(outerBrackets)
 				var winner = createFinalBracket(total);
 
-				document.body.appendChild(winner);
+				winner.appendChild(createResetButton());
 
+				document.body.appendChild(winner);
+				
 				// Add event listeners to all buttons to advance competitors
 				const buttons = document.getElementsByClassName('btn-advance');
 				
