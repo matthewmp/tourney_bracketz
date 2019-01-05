@@ -69,6 +69,7 @@ body{
 
 .brackets-wrapper button{
 	width: 15%;
+	min-width: 20px;
 	font-size: 50%;
 	vertical-align: text-bottom;
 	cursor: pointer;
