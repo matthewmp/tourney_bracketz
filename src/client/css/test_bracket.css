@@ -54,19 +54,29 @@ body{
 
 .brackets-wrapper {
 	display: flex;
+	margin: 50px 20px;
 }
 
 .brackets-wrapper input{
 	max-width: 80%;
+	width: 10vw;
 	max-height: 15px;
 	border-style: none;
 	border-bottom: 1px solid #ccc;
 	margin-top: 5px;
+	vertical-align: middle;
 }
 
 .brackets-wrapper button{
 	width: 15%;
+	min-width: 20px;
 	font-size: 50%;
 	vertical-align: text-bottom;
 	cursor: pointer;
+	height: 15px;
+    vertical-align: middle;
+    margin-top: 5px;
+    background: #0C6291;
+    color: #fff;
+    font-weight: 800;
 }

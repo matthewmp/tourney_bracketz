@@ -1,6 +1,7 @@
 body{
 	background: linear-gradient( rgba(12,98,145,0.6), rgba(12,98,145,0.6) ),url("http://localhost:8888/Mockups/trophyBackdrop.png");
   background-size: 100% 100%;
+  min-height: 100vh;
 }
 .navbar {
     width: 100%;
@@ -199,6 +200,15 @@ a {
 .row.hero {
   color: white;
   font-size: 24px;
+}
+
+#resetBtn {
+  background: orangered;
+  height: 30px;
+  width: 75px;
+  font-size: 1em;
+  position: fixed;
+  right: 150px;
 }
 
 @media only screen and (max-width: 770px) {

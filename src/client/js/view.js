@@ -166,6 +166,21 @@ export const createFinalBracket = (allOuterBrackets) => {
 	return winnerBracket;
 }
 
+export const createResetButton = () => {
+	const resetButton = document.createElement('button');
+	resetButton.innerText = 'Reset';
+	resetButton.className = 'resetButton';
+	resetButton.id = 'resetBtn';
+	
+	return resetButton;
+}
+
+export const resetButtonInitialize = () => {
+	document.getElementById('resetBtn').addEventListener('click', () => {
+		location.reload(true);
+	});
+}
+
 //window.onload = () => {
 export const initializeTestBracketz = () => {	
 	// Grab participant entry elements
@@ -200,10 +215,13 @@ export const initializeTestBracketz = () => {
 				var total = createAllOuterBrackets(outerBrackets)
 				var winner = createFinalBracket(total);
 
-				document.body.appendChild(winner);
+				winner.appendChild(createResetButton());
 
+				document.body.appendChild(winner);
+				
 				// Add event listeners to all buttons to advance competitors
 				const buttons = document.getElementsByClassName('btn-advance');
+				resetButtonInitialize();
 				
 				for(let i = 0; i < buttons.length; i++) {
 					let el = buttons[i];
@@ -213,6 +231,9 @@ export const initializeTestBracketz = () => {
 				// There are dupes
 				messenger('Duplicate players are not allowed');
 			}
+
+			// Hide landing page content for brackets
+			document.getElementsByClassName('landing-wrapper')[0].style.display = 'none';
 		});
 		highlightMatch();
 	}
