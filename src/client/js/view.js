@@ -230,6 +230,9 @@ export const initializeTestBracketz = () => {
 				// There are dupes
 				messenger('Duplicate players are not allowed');
 			}
+
+			// Hide landing page content for brackets
+			document.getElementsByClassName('landing-wrapper')[0].style.display = 'none';
 		});
 		highlightMatch();
 	}
