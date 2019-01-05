@@ -13,6 +13,30 @@ export const createBracketInputs = (competitors) => {
 	document.body.appendChild(bracket);
 }
 
+// Create Paired Brackets
+export const createPairedBrackets = (competitorPairs) => {
+	let singleBracketArray = [];
+	let pairedBracketsArray = [];
+
+	competitorPairs.toString().split(',').forEach((el) => {
+		let singleBracket = createSingleBracket(el);
+
+		singleBracketArray.push(singleBracket);
+	});
+
+	for(let i = 0; i < singleBracketArray.length; i = i + 2) {
+		let pairedBracket = document.createElement('div');
+		pairedBracket.classList = 'paired-bracket';
+		
+		pairedBracket.appendChild(singleBracketArray[i]);
+		pairedBracket.appendChild(singleBracketArray[i + 1]);
+		
+		pairedBracketsArray.push(pairedBracket);
+
+	}
+	return pairedBracketsArray;
+}
+
 // Create Single Bracket
 export const createSingleBracket = (competitor) => {
 	const singleBracket = document.createElement('div');
@@ -29,45 +53,20 @@ export const createSingleBracket = (competitor) => {
 	return singleBracket;
 }
 
-// Create Paired Brackets
-export const createPairedBrackets = (competitorPairs) => {
-	let singleBracketArray = [];
-	let pairedBracketsArray = [];
-
-	competitorPairs.toString().split(',').forEach((el) => {
-		let singleBracket = createSingleBracket(el);
-
-		singleBracketArray.push(singleBracket);
-	});
-
-	for(let i = 0; i < singleBracketArray.length; i = i + 2){
-		let pairedBracket = document.createElement('div');
-		pairedBracket.classList = 'paired-bracket';
-		
-		pairedBracket.appendChild(singleBracketArray[i]);
-		pairedBracket.appendChild(singleBracketArray[i + 1]);
-		
-		pairedBracketsArray.push(pairedBracket);
-
-	}
-	return pairedBracketsArray;
-}
-
 // Create Outer Brackets
 export const createOuterBrackets = (pairedBrackets, counter) => { 
 	const outerBracketArr = [];
 	
-	for(let i = 0; i < pairedBrackets.length - 1; i = i + 2){
+	for(let i = 0; i < pairedBrackets.length - 1; i = i + 2) {
 		
 		// Create Outer Bracket Container
 		const outerBracket = document.createElement('div');
 		outerBracket.classList = 'out-bracket-wrapper row';
-		if(counter){
+		if (counter) {
 			outerBracket.classList += ` outer-bracket-${counter}`;
 		} else {
 			outerBracket.classList += ' outer-bracket-1';
 		}
-		
 
 		// Create 2 sections of Outer Bracket (right/left)
 		const obLeft = document.createElement('div');
@@ -94,11 +93,11 @@ export const createOuterBrackets = (pairedBrackets, counter) => {
 		obBottomLeft.appendChild(pairedBrackets[i + 1]);
 
 		// Fill in right side outer bracket with single brackets
-		let num = i;
+		// let num = i;
 		const singleBracket1 = createSingleBracket('');
 		const singleBracket2 = createSingleBracket('');
 
-		if(counter){
+		if (counter) {
 			singleBracket1.id = `round_${counter}__input_top`;
 			singleBracket2.id = `round_${counter}__input_bottom`;	
 		} else {
@@ -126,7 +125,7 @@ export const createOuterBrackets = (pairedBrackets, counter) => {
 	return outerBracketArr;
 }
 
-// Wrapp all Outer Brackets within other Outer Brackets
+// Wrap all Outer Brackets within other Outer Brackets
 export const createAllOuterBrackets = (outerBrackets) => {
 	let totalBrackets = outerBrackets;
 	let counter = 2;
@@ -188,20 +187,22 @@ export const initializeTestBracketz = () => {
 	const sub = document.getElementById('btnSubmit');
 	const txt = document.getElementById('playerNameEntry');
 
-	if(sub && txt){
-		sub.addEventListener('click', function(e){
+	// If the submit button  & player input field exist...
+	if (sub && txt) {
+		// Create listener for the button click
+		sub.addEventListener('click', function(e) {
 			e.preventDefault();
-			if(!dupe){
+			if (!dupe) {
 				// Remove any existing bracket renderings
 				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
-				if(oldBrackets){
+				if (oldBrackets) {
 					oldBrackets.remove();
 				}
 
 				let initialParticipants = txt.value.split('\n');
 
 				// Remove any empty characters from initialParticipants
-				let participants = initialParticipants.filter(function(el){
+				let participants = initialParticipants.filter(function(el) {
 					return el !== "";
 				});
 
@@ -222,7 +223,7 @@ export const initializeTestBracketz = () => {
 				const buttons = document.getElementsByClassName('btn-advance');
 				resetButtonInitialize();
 				
-				for(let i = 0; i < buttons.length; i++){
+				for(let i = 0; i < buttons.length; i++) {
 					let el = buttons[i];
 					el.addEventListener('click', advance);
 				}
@@ -259,12 +260,12 @@ export const randomizeTextArea = (competitorPairs) => {
 }
 
 // Advance competitor to next bracket
-function advance(element){
+function advance(element) {
 	element = this;
 	// Get competitors name
 	const value = element.previousElementSibling.value;
 
-	if(element.parentElement.id === ''){
+	if (element.parentElement.id === '') {
 		// Find if competitor is in the top/bottom bracket
 		const order = element.parentElement.parentElement.parentElement.className.search('top') > -1 ? 0 : 1;
 
@@ -278,7 +279,7 @@ function advance(element){
 		const round = element.parentElement.id.slice(6,7);
 
 		const nextRound = parseInt(round) + 1 + '';
-		if(document.getElementsByClassName(`outer-bracket-${nextRound}`).length === 0){
+		if (document.getElementsByClassName(`outer-bracket-${nextRound}`).length === 0) {
 			document.getElementsByClassName('final-bracket-input')[0].value = value;
 		}
 		else{
@@ -297,7 +298,7 @@ export const highlightMatch = () => {
   const back = document.getElementById('backDrop');
   let text;
 
-  txt.addEventListener('keyup', function(e){
+  txt.addEventListener('keyup', function(e) {
 
     text =  txt.value.split('\n').map(el => {
         return `<span>${el}</span><br>`
@@ -305,9 +306,9 @@ export const highlightMatch = () => {
     
     var indexes = [];
       
-    for(let i = 0; i < text.length; i++){
-      for(let j = i+1; j < text.length; j++){
-        if(text[i] === text[j] && text[i] !== "<span></span><br>" && text[i] !== "<span>Bye</span><br>") {
+    for(let i = 0; i < text.length; i++) {
+      for(let j = i+1; j < text.length; j++) {
+        if (text[i] === text[j] && text[i] !== "<span></span><br>" && text[i] !== "<span>Bye</span><br>") {
           indexes.push(i,j)
         }
       }
@@ -318,7 +319,7 @@ export const highlightMatch = () => {
 
     // If index is not in ind push it to ind array
     indexes.forEach((el) => {
-      if(ind.indexOf(el) === -1){ind.push(el)}
+      if (ind.indexOf(el) === -1) {ind.push(el)}
     });
       
     // Add 'match' class to every index (ind) of text array
