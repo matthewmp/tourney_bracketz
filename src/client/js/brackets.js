@@ -37,42 +37,35 @@ export const ranSeeding = (arr) => {
 // participants = ['Tom', 'Matt', 'Brandon', 'Dean'];
 // bracketGenerator(bracketArr, participants.length); => 
 export const bracketGenerator = (arr, participants, start=0, end=arr.length) => {
-	if(participants <= 2){
+	if (participants <= 2) {
 		throw new Error('Must Enter More Than 2 Competitors');
 	}
 
 	// Find middle of bracketArr
-
 	const index = Math.floor((start + end) / 2);
 
 	// Get/store value from the center of the array
-
 	const bracketNum = arr[index];
 
 	// Check if the match and return
-
-	if(bracketNum === participants){
+	if (bracketNum === participants) {
 		return bracketNum;
 	}
-
 	// If that middle value is higher than # of participants and prev value is lower
 	// than that is the correct bracket #
-
-	else if(bracketNum > participants && bracketArr[index - 1] < participants){
+	else if (bracketNum > participants && bracketArr[index - 1] < participants) {
 		return bracketNum;
 	} 
 
 	// If the value is too high then recursivley call the function with 
 	// recalculated starting/ending points of the array
-
-	else if(bracketNum > participants && bracketArr[index - 1] >= participants){
+	else if (bracketNum > participants && bracketArr[index - 1] >= participants) {
 		return bracketGenerator(arr, participants, start, index-1);
 	}
 
 	// If the value is too low then recursivley call the function with 
 	// recalculated starting/ending points of the array
-
-	else if(bracketNum < participants){
+	else if (bracketNum < participants) {
 		return bracketGenerator(arr, participants, index+1, end);
 	}
 }
