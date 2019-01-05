@@ -1,6 +1,7 @@
 body{
 	background: linear-gradient( rgba(12,98,145,0.6), rgba(12,98,145,0.6) ),url("http://localhost:8888/Mockups/trophyBackdrop.png");
   background-size: 100% 100%;
+  min-height: 100vh;
 }
 .navbar {
     width: 100%;
