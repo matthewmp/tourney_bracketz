@@ -171,8 +171,15 @@ export const createResetButton = () => {
 	const resetButton = document.createElement('button');
 	resetButton.innerText = 'Reset';
 	resetButton.className = 'resetButton';
+	resetButton.id = 'resetBtn';
 	
 	return resetButton;
+}
+
+export const resetButtonInitialize = () => {
+	document.getElementById('resetBtn').addEventListener('click', () => {
+		location.reload(true);
+	});
 }
 
 //window.onload = () => {
@@ -213,6 +220,7 @@ export const initializeTestBracketz = () => {
 				
 				// Add event listeners to all buttons to advance competitors
 				const buttons = document.getElementsByClassName('btn-advance');
+				resetButtonInitialize();
 				
 				for(let i = 0; i < buttons.length; i++){
 					let el = buttons[i];
