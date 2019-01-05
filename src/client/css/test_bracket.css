@@ -54,14 +54,17 @@ body{
 
 .brackets-wrapper {
 	display: flex;
+	margin-top: 50px;
 }
 
 .brackets-wrapper input{
 	max-width: 80%;
+	width: 10vw;
 	max-height: 15px;
 	border-style: none;
 	border-bottom: 1px solid #ccc;
 	margin-top: 5px;
+	vertical-align: middle;
 }
 
 .brackets-wrapper button{
@@ -69,4 +72,10 @@ body{
 	font-size: 50%;
 	vertical-align: text-bottom;
 	cursor: pointer;
+	height: 15px;
+    vertical-align: middle;
+    margin-top: 5px;
+    background: #0C6291;
+    color: #fff;
+    font-weight: 800;
 }
