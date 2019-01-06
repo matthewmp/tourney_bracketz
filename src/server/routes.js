@@ -26,12 +26,20 @@ module.exports = function(app, passport,models) {
         res.json({ message: "Login failed."});
     });
     
-    // Logout user
+    // Logout user (standard)
     app.get('/logout', (req,res) => {
         req.session.destroy((err) => {
             res.redirect('/');
         })
     });
+
+    // Logout user from the public page
+    app.get('/public/logout', (req,res) => {
+        req.session.destroy((err) => {
+            res.redirect('/');
+        })
+    });
+
 
     // Passport Middleware function to check if current user is logged in
     // Used to protect routes from anonymous access
