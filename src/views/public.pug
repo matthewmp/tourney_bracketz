@@ -1,5 +1,31 @@
 extends main-layout-public
 block content
+	//- Function to format the dates from SQL into something readable
+	-function prettyDate(dateString){
+		-var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+		-var date = new Date(dateString);
+		-var d = date.getDate(dateString);
+		-var m = monthNames[date.getMonth()];
+		-var y = date.getFullYear();
+		-return m+' '+d+', '+y;
+	-} 
+	div.public-notes
+		p Public Page to view any Tournament
 
-	| Public Page for brackets
-	
+	div.public-notes
+		if tournamentdata
+			if tournamentdata.email
+				p The current user is logged in
+				if tournamentdata.owner
+					p The current logged in user is the owner of this tournament
+				else
+					p The current logged in user is NOT the owner of this tournament
+			else
+				p The current user is not logged in
+	div.title.public-notes
+		p #{tournamentdata.title}
+		p #{prettyDate(tournamentdata.createdAt)}
+	each key in tournamentdata.Players
+		div.public-notes
+			| Seed #{key.seed}
+			| #{key.playername}
