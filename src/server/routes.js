@@ -26,12 +26,20 @@ module.exports = function(app, passport,models) {
         res.json({ message: "Login failed."});
     });
     
-    // Logout user
+    // Logout user (standard)
     app.get('/logout', (req,res) => {
         req.session.destroy((err) => {
             res.redirect('/');
         })
     });
+
+    // Logout user from the public page
+    app.get('/public/logout', (req,res) => {
+        req.session.destroy((err) => {
+            res.redirect('/');
+        })
+    });
+
 
     // Passport Middleware function to check if current user is logged in
     // Used to protect routes from anonymous access
@@ -141,7 +149,6 @@ module.exports = function(app, passport,models) {
 
             // // Check if the user is logged in
             if ( confirmUserSession(req) == true ) {
-                console.log("user is logged in");
                 // Obtain current User's ID from the session
                 var currentUserId = req.user.id;
 
@@ -151,14 +158,12 @@ module.exports = function(app, passport,models) {
                 // Does this user own this tournament?
                 if (dataobject.userID == currentUserId) {
                     //Modify object to signal to allow for editing
-
+                    dataobject.owner = true;
                 }
             }
 
-            // }
             // Package the returned JSON file
             var payload = {tournamentdata: dataobject}
-            
             // Load the page
             res.render('public', {tournamentdata: payload.tournamentdata});
         }).catch(function (err) {

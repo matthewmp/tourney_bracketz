@@ -210,7 +210,11 @@ a {
   position: fixed;
   right: 150px;
 }
-
+/* Public Page */
+.public-notes {
+  color: #ffffff;
+  font-size: 20px;
+}
 @media only screen and (max-width: 770px) {
   .landing-left {
       border: none;
