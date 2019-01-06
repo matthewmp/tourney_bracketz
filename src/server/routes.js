@@ -124,55 +124,46 @@ module.exports = function(app, passport,models) {
         }
     });
     
-    // Route for the public URL. This is a accessible to anyone with the correct Tournament ID
-    app.get('/public/:uniqueURL', isLoggedIn, (req, res) => {
-        // Proceed is user is logged in 
-        if ( confirmUserSession(req) == true ) {
-            // Get the tournament info
-            models.Tournament.findAll({
-                where: {
-                    publicURL: req.params.uniqueURL
-                },
-                include: [{
-                    model: models.Players,
-                }]
-            })
-            // Lookup the user
-            // models.User.findOne({
-            //     where: {
-            //         id: req.user.id
-            //     }
-            // })
-            .then(function(data) {
-                // Package the returned JSON file
-                var payload = {tournamentdata: data}
-                
-                console.log(payload)
+    // Route for the public URL. This is a accessible to anyone with the correct Tournament ID string
+    // Do not run isLoggedIn as that will reject non-logged in users
+    app.get('/public/:uniqueURL', (req, res) => {
 
-                // Load the page
-                res.render('public', {tournamentdata: payload.tournamentdata});
-            }).catch(function (err) {
-                console.log(err);
-            });
-        } else {
-            models.Tournament.findAll({
-                where: {
-                    publicURL: req.params.uniqueURL
-                },
-                include: [{
-                    model: models.Players,
-                }]
-            })
-            .then(function(data) {
-                // Package the returned JSON file
-                var payload = {tournamentdata: data}
-                
-                // Load the page
-                res.render('public', {tournamentdata: payload.tournamentdata});
-            }).catch(function (err) {
-                console.log(err);
-            });	
-        }
+        // Lookup the *tournament*. 
+        models.Tournament.findOne({
+            where: {
+                publicURL: req.params.uniqueURL
+            },
+            include: [{
+                model: models.Players,
+            }]
+        }).then(function(tournament) {
+            var dataobject = tournament.toJSON();
+
+            // // Check if the user is logged in
+            if ( confirmUserSession(req) == true ) {
+                console.log("user is logged in");
+                // Obtain current User's ID from the session
+                var currentUserId = req.user.id;
+
+                // Add a dummy email to the object. This will alert the navbar that the user is logged in (regardless of tournament ownership)
+                dataobject.email = "dummy@dummy.com";
+
+                // Does this user own this tournament?
+                if (dataobject.userID == currentUserId) {
+                    //Modify object to signal to allow for editing
+
+                }
+            }
+
+            // }
+            // Package the returned JSON file
+            var payload = {tournamentdata: dataobject}
+            
+            // Load the page
+            res.render('public', {tournamentdata: payload.tournamentdata});
+        }).catch(function (err) {
+            console.log(err);
+        });
     });
 
     // API to return the tournament data in JSON format.

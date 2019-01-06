@@ -17,12 +17,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
             a.nav-link(href="logos") Logos
         div#dashboard
             if tournamentdata
-                if tournamentdata.id
+                if tournamentdata.email
                     li.nav-item
                         a.nav-link(href="userdashboard") Dashboard
     ul.navbar-nav.ml-auto
         if tournamentdata
-            if tournamentdata.id
+            if tournamentdata.email
                 li.nav-item
                     a(href="logout") Logout
             else 
