@@ -233,7 +233,7 @@ export const initializeTestBracketz = () => {
 			}
 
 			// Hide landing page content for brackets
-			document.getElementsByClassName('landing-wrapper')[0].style.display = 'none';
+			// document.getElementsByClassName('landing-wrapper')[0].style.display = 'none';
 		});
 		highlightMatch();
 	}
