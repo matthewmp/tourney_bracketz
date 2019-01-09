@@ -1,6 +1,6 @@
 
 // Execute all functions below and return ordered array for Tourney Brackets
-export const createCompetitorPairs = (participantsArr, randomSeeding) => {
+export const createMatchups = (participantsArr, randomSeeding) => {
 	let participants = randomSeeding === true ? ranSeeding(participantsArr) : participantsArr;
 	
 	let numOfBrackets = bracketGenerator(bracketArr, participants.length);
