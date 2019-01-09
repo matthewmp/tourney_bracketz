@@ -1,44 +1,120 @@
 import * as brackets from './brackets';
 
+// Track if the user has entered duplicate names
+export let duplicateNames = false;
+
+export const initializeTestBracketz = () => {	
+	// Grab participant entry elements
+	const submitButton = document.getElementById('btnSubmit');
+	const playerNames = document.getElementById('playerNameEntry');
+
+	// If the submit button & player input field exist...
+	if (submitButton && playerNames) {
+		// Create listener for the button click
+		submitButton.addEventListener('click', function(event) {
+			event.preventDefault();
+
+			// Continue if there are no duplicate names
+			if (duplicateNames == false) {
+				// Target the brackets-wrapper DIV
+				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
+				
+				// If the div exists...
+				if (oldBrackets) {
+					// Delete it
+					oldBrackets.remove();
+				}
+
+				// Store the provided names in an array
+				let initialParticipants = playerNames.value.split('\n');
+
+				// Remove any empty lines from initialParticipants
+				let participants = initialParticipants.filter(function(el) {
+					return el !== "";
+				});
+
+				// Does the user want to randomize the seeds?
+				let randomizeOrder = document.getElementById('randomize').checked;
+
+				// Identify who will be playing who in the first round
+				let matchups = brackets.createMatchups(participants, randomizeOrder);
+				
+				// randomizeTextArea(matchups);
+
+				let pairedBrackets = generateMatchupsForDOM(matchups);
+
+				let outerBrackets = createOuterBrackets(pairedBrackets);
+
+
+				// let shellBrackets = createOuterBrackets(outerBrackets);
+				let total = createAllOuterBrackets(outerBrackets)
+				let winner = createFinalBracket(total);
+
+				winner.appendChild(createResetButton());
+
+				document.body.appendChild(winner);
+				
+				// Add event listeners to all buttons to advance competitors
+				const buttons = document.getElementsByClassName('btn-advance');
+				resetButtonInitialize();
+				
+				for(let i = 0; i < buttons.length; i++) {
+					let el = buttons[i];
+					el.addEventListener('click', advance);
+				}
+			} else {
+				// There are dupes
+				messenger('Duplicate players are not allowed');
+			}
+
+			// Hide landing page content for brackets
+			// document.getElementsByClassName('landing-wrapper')[0].style.display = 'none';
+		});
+		highlightMatch();
+	}
+}
+
+
 // Create Component
 export const createBracketInputs = (competitors) => {
 	const bracket = document.createElement('div');
 	bracket.classList = 'brackets-wrapper';
 
 	competitors.forEach(el => {
-		let pairedBracket = createPairedBrackets(el);
+		let pairedBracket = generateMatchupsForDOM(el);
 		bracket.appendChild(pairedBracket);
 	});
 
 	document.body.appendChild(bracket);
 }
 
-// Create Paired Brackets
-export const createPairedBrackets = (competitorPairs) => {
-	let singleBracketArray = [];
-	let pairedBracketsArray = [];
+// Create DOM elements for each matchup (pair of players)
+export const generateMatchupsForDOM = (matchups) => {
+	let playerDivs = []; // Stores one element for each player
+	let playerPairDivs = []; // Stores combined playerDivs for each matchup
 
-	competitorPairs.toString().split(',').forEach((el) => {
-		let singleBracket = createSingleBracket(el);
+	// Create One DOM element for each player and store them in the array
+	matchups.toString().split(',').forEach((el) => {
+		let playerElement = createPlayerDiv(el);
 
-		singleBracketArray.push(singleBracket);
+		playerDivs.push(playerElement);
 	});
 
-	for(let i = 0; i < singleBracketArray.length; i = i + 2) {
-		let pairedBracket = document.createElement('div');
-		pairedBracket.classList = 'paired-bracket';
+	// Iterate through all playerDIVs and add each matchup into a parent DIV
+	for (let i = 0; i < playerDivs.length; i = i + 2) {
+		let matchupParentDiv = document.createElement('div');
+		matchupParentDiv.classList = 'paired-bracket';
 		
-		pairedBracket.appendChild(singleBracketArray[i]);
-		pairedBracket.appendChild(singleBracketArray[i + 1]);
+		matchupParentDiv.appendChild(playerDivs[i]);
+		matchupParentDiv.appendChild(playerDivs[i + 1]);
 		
-		pairedBracketsArray.push(pairedBracket);
-
+		playerPairDivs.push(matchupParentDiv);
 	}
-	return pairedBracketsArray;
+	return playerPairDivs;
 }
 
-// Create Single Bracket
-export const createSingleBracket = (competitor) => {
+// Create Single Bracket (DIV that will contain a single player)
+export const createPlayerDiv = (competitor) => {
 	const singleBracket = document.createElement('div');
 	singleBracket.classList = 'single-bracket';
 
@@ -94,8 +170,8 @@ export const createOuterBrackets = (pairedBrackets, counter) => {
 
 		// Fill in right side outer bracket with single brackets
 		// let num = i;
-		const singleBracket1 = createSingleBracket('');
-		const singleBracket2 = createSingleBracket('');
+		const singleBracket1 = createPlayerDiv('');
+		const singleBracket2 = createPlayerDiv('');
 
 		if (counter) {
 			singleBracket1.id = `round_${counter}__input_top`;
@@ -181,64 +257,6 @@ export const resetButtonInitialize = () => {
 	});
 }
 
-//window.onload = () => {
-export const initializeTestBracketz = () => {	
-	// Grab participant entry elements
-	const sub = document.getElementById('btnSubmit');
-	const txt = document.getElementById('playerNameEntry');
-
-	// If the submit button  & player input field exist...
-	if (sub && txt) {
-		// Create listener for the button click
-		sub.addEventListener('click', function(e) {
-			e.preventDefault();
-			if (!dupe) {
-				// Remove any existing bracket renderings
-				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
-				if (oldBrackets) {
-					oldBrackets.remove();
-				}
-
-				let initialParticipants = txt.value.split('\n');
-
-				// Remove any empty characters from initialParticipants
-				let participants = initialParticipants.filter(function(el) {
-					return el !== "";
-				});
-
-				let checked = document.getElementById('randomize').checked;
-				var CompetitorPairs = brackets.createCompetitorPairs(participants, checked);
-				randomizeTextArea(CompetitorPairs);
-				var pairedBrackets = createPairedBrackets(CompetitorPairs);
-				var outerBrackets = createOuterBrackets(pairedBrackets);
-				var shellBrackets = createOuterBrackets(outerBrackets);
-				var total = createAllOuterBrackets(outerBrackets)
-				var winner = createFinalBracket(total);
-
-				winner.appendChild(createResetButton());
-
-				document.body.appendChild(winner);
-				
-				// Add event listeners to all buttons to advance competitors
-				const buttons = document.getElementsByClassName('btn-advance');
-				resetButtonInitialize();
-				
-				for(let i = 0; i < buttons.length; i++) {
-					let el = buttons[i];
-					el.addEventListener('click', advance);
-				}
-			} else {
-				// There are dupes
-				messenger('Duplicate players are not allowed');
-			}
-
-			// Hide landing page content for brackets
-			// document.getElementsByClassName('landing-wrapper')[0].style.display = 'none';
-		});
-		highlightMatch();
-	}
-}
-
 // Clear and fill textarea with seeded list on randomize
 export const randomizeTextArea = (competitorPairs) => {
 	let newText = '';
@@ -289,18 +307,15 @@ function advance(element) {
 	}
 }
 
-// Flag for dupes and prevent ability to generate brackets
-export let dupe = false;
-
 // Detect/Highlight duplicate entries
 export const highlightMatch = () => {
-  const txt = document.getElementById('playerNameEntry');
+  const playerNames = document.getElementById('playerNameEntry');
   const back = document.getElementById('backDrop');
   let text;
 
-  txt.addEventListener('keyup', function(e) {
+  playerNames.addEventListener('keyup', function(e) {
 
-    text =  txt.value.split('\n').map(el => {
+    text =  playerNames.value.split('\n').map(el => {
         return `<span>${el}</span><br>`
     });
     
@@ -329,7 +344,7 @@ export const highlightMatch = () => {
     });
 
     // Flag app for dupes
-    dupe = ind.length > 0 ? true : false;
+    duplicateNames = ind.length > 0 ? true : false;
 
     // Add all spans to name list div
     back.innerHTML = text.join('')
@@ -341,8 +356,8 @@ export const highlightMatch = () => {
   });
 
   // Handle scroll of backdrop to textarea to match onscroll
-  txt.onscroll = (e) => {
-  	back.scrollTop = e.target.scrollTop;
+  playerNames.onscroll = (event) => {
+  	back.scrollTop = event.target.scrollTop;
   };
 }
 
