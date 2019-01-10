@@ -2,7 +2,7 @@ body{
 	font-size: 0.7rem;
 }
 
-.out-bracket-wrapper{
+div[class^="bracket-wrapper"] {
 	/*border: 3px solid beige;*/
 	margin: 0;
 }	
@@ -10,6 +10,11 @@ body{
 .left{
 	/*border: 1px solid pink;*/
 }
+
+.upperContainer{
+	margin-bottom: 10px;
+}
+
 
 .ob-top{
 	margin-bottom: 10px;
@@ -19,37 +24,17 @@ body{
 	margin-top: 10px;
 }
 
-
-.ob-left, .ob-right{
-/*	width: 50%;*/
-	/*border: 1px solid #eee;*/
-}	
-
-.ob-right{
+div[class^="right-object-"], .winner-container {
 	align-self: center;
 }
 
-.ob-right.top, .ob-right.bottom{
-	/*border: 1px solid gold;*/
+div[class^="right-object-"].top, div[class^="right-object-"].bottom {
 	height: 50%;
 	width: 100%;
 }
 
-.ob-right.top, .ob-right.bottom{
-	display: flex;
-}
-
-.ob-right .single-bracket {
+.single-bracket {
 	align-self: center;
-	/*border: 1px solid #ccc;*/
-}
-
-.paired-bracket {
-    /*margin: 25px 0;*/
-}
-
-.single-bracket{
-	width: 100%;
 }
 
 .brackets-wrapper {
