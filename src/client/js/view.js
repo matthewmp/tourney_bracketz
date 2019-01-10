@@ -141,48 +141,46 @@ export const createOuterBrackets = (pairedBrackets, bracketNumber) => {
 	// Iterate through the array and identify
 	for (let i = 0; i < pairedBrackets.length - 1; i = i + 2) {
 
+		console.log(pairedBrackets[1])
+
 		// Create Outer Bracket Container
 		const outerBracket = document.createElement('div');
 		outerBracket.classList = `bracket-wrapper-${bracketNumber} row`;
 
+		// Right objects are everything that is not in round 1
 		const obRight = document.createElement('div');
 		obRight.classList = `right-object-${bracketNumber}`;
 
-		// Create 2 sections for each left/right section (top/bottom)
+		// Left objects have an accompanying right object
+		const obLeft = document.createElement('div');
+		obLeft.classList = `left-object-${bracketNumber}`;
+		
+		// left-upper objects are all elements that are in the top left of any parent container
 		const obTopLeft = document.createElement('div');
-		// obTopLeft.classList = `left-upper-container-${bracketNumber}`;
-		obTopLeft.classList = 'ob-top top left';
+		obTopLeft.classList = `left-upper-container-${bracketNumber}`;
 
-		// Fill in sections with paired brackets
+		// lower-container objects are all elements that are in the bottom of any parent container
 		const obBottomLeft = document.createElement('div');
-		// obBottomLeft.classList = 'lower-container bottom left';
-		obBottomLeft.classList = 'ob-bottom bottom left';
+		obBottomLeft.classList = 'lower-container';
 
+		// right-upper objects are all objects on the top right of a parent container. These do not exist in round 1
 		const obTopRight = document.createElement('div');
 		obTopRight.classList = `right-upper-container-${bracketNumber} top`;
 
+		// right-bottom objects are all objects on the bottom right of a parent container. These do not exist in round 1.
 		const obBottomRight = document.createElement('div');
 		obBottomRight.classList = 'right-object bottom';
 
+		// The top left object gets the previously created DIVs of matchups (2 players)
 		obTopLeft.appendChild(pairedBrackets[i]);
 		obBottomLeft.appendChild(pairedBrackets[i + 1]);
 
-		// Create 2 sections of Outer Bracket (right/left)
-		const obLeft = document.createElement('div');
-		obLeft.classList = `left-object-${bracketNumber}`;
-
-		// Fill in right side outer bracket with single brackets
-		// let num = i;
+		// Fill in all brackets outside the first round with empty inputs
 		const singleBracket1 = createPlayerDiv('');
 		const singleBracket2 = createPlayerDiv('');
 
-		if (bracketNumber > 1) {
-			singleBracket1.id = `round_${bracketNumber}__input_top`;
-			singleBracket2.id = `round_${bracketNumber}__input_bottom`;	
-		} else {
-			singleBracket1.id = 'round_1__input_top';
-			singleBracket2.id = 'round_1__input_bottom';
-		}
+		singleBracket1.id = `round_${bracketNumber + i}__input_top`;
+		singleBracket2.id = `round_${bracketNumber + i}__input_bottom`;	
 
 		// Attach children to parents
 		obTopRight.appendChild(singleBracket1);
@@ -191,13 +189,10 @@ export const createOuterBrackets = (pairedBrackets, bracketNumber) => {
 		obRight.appendChild(obTopRight);
 		obRight.appendChild(obBottomRight);
 
-		if (bracketNumber > 0) {
-			obLeft.appendChild(obTopLeft);
-			obLeft.appendChild(obBottomLeft);
+		obLeft.appendChild(obTopLeft);
+		obLeft.appendChild(obBottomLeft);
 
-			outerBracket.appendChild(obLeft);
-		}
-		
+		outerBracket.appendChild(obLeft);
 		outerBracket.appendChild(obRight);
 
 		outerBracketArr.push(outerBracket);
@@ -224,18 +219,17 @@ export const createFinalBracket = (allOuterBrackets) => {
 	winnerBracket.classList = 'brackets-wrapper';
 
 	const wbLeft = document.createElement('div');
-	// wbLeft.classList = 'left-object';
-	wbLeft.classList = 'ob-left';
-	wbLeft.style.display = 'inline-block';
 
 	const wbRight = document.createElement('div');
-	// wbRight.classList = 'right-object';
 	wbRight.classList = 'winner-container';
-	wbRight.style.display = 'inline-block';
 
 	const singleBracket = document.createElement('input');
 	singleBracket.type = 'text';
 	singleBracket.classList = 'final-bracket-input';
+
+	// Move this into the CSS file
+	wbRight.style.display = 'inline-block';
+	wbLeft.style.display = 'inline-block';
 
 	allOuterBrackets.forEach(bracket => {
 		wbLeft.appendChild(bracket);	
@@ -249,40 +243,41 @@ export const createFinalBracket = (allOuterBrackets) => {
 	return winnerBracket;
 }
 
-export const createResetButton = () => {
-	const resetButton = document.createElement('button');
-	resetButton.innerText = 'Reset';
-	resetButton.className = 'resetButton';
-	resetButton.id = 'resetBtn';
-	
-	return resetButton;
-}
+// We don't need to do this with JS. Why not create it in the PUG file?
+	export const createResetButton = () => {
+		const resetButton = document.createElement('button');
+		resetButton.innerText = 'Reset';
+		resetButton.className = 'resetButton';
+		resetButton.id = 'resetBtn';
+		
+		return resetButton;
+	}
 
-export const resetButtonInitialize = () => {
-	document.getElementById('resetBtn').addEventListener('click', () => {
-		location.reload(true);
-	});
-}
+	export const resetButtonInitialize = () => {
+		document.getElementById('resetBtn').addEventListener('click', () => {
+			location.reload(true);
+		});
+	}
 
 // Clear and fill textarea with seeded list on randomize
-export const randomizeTextArea = (competitorPairs) => {
-	let newText = '';
-	competitorPairs.forEach((firstPairArr) => {
-		firstPairArr.forEach((competitor) => {
-			newText += competitor[0];
-			newText += '\n';
-			newText += competitor[1];
-			newText += '\n';
-		});
-	});
+// export const randomizeTextArea = (competitorPairs) => {
+// 	let newText = '';
+// 	competitorPairs.forEach((firstPairArr) => {
+// 		firstPairArr.forEach((competitor) => {
+// 			newText += competitor[0];
+// 			newText += '\n';
+// 			newText += competitor[1];
+// 			newText += '\n';
+// 		});
+// 	});
 
-	const txtArea = document.getElementById('playerNameEntry');
-	const back = document.getElementById('backDrop');
-	txtArea.value = newText;
-	back.innerText = newText;
+// 	const txtArea = document.getElementById('playerNameEntry');
+// 	const back = document.getElementById('backDrop');
+// 	txtArea.value = newText;
+// 	back.innerText = newText;
 
 
-}
+// }
 
 // Advance competitor to next bracket
 function advance(element) {
@@ -296,6 +291,7 @@ function advance(element) {
 
 		// Advance value to next round
 		element.closest('.outer-bracket-1').children[1].children[order].children[0].children[0].value = value;
+		
 	} else {
 		// Find if competitor is in the top/bottom bracket
 		const order = element.closest('.out-bracket-wrapper').parentElement.className.search('top') > -1 ? 0 : 1;
@@ -369,7 +365,6 @@ export const highlightMatch = () => {
 }
 
 // Activate Messenger 
-
 export const messenger = (text) => {
 	// Grab messenger & 'X' to close messenger
 	const msgr = document.getElementsByClassName('messenger')[0];

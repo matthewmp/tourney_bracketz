@@ -7,20 +7,14 @@ div[class^="bracket-wrapper"] {
 	margin: 0;
 }	
 
-.left{
-	/*border: 1px solid pink;*/
-}
-
 .upperContainer{
 	margin-bottom: 10px;
 }
 
-
-.ob-top{
+div[class^="left-object-"].top {
 	margin-bottom: 10px;
 }
-
-.ob-bottom{
+.lower-container {
 	margin-top: 10px;
 }
 
