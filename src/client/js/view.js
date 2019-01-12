@@ -3,12 +3,12 @@ import * as brackets from './brackets';
 // Track if the user has entered duplicate names
 export let duplicateNames = false;
 
-export const initializeTestBracketz = () => {	
+export const initializeTestBracketz = () => {
 	// Grab participant entry elements
 	const submitButton = document.getElementById('btnSubmit');
 	const playerNames = document.getElementById('playerNameEntry');
 
-	// If the submit button & player input field exist...
+	// If the submit button & player input fields exist...
 	if (submitButton && playerNames) {
 		// Create listener for the button click
 		submitButton.addEventListener('click', function(event) {
@@ -16,53 +16,8 @@ export const initializeTestBracketz = () => {
 
 			// Continue if there are no duplicate names
 			if (duplicateNames == false) {
-				// Target the brackets-wrapper DIV
-				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
-				
-				// If the div exists...
-				if (oldBrackets) {
-					// Delete it
-					oldBrackets.remove();
-				}
-
-				// Store the provided names in an array
-				let initialParticipants = playerNames.value.split('\n');
-
-				// Remove any empty lines from initialParticipants
-				let participants = initialParticipants.filter(function(el) {
-					return el !== "";
-				});
-
-				// Does the user want to randomize the seeds?
-				let randomizeOrder = document.getElementById('randomize').checked;
-
-				// Identify who will be playing who in the first round
-				let matchups = brackets.createMatchups(participants, randomizeOrder);
-				
-				// randomizeTextArea(matchups);
-
-				// Create the 1st round of the tournament
-				let pairedBrackets = generateMatchupsForDOM(matchups);
-
-				let outerBrackets = createOuterBrackets(pairedBrackets, 1);
-
-
-				// let shellBrackets = createOuterBrackets(outerBrackets);
-				let total = createAllOuterBrackets(outerBrackets)
-				let winner = createFinalBracket(total);
-
-				winner.appendChild(createResetButton());
-
-				document.body.appendChild(winner);
-				
-				// Add event listeners to all buttons to advance competitors
-				const buttons = document.getElementsByClassName('btn-advance');
-				resetButtonInitialize();
-				
-				for(let i = 0; i < buttons.length; i++) {
-					let el = buttons[i];
-					el.addEventListener('click', advance);
-				}
+				// Begin the bracket generation process
+				createBrackets(playerNames);
 			} else {
 				// There are dupes
 				messenger('Duplicate players are not allowed');
@@ -75,6 +30,55 @@ export const initializeTestBracketz = () => {
 	}
 }
 
+export const createBrackets = (playerNames) => {	
+	// // Target the brackets-wrapper DIV
+	const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
+					
+	// // If the div exists...
+	if (oldBrackets) {
+		// Delete it
+		oldBrackets.remove();
+	}
+
+	// // Store the provided names in an array
+	let initialParticipants = playerNames.value.split('\n');
+
+	// // Remove any empty lines from initialParticipants
+	let participants = initialParticipants.filter(function(el) {
+		return el !== "";
+	});
+
+	// // Does the user want to randomize the seeds?
+	let randomizeOrder = document.getElementById('randomize').checked;
+
+	// // Identify who will be playing who in the first round
+	let matchups = brackets.createMatchups(participants, randomizeOrder);
+
+	// // randomizeTextArea(matchups);
+
+	// // Create the 1st round of the tournament
+	let pairedBrackets = generateMatchupsForDOM(matchups);
+
+	let outerBrackets = createOuterBrackets(pairedBrackets, 1);
+
+
+	// // let shellBrackets = createOuterBrackets(outerBrackets);
+	let total = createAllOuterBrackets(outerBrackets)
+	let winner = createFinalBracket(total);
+
+	winner.appendChild(createResetButton());
+
+	document.body.appendChild(winner);
+
+	// // Add event listeners to all buttons to advance competitors
+	const buttons = document.getElementsByClassName('btn-advance');
+	resetButtonInitialize();
+
+	for(let i = 0; i < buttons.length; i++) {
+		let el = buttons[i];
+		el.addEventListener('click', advance);
+	}
+}
 
 // Create Component
 export const createBracketInputs = (competitors) => {
@@ -304,7 +308,7 @@ function advance(element) {
 			document.getElementsByClassName('final-bracket-input')[0].value = value;
 		}
 		else{
-			// Traget next round
+			// Target next round
 			element.closest(`.outer-bracket-${nextRound}`).children[1].children[order].children[0].children[0].value = value;
 		}
 	}
