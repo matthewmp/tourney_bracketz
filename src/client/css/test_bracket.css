@@ -1,63 +1,51 @@
 body{
 	font-size: 0.7rem;
 }
+.round-1-container,.round-2-container,.round-3-container,.round-4-container,.round-5-container,.round-6-container,.round-7-container,.round-8-container {
+	align-self: center;
+}
+/* div {
+	border: 1px solid yellow;
+	padding: 4px;
+}
+.round-one {
+    border: 1px solid red;
+} */
 
-.out-bracket-wrapper{
-	/*border: 3px solid beige;*/
+div[class^="bracket-wrapper"] {
 	margin: 0;
 }	
 
-.left{
-	/*border: 1px solid pink;*/
-}
-
-.ob-top{
+.upperContainer{
 	margin-bottom: 10px;
 }
 
-.ob-bottom{
+div[class^="left-object-"].top {
+	margin-bottom: 10px;
+}
+.lower-container {
 	margin-top: 10px;
 }
 
-
-.ob-left, .ob-right{
-/*	width: 50%;*/
-	/*border: 1px solid #eee;*/
-}	
-
-.ob-right{
+div[class^="right-object-"], .winner-container {
 	align-self: center;
 }
 
-.ob-right.top, .ob-right.bottom{
-	/*border: 1px solid gold;*/
+div[class^="right-object-"].top, div[class^="right-object-"].bottom {
 	height: 50%;
 	width: 100%;
 }
 
-.ob-right.top, .ob-right.bottom{
-	display: flex;
-}
-
-.ob-right .single-bracket {
+.single-bracket {
 	align-self: center;
-	/*border: 1px solid #ccc;*/
 }
 
-.paired-bracket {
-    /*margin: 25px 0;*/
-}
-
-.single-bracket{
-	width: 100%;
-}
-
-.brackets-wrapper {
+#tournament-container {
 	display: flex;
 	margin: 50px 20px;
 }
 
-.brackets-wrapper input{
+#tournament-container input{
 	max-width: 80%;
 	width: 10vw;
 	max-height: 15px;
@@ -67,7 +55,7 @@ body{
 	vertical-align: middle;
 }
 
-.brackets-wrapper button{
+#tournament-container button{
 	width: 15%;
 	min-width: 20px;
 	font-size: 50%;

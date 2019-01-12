@@ -3,12 +3,22 @@ import * as brackets from './brackets';
 // Track if the user has entered duplicate names
 export let duplicateNames = false;
 
-export const initializeTestBracketz = () => {	
+// Key is the tournamentSize, value is the number of rounds in the tournament (including winner)
+export let numOfRoundsTable = { 
+	4: 3,
+	8: 4,
+	16: 5,
+	32: 6,
+	64: 7
+}
+
+// Initialize the buttons, set up listeners
+export const initializeTestBracketz = () => {
 	// Grab participant entry elements
 	const submitButton = document.getElementById('btnSubmit');
 	const playerNames = document.getElementById('playerNameEntry');
 
-	// If the submit button & player input field exist...
+	// If the submit button & player input fields exist...
 	if (submitButton && playerNames) {
 		// Create listener for the button click
 		submitButton.addEventListener('click', function(event) {
@@ -16,52 +26,8 @@ export const initializeTestBracketz = () => {
 
 			// Continue if there are no duplicate names
 			if (duplicateNames == false) {
-				// Target the brackets-wrapper DIV
-				const oldBrackets = document.getElementsByClassName('brackets-wrapper')[0];
-				
-				// If the div exists...
-				if (oldBrackets) {
-					// Delete it
-					oldBrackets.remove();
-				}
-
-				// Store the provided names in an array
-				let initialParticipants = playerNames.value.split('\n');
-
-				// Remove any empty lines from initialParticipants
-				let participants = initialParticipants.filter(function(el) {
-					return el !== "";
-				});
-
-				// Does the user want to randomize the seeds?
-				let randomizeOrder = document.getElementById('randomize').checked;
-
-				// Identify who will be playing who in the first round
-				let matchups = brackets.createMatchups(participants, randomizeOrder);
-				
-				// randomizeTextArea(matchups);
-
-				let pairedBrackets = generateMatchupsForDOM(matchups);
-
-				let outerBrackets = createOuterBrackets(pairedBrackets);
-
-
-				// let shellBrackets = createOuterBrackets(outerBrackets);
-				let total = createAllOuterBrackets(outerBrackets)
-				let winner = createFinalBracket(total);
-
-				winner.appendChild(createResetButton());
-
-				document.body.appendChild(winner);
-				
-				// Add event listeners to all buttons to advance competitors
-				const buttons = document.getElementsByClassName('btn-advance');
-				resetButtonInitialize();
-				
-				for(let i = 0; i < buttons.length; i++) {
-					let el = buttons[i];
-					el.addEventListener('click', advance);
-				}
+				// Begin the bracket generation process
+				createBrackets(playerNames);
 			} else {
 				// There are dupes
 				messenger('Duplicate players are not allowed');
@@ -74,36 +40,178 @@ export const initializeTestBracketz = () => {
 	}
 }
 
+export const createBrackets = (playerNames) => {
+	clearBrackets();
 
-// Create Component
-export const createBracketInputs = (competitors) => {
-	const bracket = document.createElement('div');
-	bracket.classList = 'brackets-wrapper';
+	// Cconvert the names into an object to match the database format
+	let participants = createOrderedPlayerList(playerNames);
 
-	competitors.forEach(el => {
-		let pairedBracket = generateMatchupsForDOM(el);
-		bracket.appendChild(pairedBracket);
+	// Identify who will be playing who in the first round
+	// Returns an array of objects. Each array has 2 players that will play in the first round
+	let roundOneMatchups = brackets.createMatchups(participants);	
+
+	// Create the DOM elements for the 1st round of the tournament
+	// Returns an array of DIVs that contain the DOM structure for the 1st round matchups
+	let pairedBrackets = createRoundOneDOMElements(roundOneMatchups);
+	
+	// Create the parent container to hold the tournament layout
+	let tContainer = document.createElement('div');
+	tContainer.id = 'tournament-container';
+
+	// Create a DIV element to hold the round one elements
+	let roundOneDOM = document.createElement('div');
+	roundOneDOM.classList = 'round-one-container';
+
+	// Append each matchup to round One DOM element
+	for (let i=0; i < pairedBrackets.length; i++) {
+		roundOneDOM.appendChild(pairedBrackets[i]);
+	}
+	
+	// Append round one to the tournament container
+	tContainer.appendChild(roundOneDOM);
+	
+	// Append the entire container to the DOM
+	document.body.appendChild(tContainer);
+
+	// Determine the number of rounds left to create
+	let firstRoundMatches = roundOneMatchups.length;
+
+	// Lookup the number of *players* to determine the number of rounds
+	let numberOfRounds = numOfRoundsTable[firstRoundMatches]
+
+	createAllRounds(numberOfRounds, firstRoundMatches);
+
+	// let outerBrackets = createOuterBrackets(pairedBrackets, 1);
+	// let shellBrackets = createOuterBrackets(outerBrackets);
+
+	// let total = createAllOuterBrackets(pairedBrackets)
+	
+	// let winner = createFinalBracket(total);
+
+	// Append a reset button to the DOM element to be appended
+	// winner.appendChild(createResetButton());
+
+	
+
+	// resetButtonInitialize();
+	// addButtonListeners();
+}
+
+export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
+	let tContainer = document.getElementById('tournament-container');
+	let roundCounter = 2;
+	let matchupsThisRound = firstRoundMatches / 2;
+
+	// Iterate for each *round*
+	while ( numberOfRounds > 0) {
+		// Create a DIV to contain this input field
+		let roundContainer = document.createElement('div');
+		roundContainer.classList = `round-${roundCounter}-container`;
+
+		// Iterate for each *matchup*
+		for (let i=0; i < matchupsThisRound; i++) {
+			// Create parent DIV to contain this matchup
+			let matchupDiv = document.createElement('div');
+			matchupDiv.classList = `round-${roundCounter}`;
+			
+			// Insert 2 inputs for a round that still has competition
+			if (matchupsThisRound >= 1) {
+				// Append the element to matchupDiv
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
+			} else {
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
+			}
+			
+			roundContainer.append( matchupDiv )
+		}
+
+		tContainer.append( roundContainer );
+
+		matchupsThisRound = matchupsThisRound / 2;
+		roundCounter++;
+		numberOfRounds--;
+	}
+	
+
+}
+
+
+// Take a string, isolate the names & store in an object
+export const createOrderedPlayerList = (playerNames) => {
+	// Store the provided names in an array
+	let initialParticipants = playerNames.value.split('\n');
+
+	// Remove any empty strings from initialParticipants
+	let participants = initialParticipants.filter(function(el) {
+		return el !== "";
 	});
 
-	document.body.appendChild(bracket);
+	// Does the user want to randomize the seeds?
+	let randomizeOrder = document.getElementById('randomize').checked;
+
+	// shuffle the array
+	if (randomizeOrder == true) {
+		participants = ranSeeding(participants);
+	}
+	
+	participants = creatPlayerObject(participants);
+
+	return participants;
+}
+
+export const creatPlayerObject = (participants) => {
+	let playerObject = [];
+
+	// Loop through the participants array and store each in an object to replicate the database structure
+	for (let i=0; i < participants.length; i++) {
+		let temp = {
+			playername: participants[i],
+			seed: i + 1,
+			wins: 0
+		}
+		playerObject.push(temp);
+	}
+	return playerObject;
+}
+
+export const addButtonListeners = () => {
+	// Add event listeners to all buttons to advance competitors
+	const buttons = document.getElementsByClassName('btn-advance');
+
+	for (let i = 0; i < buttons.length; i++) {
+		let el = buttons[i];
+		el.addEventListener('click', advance);
+	}
 }
 
 // Create DOM elements for each matchup (pair of players)
-export const generateMatchupsForDOM = (matchups) => {
+export const createRoundOneDOMElements = (matchups) => {
 	let playerDivs = []; // Stores one element for each player
 	let playerPairDivs = []; // Stores combined playerDivs for each matchup
-
+	
 	// Create One DOM element for each player and store them in the array
-	matchups.toString().split(',').forEach((el) => {
-		let playerElement = createPlayerDiv(el);
+	// Iterate over the matchups array
+	for (let j=0; j < matchups.length; j++) {
+		
+		// Iterate over the nested array
+		// For some reason there is a third array which requires the static [0] below.
+		for (let k=0; k < matchups[j][0].length; k++) {
 
-		playerDivs.push(playerElement);
-	});
+			let round = 1;
+			let seed = matchups[j][0][k].seed;
+
+			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed);
+
+			playerDivs.push(playerElement);
+		}
+	}
 
 	// Iterate through all playerDIVs and add each matchup into a parent DIV
 	for (let i = 0; i < playerDivs.length; i = i + 2) {
 		let matchupParentDiv = document.createElement('div');
-		matchupParentDiv.classList = 'paired-bracket';
+		matchupParentDiv.classList = `round-one`;
+		matchupParentDiv.classList = `round-one`;
 		
 		matchupParentDiv.appendChild(playerDivs[i]);
 		matchupParentDiv.appendChild(playerDivs[i + 1]);
@@ -114,15 +222,18 @@ export const generateMatchupsForDOM = (matchups) => {
 }
 
 // Create Single Bracket (DIV that will contain a single player)
-export const createPlayerDiv = (competitor) => {
+export const createPlayerDiv = (playerName, round, seed) => {
 	const singleBracket = document.createElement('div');
-	singleBracket.classList = 'single-bracket';
+	singleBracket.classList = 'playerInputContainer';
 
 	const input = document.createElement('input');
 	const btn = document.createElement('button');
-	input.value = competitor;
+	if (playerName != null) {
+		input.value = playerName;
+	}
+	input.setAttribute("disabled", "disabled");
 	btn.innerText = '=>';
-	btn.className = 'btn-advance';
+	btn.classList = `btn-advance round-${round} seed-${seed}`;
 	singleBracket.appendChild(input);
 	singleBracket.appendChild(btn);
 
@@ -130,57 +241,52 @@ export const createPlayerDiv = (competitor) => {
 }
 
 // Create Outer Brackets
-export const createOuterBrackets = (pairedBrackets, counter) => { 
+export const createOuterBrackets = (pairedBrackets, bracketNumber) => { 
+	// bracketNumber is the number of columns. ie. 1 = 1st round, 2 = 2nd round, etc
+
 	const outerBracketArr = [];
 	
-	for(let i = 0; i < pairedBrackets.length - 1; i = i + 2) {
-		
+	// Iterate through the array and identify
+	for (let i = 0; i < pairedBrackets.length - 1; i = i + 2) {
+
 		// Create Outer Bracket Container
 		const outerBracket = document.createElement('div');
-		outerBracket.classList = 'out-bracket-wrapper row';
-		if (counter) {
-			outerBracket.classList += ` outer-bracket-${counter}`;
-		} else {
-			outerBracket.classList += ' outer-bracket-1';
-		}
+		outerBracket.classList = `bracket-wrapper-${bracketNumber} row`;
 
-		// Create 2 sections of Outer Bracket (right/left)
-		const obLeft = document.createElement('div');
-		obLeft.classList = 'ob-left';
-		
+		// Right objects are everything that is not in round 1
 		const obRight = document.createElement('div');
-		obRight.classList = 'ob-right';
+		obRight.classList = `right-object-${bracketNumber}`;
 
-		// Create 2 sections for each left/right section (top/bottom)
+		// Left objects have an accompanying right object
+		const obLeft = document.createElement('div');
+		obLeft.classList = `left-object-${bracketNumber}`;
+		
+		// left-upper objects are all elements that are in the top left of any parent container
 		const obTopLeft = document.createElement('div');
-		obTopLeft.classList = 'ob-top top left';
+		obTopLeft.classList = `left-upper-container-${bracketNumber}`;
 
-		// Fill in sections with paired brackets
+		// lower-container objects are all elements that are in the bottom of any parent container
 		const obBottomLeft = document.createElement('div');
-		obBottomLeft.classList = 'ob-bottom bottom left';
+		obBottomLeft.classList = 'lower-container';
 
+		// right-upper objects are all objects on the top right of a parent container. These do not exist in round 1
 		const obTopRight = document.createElement('div');
-		obTopRight.classList = 'ob-right top';
+		obTopRight.classList = `right-upper-container-${bracketNumber} top`;
 
+		// right-bottom objects are all objects on the bottom right of a parent container. These do not exist in round 1.
 		const obBottomRight = document.createElement('div');
-		obBottomRight.classList = 'ob-right bottom';
+		obBottomRight.classList = 'right-object bottom';
 
+		// The top left object gets the previously created DIVs of matchups (2 players)
 		obTopLeft.appendChild(pairedBrackets[i]);
 		obBottomLeft.appendChild(pairedBrackets[i + 1]);
 
-		// Fill in right side outer bracket with single brackets
-		// let num = i;
+		// Fill in all brackets outside the first round with empty inputs
 		const singleBracket1 = createPlayerDiv('');
 		const singleBracket2 = createPlayerDiv('');
 
-		if (counter) {
-			singleBracket1.id = `round_${counter}__input_top`;
-			singleBracket2.id = `round_${counter}__input_bottom`;	
-		} else {
-			singleBracket1.id = 'round_1__input_top';
-			singleBracket2.id = 'round_1__input_bottom';
-		}
-		
+		singleBracket1.id = `round_${bracketNumber + i}__input_top`;
+		singleBracket2.id = `round_${bracketNumber + i}__input_bottom`;	
 
 		// Attach children to parents
 		obTopRight.appendChild(singleBracket1);
@@ -203,9 +309,10 @@ export const createOuterBrackets = (pairedBrackets, counter) => {
 
 // Wrap all Outer Brackets within other Outer Brackets
 export const createAllOuterBrackets = (outerBrackets) => {
+	// console.log(outerBrackets);
 	let totalBrackets = outerBrackets;
 	let counter = 2;
-	while(totalBrackets.length > 1) {
+	while (totalBrackets.length > 1) {
 		totalBrackets = createOuterBrackets(totalBrackets, counter);
 		counter++;
 	}
@@ -216,19 +323,20 @@ export const createAllOuterBrackets = (outerBrackets) => {
 export const createFinalBracket = (allOuterBrackets) => {
 
 	const winnerBracket = document.createElement('div');
-	winnerBracket.classList = 'brackets-wrapper';
+	winnerBracket.classList = 'tournament-container';
 
 	const wbLeft = document.createElement('div');
-	wbLeft.classList = 'ob-left';
-	wbLeft.style.display = 'inline-block';
 
 	const wbRight = document.createElement('div');
-	wbRight.classList = 'ob-right';
-	wbRight.style.display = 'inline-block';
+	wbRight.classList = 'winner-container';
 
 	const singleBracket = document.createElement('input');
 	singleBracket.type = 'text';
 	singleBracket.classList = 'final-bracket-input';
+
+	// Move this into the CSS file
+	wbRight.style.display = 'inline-block';
+	wbLeft.style.display = 'inline-block';
 
 	allOuterBrackets.forEach(bracket => {
 		wbLeft.appendChild(bracket);	
@@ -242,40 +350,21 @@ export const createFinalBracket = (allOuterBrackets) => {
 	return winnerBracket;
 }
 
-export const createResetButton = () => {
-	const resetButton = document.createElement('button');
-	resetButton.innerText = 'Reset';
-	resetButton.className = 'resetButton';
-	resetButton.id = 'resetBtn';
-	
-	return resetButton;
-}
+// We don't need to do this with JS. Why not create it in the PUG file?
+	export const createResetButton = () => {
+		const resetButton = document.createElement('button');
+		resetButton.innerText = 'Reset';
+		resetButton.className = 'resetButton';
+		resetButton.id = 'resetBtn';
+		
+		return resetButton;
+	}
 
-export const resetButtonInitialize = () => {
-	document.getElementById('resetBtn').addEventListener('click', () => {
-		location.reload(true);
-	});
-}
-
-// Clear and fill textarea with seeded list on randomize
-export const randomizeTextArea = (competitorPairs) => {
-	let newText = '';
-	competitorPairs.forEach((firstPairArr) => {
-		firstPairArr.forEach((competitor) => {
-			newText += competitor[0];
-			newText += '\n';
-			newText += competitor[1];
-			newText += '\n';
-		});
-	});
-
-	const txtArea = document.getElementById('playerNameEntry');
-	const back = document.getElementById('backDrop');
-	txtArea.value = newText;
-	back.innerText = newText;
-
-
-}
+	export const resetButtonInitialize = () => {
+		// document.getElementById('resetBtn').addEventListener('click', () => {
+		// 	location.reload(true);
+		// });
+	}
 
 // Advance competitor to next bracket
 function advance(element) {
@@ -289,6 +378,7 @@ function advance(element) {
 
 		// Advance value to next round
 		element.closest('.outer-bracket-1').children[1].children[order].children[0].children[0].value = value;
+		
 	} else {
 		// Find if competitor is in the top/bottom bracket
 		const order = element.closest('.out-bracket-wrapper').parentElement.className.search('top') > -1 ? 0 : 1;
@@ -301,9 +391,19 @@ function advance(element) {
 			document.getElementsByClassName('final-bracket-input')[0].value = value;
 		}
 		else{
-			// Traget next round
+			// Target next round
 			element.closest(`.outer-bracket-${nextRound}`).children[1].children[order].children[0].children[0].value = value;
 		}
+	}
+}
+
+export const clearBrackets = () => {	
+	// Target the brackets container
+	const oldBrackets = document.getElementsByClassName('tournament-container')[0];
+					
+	// If the div exists delete it
+	if (oldBrackets != undefined) {
+		oldBrackets.remove();
 	}
 }
 
@@ -362,7 +462,6 @@ export const highlightMatch = () => {
 }
 
 // Activate Messenger 
-
 export const messenger = (text) => {
 	// Grab messenger & 'X' to close messenger
 	const msgr = document.getElementsByClassName('messenger')[0];
@@ -385,3 +484,47 @@ export const messenger = (text) => {
 	// Add eventlistener to close messenger
 	msgrX.addEventListener('click', closeMessenger);
 }
+
+// Generate random seeding
+export const ranSeeding = (arr) => {
+	let ranArray = [];
+	let ranIndex = 0;
+	let len = arr.length;
+
+	while(len > 0){
+		ranIndex = Math.floor(Math.random() * arr.length);
+		ranArray.push(arr.splice(ranIndex,1)[0]);
+		len = arr.length;
+	}
+	return ranArray;
+}
+// Clear and fill textarea with seeded list on randomize
+// export const randomizeTextArea = (competitorPairs) => {
+// 	let newText = '';
+// 	competitorPairs.forEach((firstPairArr) => {
+// 		firstPairArr.forEach((competitor) => {
+// 			newText += competitor[0];
+// 			newText += '\n';
+// 			newText += competitor[1];
+// 			newText += '\n';
+// 		});
+// 	});
+
+// 	const txtArea = document.getElementById('playerNameEntry');
+// 	const back = document.getElementById('backDrop');
+// 	txtArea.value = newText;
+// 	back.innerText = newText;
+// }
+
+// Create Component
+// export const createBracketInputs = (competitors) => {
+// 	const bracket = document.createElement('div');
+// 	bracket.classList = 'tournament-container';
+
+// 	competitors.forEach(el => {
+// 		let pairedBracket = createRoundOneDOMElements(el);
+// 		bracket.appendChild(pairedBracket);
+// 	});
+
+// 	document.body.appendChild(bracket);
+// }

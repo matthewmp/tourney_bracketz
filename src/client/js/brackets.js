@@ -1,117 +1,75 @@
+// Array of available brackets
+// export const bracketArr = [2,4,8,16,32,64];
 
 // Execute all functions below and return ordered array for Tourney Brackets
-export const createMatchups = (participantsArr, randomSeeding) => {
-	let participants = randomSeeding === true ? ranSeeding(participantsArr) : participantsArr;
+export const createMatchups = (participantsObj) => {
 	
-	let numOfBrackets = bracketGenerator(bracketArr, participants.length);
+	let tournamentSize = getTournamentSize(participantsObj.length);
 
-	let numOfByes = getByes(participants.length, numOfBrackets);
+	let numOfByes = tournamentSize - participantsObj.length;
 
-	let brackets = matchParticipants(participants, numOfByes);
+	// Insert bye object(s) into participantsObj
+	for (let i=0; i < numOfByes; i++) {
+		let temp = {
+			playername: "Bye",
+			seed: tournamentSize - numOfByes + i + 1, // This gives the bye the correct "seed" for later computations
+			wins: 0
+		}
+		participantsObj.push(temp);
+	}
+
+	let brackets = matchParticipants(participantsObj);
 
 	return brackets;
 }
-
-// Array of available brackets
-export const bracketArr = [2,4,8,16,32,64];
 
 // Function to find correct bracket
 // Call function with bracketArr (arr) and number of participants (participants)
 // Utilizing a binary search algorithm (of sorts)
 
-// Generate random seeding
-export const ranSeeding = (arr) => {
-	let ranArray = [];
-	let ranIndex = 0;
-	let len = arr.length;
-
-	while(len > 0){
-		ranIndex = Math.floor(Math.random() * arr.length);
-		ranArray.push(arr.splice(ranIndex,1)[0]);
-		len = arr.length;
-	}
-	return ranArray;
-}
-
-// Calculates # of brackets needed.  Call this function with the bracketArr above and with the array length of participants ie.
-// participants = ['Tom', 'Matt', 'Brandon', 'Dean'];
-// bracketGenerator(bracketArr, participants.length); => 
-export const bracketGenerator = (arr, participants, start=0, end=arr.length) => {
-	if (participants <= 2) {
+export const getTournamentSize = (numOfParticipants) => {
+	if (numOfParticipants < 2) {
 		throw new Error('Must Enter More Than 2 Competitors');
-	}
-
-	// Find middle of bracketArr
-	const index = Math.floor((start + end) / 2);
-
-	// Get/store value from the center of the array
-	const bracketNum = arr[index];
-
-	// Check if the match and return
-	if (bracketNum === participants) {
-		return bracketNum;
-	}
-	// If that middle value is higher than # of participants and prev value is lower
-	// than that is the correct bracket #
-	else if (bracketNum > participants && bracketArr[index - 1] < participants) {
-		return bracketNum;
-	} 
-
-	// If the value is too high then recursivley call the function with 
-	// recalculated starting/ending points of the array
-	else if (bracketNum > participants && bracketArr[index - 1] >= participants) {
-		return bracketGenerator(arr, participants, start, index-1);
-	}
-
-	// If the value is too low then recursivley call the function with 
-	// recalculated starting/ending points of the array
-	else if (bracketNum < participants) {
-		return bracketGenerator(arr, participants, index+1, end);
+	} else if (numOfParticipants < 5) {
+		return 4;
+	} else if (numOfParticipants < 9) {
+		return 8;
+	} else if (numOfParticipants < 17) {
+		return 16;
+	} else if (numOfParticipants < 32) {
+		return 32;
+	} else if (numOfParticipants < 65) {
+		return 64;
+	} else {
+		throw new Error('There is a maximum of 64 Competitors allowed.');
 	}
 }
 
-// Calculate # of byes needed for tournament
-// Call getbyes with number of participants and number of brackets (which should come from the bracketGenerator function) ie.
-// participants = ['Tom', 'Matt', 'Brandon', 'Dean', 'Jose'];
-// getbyes(participants.length, 8)
-export const getByes = (numParticipants, numBrackets) => {
-	return numBrackets - numParticipants;
-}
-
-// Matches the participants with correct buy or other participant.  This will return a 2D array with pairs inside each inner array.
-// Call function with the array of participants and # of byes (which should come from getbyes function) ie.
-// participants = ['Tom', 'Matt', 'Brandon', 'Dean', 'Jose'];
-// matchParticipants(participants, 3);
-export const matchParticipants = (participants, numOfbyes) => {
+// Matches the participants with correctcompetitor. This will return a 2D array with pairs inside each inner array.
+export const matchParticipants = (participants) => {
 	// 2D Array to hold pairs of opponents
 	let brackets = [];
 
-	// Usurp all byes on top seeded participants and push into brackets array
-	for(let i = 0; i < numOfbyes; i++){
-		let matchUp = participants.splice(0,1);
-		matchUp.push('Bye');
-		brackets.push(matchUp);
-	}
+	// Match up participants against each other
+	while (participants.length > 0){
+		// Identify the highest seed
+		let highSeed = participants.splice(0,1);
 
-	// Match up rest of participants against each other
-	//for(let i = 0; i < participants.length + 2; i++){
-	while(participants.length > 0){
-		let matchUp2 = participants.splice(0,1);
-		let last = participants.splice(participants.length - 1)[0]
+		//Identify the lowest seed as the competitor
+		let lowSeed = participants.splice(participants.length - 1)[0]
 		
-		matchUp2.push(last);
-		brackets.push(matchUp2);
+		highSeed.push(lowSeed);
+		brackets.push(highSeed);
 	}
 	
-	// Reorder brackets
+	// Reorder brackets for proper distribution of the higher seeds
 	let orderedBrackets = [];
 
 	orderedBrackets.push(brackets.splice(0,1));
 	orderedBrackets.push(brackets.splice(brackets.length - 1, 1))
 
-	while(brackets.length > 0){
-
-		let mid = Math.ceil((brackets.length / 2));
+	while (brackets.length > 0){
+		let mid = Math.ceil(brackets.length / 2);
 		let index = mid === 0 ? 0 : (mid - 1)
 		orderedBrackets.push(brackets.splice(index,1));
 	}
