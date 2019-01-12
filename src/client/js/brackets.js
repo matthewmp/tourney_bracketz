@@ -1,8 +1,8 @@
 // Array of available brackets
-export const bracketArr = [2,4,8,16,32,64];
+// export const bracketArr = [2,4,8,16,32,64];
 
 // Execute all functions below and return ordered array for Tourney Brackets
-export const createMatchups = (participantsObj, randomSeeding) => {
+export const createMatchups = (participantsObj) => {
 	
 	let tournamentSize = getTournamentSize(participantsObj.length);
 

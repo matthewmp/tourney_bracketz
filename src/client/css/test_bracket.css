@@ -1,9 +1,18 @@
 body{
 	font-size: 0.7rem;
 }
+.round-1-container,.round-2-container,.round-3-container,.round-4-container,.round-5-container,.round-6-container,.round-7-container,.round-8-container {
+	align-self: center;
+}
+/* div {
+	border: 1px solid yellow;
+	padding: 4px;
+}
+.round-one {
+    border: 1px solid red;
+} */
 
 div[class^="bracket-wrapper"] {
-	/*border: 3px solid beige;*/
 	margin: 0;
 }	
 
@@ -31,12 +40,12 @@ div[class^="right-object-"].top, div[class^="right-object-"].bottom {
 	align-self: center;
 }
 
-.brackets-wrapper {
+#tournament-container {
 	display: flex;
 	margin: 50px 20px;
 }
 
-.brackets-wrapper input{
+#tournament-container input{
 	max-width: 80%;
 	width: 10vw;
 	max-height: 15px;
@@ -46,7 +55,7 @@ div[class^="right-object-"].top, div[class^="right-object-"].bottom {
 	vertical-align: middle;
 }
 
-.brackets-wrapper button{
+#tournament-container button{
 	width: 15%;
 	min-width: 20px;
 	font-size: 50%;
