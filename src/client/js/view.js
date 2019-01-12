@@ -128,16 +128,23 @@ export const addButtonListeners = () => {
 export const createRoundOneDOMElements = (matchups) => {
 	let playerDivs = []; // Stores one element for each player
 	let playerPairDivs = []; // Stores combined playerDivs for each matchup
-
+	
 	// Create One DOM element for each player and store them in the array
-	matchups.toString().split(',').forEach((el) => {
-		let round = 1;
-		let seed = 1;
+	// Iterate over the matchups array
+	for (let j=0; j < matchups.length; j++) {
 		
-		let playerElement = createPlayerDiv(el, round, seed);
+		// Iterate over the nested array
+		// For some reason there is a third array which requires the static [0] below.
+		for (let k=0; k < matchups[j][0].length; k++) {
 
-		playerDivs.push(playerElement);
-	});
+			let round = 1;
+			let seed = matchups[j][0][k].seed;
+
+			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed);
+
+			playerDivs.push(playerElement);
+		}
+	}
 
 	// Iterate through all playerDIVs and add each matchup into a parent DIV
 	for (let i = 0; i < playerDivs.length; i = i + 2) {
