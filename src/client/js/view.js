@@ -117,10 +117,10 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 			// Insert 2 inputs for a round that still has competition
 			if (matchupsThisRound >= 1) {
 				// Append the element to matchupDiv
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
 			} else {
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
 			}
 			
 			roundContainer.append( matchupDiv )
@@ -132,10 +132,7 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 		roundCounter++;
 		numberOfRounds--;
 	}
-	
-
 }
-
 
 // Take a string, isolate the names & store in an object
 export const createOrderedPlayerList = (playerNames) => {
@@ -201,7 +198,7 @@ export const createRoundOneDOMElements = (matchups) => {
 			let round = 1;
 			let seed = matchups[j][0][k].seed;
 
-			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed);
+			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed, j+1);
 
 			playerDivs.push(playerElement);
 		}
@@ -222,7 +219,7 @@ export const createRoundOneDOMElements = (matchups) => {
 }
 
 // Create Single Bracket (DIV that will contain a single player)
-export const createPlayerDiv = (playerName, round, seed) => {
+export const createPlayerDiv = (playerName, round, seed, matchup) => {
 	const singleBracket = document.createElement('div');
 	singleBracket.classList = 'playerInputContainer';
 
@@ -234,6 +231,9 @@ export const createPlayerDiv = (playerName, round, seed) => {
 	input.setAttribute("disabled", "disabled");
 	btn.innerText = '=>';
 	btn.classList = `btn-advance round-${round} seed-${seed}`;
+	btn.dataset.round = round;
+	btn.dataset.seed = seed;
+	btn.dataset.matchup = matchup;
 	singleBracket.appendChild(input);
 	singleBracket.appendChild(btn);
 
@@ -241,83 +241,84 @@ export const createPlayerDiv = (playerName, round, seed) => {
 }
 
 // Create Outer Brackets
-export const createOuterBrackets = (pairedBrackets, bracketNumber) => { 
-	// bracketNumber is the number of columns. ie. 1 = 1st round, 2 = 2nd round, etc
+// export const createOuterBrackets = (pairedBrackets, bracketNumber) => { 
+// 	// bracketNumber is the number of columns. ie. 1 = 1st round, 2 = 2nd round, etc
 
-	const outerBracketArr = [];
+// 	const outerBracketArr = [];
 	
-	// Iterate through the array and identify
-	for (let i = 0; i < pairedBrackets.length - 1; i = i + 2) {
+// 	// Iterate through the array and identify
+// 	for (let i = 0; i < pairedBrackets.length - 1; i = i + 2) {
 
-		// Create Outer Bracket Container
-		const outerBracket = document.createElement('div');
-		outerBracket.classList = `bracket-wrapper-${bracketNumber} row`;
+// 		// Create Outer Bracket Container
+// 		const outerBracket = document.createElement('div');
+// 		outerBracket.classList = `bracket-wrapper-${bracketNumber} row`;
 
-		// Right objects are everything that is not in round 1
-		const obRight = document.createElement('div');
-		obRight.classList = `right-object-${bracketNumber}`;
+// 		// Right objects are everything that is not in round 1
+// 		const obRight = document.createElement('div');
+// 		obRight.classList = `right-object-${bracketNumber}`;
 
-		// Left objects have an accompanying right object
-		const obLeft = document.createElement('div');
-		obLeft.classList = `left-object-${bracketNumber}`;
+// 		// Left objects have an accompanying right object
+// 		const obLeft = document.createElement('div');
+// 		obLeft.classList = `left-object-${bracketNumber}`;
 		
-		// left-upper objects are all elements that are in the top left of any parent container
-		const obTopLeft = document.createElement('div');
-		obTopLeft.classList = `left-upper-container-${bracketNumber}`;
+// 		// left-upper objects are all elements that are in the top left of any parent container
+// 		const obTopLeft = document.createElement('div');
+// 		obTopLeft.classList = `left-upper-container-${bracketNumber}`;
 
-		// lower-container objects are all elements that are in the bottom of any parent container
-		const obBottomLeft = document.createElement('div');
-		obBottomLeft.classList = 'lower-container';
+// 		// lower-container objects are all elements that are in the bottom of any parent container
+// 		const obBottomLeft = document.createElement('div');
+// 		obBottomLeft.classList = 'lower-container';
 
-		// right-upper objects are all objects on the top right of a parent container. These do not exist in round 1
-		const obTopRight = document.createElement('div');
-		obTopRight.classList = `right-upper-container-${bracketNumber} top`;
+// 		// right-upper objects are all objects on the top right of a parent container. These do not exist in round 1
+// 		const obTopRight = document.createElement('div');
+// 		obTopRight.classList = `right-upper-container-${bracketNumber} top`;
 
-		// right-bottom objects are all objects on the bottom right of a parent container. These do not exist in round 1.
-		const obBottomRight = document.createElement('div');
-		obBottomRight.classList = 'right-object bottom';
+// 		// right-bottom objects are all objects on the bottom right of a parent container. These do not exist in round 1.
+// 		const obBottomRight = document.createElement('div');
+// 		obBottomRight.classList = 'right-object bottom';
 
-		// The top left object gets the previously created DIVs of matchups (2 players)
-		obTopLeft.appendChild(pairedBrackets[i]);
-		obBottomLeft.appendChild(pairedBrackets[i + 1]);
+// 		// The top left object gets the previously created DIVs of matchups (2 players)
+// 		obTopLeft.appendChild(pairedBrackets[i]);
+// 		obBottomLeft.appendChild(pairedBrackets[i + 1]);
 
-		// Fill in all brackets outside the first round with empty inputs
-		const singleBracket1 = createPlayerDiv('');
-		const singleBracket2 = createPlayerDiv('');
+// 		// Fill in all brackets outside the first round with empty inputs
+// 		// export const createPlayerDiv = (playerName, round, seed, matchup)
+// 		const singleBracket1 = createPlayerDiv('');
+// 		const singleBracket2 = createPlayerDiv('');
 
-		singleBracket1.id = `round_${bracketNumber + i}__input_top`;
-		singleBracket2.id = `round_${bracketNumber + i}__input_bottom`;	
+// 		singleBracket1.id = `round_${bracketNumber + i}__input_top`;
+// 		singleBracket2.id = `round_${bracketNumber + i}__input_bottom`;	
 
-		// Attach children to parents
-		obTopRight.appendChild(singleBracket1);
-		obBottomRight.appendChild(singleBracket2);
+// 		// Attach children to parents
+// 		obTopRight.appendChild(singleBracket1);
+// 		obBottomRight.appendChild(singleBracket2);
 
-		obRight.appendChild(obTopRight);
-		obRight.appendChild(obBottomRight);
+// 		obRight.appendChild(obTopRight);
+// 		obRight.appendChild(obBottomRight);
 
-		obLeft.appendChild(obTopLeft);
-		obLeft.appendChild(obBottomLeft);
+// 		obLeft.appendChild(obTopLeft);
+// 		obLeft.appendChild(obBottomLeft);
 
-		outerBracket.appendChild(obLeft);
-		outerBracket.appendChild(obRight);
+// 		outerBracket.appendChild(obLeft);
+// 		outerBracket.appendChild(obRight);
 
-		outerBracketArr.push(outerBracket);
-	}
+// 		outerBracketArr.push(outerBracket);
+// 	}
 
-	return outerBracketArr;
-}
+// 	return outerBracketArr;
+// }
 
 // Wrap all Outer Brackets within other Outer Brackets
-export const createAllOuterBrackets = (outerBrackets) => {
-	// console.log(outerBrackets);
-	let totalBrackets = outerBrackets;
-	let counter = 2;
-	while (totalBrackets.length > 1) {
-		totalBrackets = createOuterBrackets(totalBrackets, counter);
-		counter++;
-	}
-	return totalBrackets;
-}
+// export const createAllOuterBrackets = (outerBrackets) => {
+// 	// console.log(outerBrackets);
+// 	let totalBrackets = outerBrackets;
+// 	let counter = 2;
+// 	while (totalBrackets.length > 1) {
+// 		totalBrackets = createOuterBrackets(totalBrackets, counter);
+// 		counter++;
+// 	}
+// 	return totalBrackets;
+// }
 
 // Create Final Bracket
 export const createFinalBracket = (allOuterBrackets) => {
