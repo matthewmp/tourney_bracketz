@@ -3,13 +3,13 @@ import * as brackets from './brackets';
 // Track if the user has entered duplicate names
 export let duplicateNames = false;
 
-// Key is the tournamentSize, value is the number of rounds in the tournament (including winner)
+// Key is the tournamentSize (number of matches int he first round), value is the number of rounds in the tournament (including winner)
 export let numOfRoundsTable = { 
-	4: 3,
-	8: 4,
-	16: 5,
-	32: 6,
-	64: 7
+	2: 3,
+	4: 4,
+	8: 5,
+	16: 6,
+	32: 7
 }
 
 // Initialize the buttons, set up listeners
@@ -48,19 +48,19 @@ export const createBrackets = (playerNames) => {
 
 	// Identify who will be playing who in the first round
 	// Returns an array of objects. Each array has 2 players that will play in the first round
-	let roundOneMatchups = brackets.createMatchups(participants);	
+	let roundOneMatchups = brackets.createMatchups(participants);
 
 	// Create the DOM elements for the 1st round of the tournament
 	// Returns an array of DIVs that contain the DOM structure for the 1st round matchups
 	let pairedBrackets = createRoundOneDOMElements(roundOneMatchups);
-	
+
 	// Create the parent container to hold the tournament layout
 	let tContainer = document.createElement('div');
 	tContainer.id = 'tournament-container';
 
 	// Create a DIV element to hold the round one elements
 	let roundOneDOM = document.createElement('div');
-	roundOneDOM.classList = 'round-one-container';
+	roundOneDOM.classList = `round-one-container total-matchups-${pairedBrackets.length}`;
 
 	// Append each matchup to round One DOM element
 	for (let i=0; i < pairedBrackets.length; i++) {
@@ -69,6 +69,7 @@ export const createBrackets = (playerNames) => {
 	
 	// Append round one to the tournament container
 	tContainer.appendChild(roundOneDOM);
+	
 	
 	// Append the entire container to the DOM
 	document.body.appendChild(tContainer);
@@ -81,20 +82,8 @@ export const createBrackets = (playerNames) => {
 
 	createAllRounds(numberOfRounds, firstRoundMatches);
 
-	// let outerBrackets = createOuterBrackets(pairedBrackets, 1);
-	// let shellBrackets = createOuterBrackets(outerBrackets);
-
-	// let total = createAllOuterBrackets(pairedBrackets)
-	
-	// let winner = createFinalBracket(total);
-
-	// Append a reset button to the DOM element to be appended
-	// winner.appendChild(createResetButton());
-
-	
-
 	// resetButtonInitialize();
-	// addButtonListeners();
+	addButtonListeners();
 }
 
 export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
@@ -103,24 +92,27 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 	let matchupsThisRound = firstRoundMatches / 2;
 
 	// Iterate for each *round*
-	while ( numberOfRounds > 0) {
+	while ( numberOfRounds > 1) {
 		// Create a DIV to contain this input field
 		let roundContainer = document.createElement('div');
-		roundContainer.classList = `round-${roundCounter}-container`;
 
 		// Iterate for each *matchup*
 		for (let i=0; i < matchupsThisRound; i++) {
 			// Create parent DIV to contain this matchup
 			let matchupDiv = document.createElement('div');
-			matchupDiv.classList = `round-${roundCounter}`;
+			matchupDiv.classList = `round-${roundCounter} matchups-${matchupsThisRound}`;
 			
+			console.log(matchupsThisRound);
 			// Insert 2 inputs for a round that still has competition
 			if (matchupsThisRound >= 1) {
+				roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound}`;
+
 				// Append the element to matchupDiv
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
 			} else {
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null) );
+				roundContainer.classList = `winner-round`;
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
 			}
 			
 			roundContainer.append( matchupDiv )
@@ -132,10 +124,7 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 		roundCounter++;
 		numberOfRounds--;
 	}
-	
-
 }
-
 
 // Take a string, isolate the names & store in an object
 export const createOrderedPlayerList = (playerNames) => {
@@ -176,12 +165,11 @@ export const creatPlayerObject = (participants) => {
 }
 
 export const addButtonListeners = () => {
-	// Add event listeners to all buttons to advance competitors
+	// Add event listeners to all tournament buttons 
 	const buttons = document.getElementsByClassName('btn-advance');
 
 	for (let i = 0; i < buttons.length; i++) {
-		let el = buttons[i];
-		el.addEventListener('click', advance);
+		buttons[i].addEventListener('click', advance);
 	}
 }
 
@@ -201,7 +189,7 @@ export const createRoundOneDOMElements = (matchups) => {
 			let round = 1;
 			let seed = matchups[j][0][k].seed;
 
-			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed);
+			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed, j+1);
 
 			playerDivs.push(playerElement);
 		}
@@ -222,7 +210,7 @@ export const createRoundOneDOMElements = (matchups) => {
 }
 
 // Create Single Bracket (DIV that will contain a single player)
-export const createPlayerDiv = (playerName, round, seed) => {
+export const createPlayerDiv = (playerName, round, seed, matchup) => {
 	const singleBracket = document.createElement('div');
 	singleBracket.classList = 'playerInputContainer';
 
@@ -233,166 +221,72 @@ export const createPlayerDiv = (playerName, round, seed) => {
 	}
 	input.setAttribute("disabled", "disabled");
 	btn.innerText = '=>';
-	btn.classList = `btn-advance round-${round} seed-${seed}`;
+	btn.classList = `btn-advance btn-round-${round} btn-seed-${seed}`;
+	btn.dataset.round = round;
+	btn.dataset.seed = seed;
+	btn.dataset.matchup = matchup;
 	singleBracket.appendChild(input);
 	singleBracket.appendChild(btn);
 
 	return singleBracket;
 }
 
-// Create Outer Brackets
-export const createOuterBrackets = (pairedBrackets, bracketNumber) => { 
-	// bracketNumber is the number of columns. ie. 1 = 1st round, 2 = 2nd round, etc
-
-	const outerBracketArr = [];
-	
-	// Iterate through the array and identify
-	for (let i = 0; i < pairedBrackets.length - 1; i = i + 2) {
-
-		// Create Outer Bracket Container
-		const outerBracket = document.createElement('div');
-		outerBracket.classList = `bracket-wrapper-${bracketNumber} row`;
-
-		// Right objects are everything that is not in round 1
-		const obRight = document.createElement('div');
-		obRight.classList = `right-object-${bracketNumber}`;
-
-		// Left objects have an accompanying right object
-		const obLeft = document.createElement('div');
-		obLeft.classList = `left-object-${bracketNumber}`;
-		
-		// left-upper objects are all elements that are in the top left of any parent container
-		const obTopLeft = document.createElement('div');
-		obTopLeft.classList = `left-upper-container-${bracketNumber}`;
-
-		// lower-container objects are all elements that are in the bottom of any parent container
-		const obBottomLeft = document.createElement('div');
-		obBottomLeft.classList = 'lower-container';
-
-		// right-upper objects are all objects on the top right of a parent container. These do not exist in round 1
-		const obTopRight = document.createElement('div');
-		obTopRight.classList = `right-upper-container-${bracketNumber} top`;
-
-		// right-bottom objects are all objects on the bottom right of a parent container. These do not exist in round 1.
-		const obBottomRight = document.createElement('div');
-		obBottomRight.classList = 'right-object bottom';
-
-		// The top left object gets the previously created DIVs of matchups (2 players)
-		obTopLeft.appendChild(pairedBrackets[i]);
-		obBottomLeft.appendChild(pairedBrackets[i + 1]);
-
-		// Fill in all brackets outside the first round with empty inputs
-		const singleBracket1 = createPlayerDiv('');
-		const singleBracket2 = createPlayerDiv('');
-
-		singleBracket1.id = `round_${bracketNumber + i}__input_top`;
-		singleBracket2.id = `round_${bracketNumber + i}__input_bottom`;	
-
-		// Attach children to parents
-		obTopRight.appendChild(singleBracket1);
-		obBottomRight.appendChild(singleBracket2);
-
-		obRight.appendChild(obTopRight);
-		obRight.appendChild(obBottomRight);
-
-		obLeft.appendChild(obTopLeft);
-		obLeft.appendChild(obBottomLeft);
-
-		outerBracket.appendChild(obLeft);
-		outerBracket.appendChild(obRight);
-
-		outerBracketArr.push(outerBracket);
-	}
-
-	return outerBracketArr;
-}
-
-// Wrap all Outer Brackets within other Outer Brackets
-export const createAllOuterBrackets = (outerBrackets) => {
-	// console.log(outerBrackets);
-	let totalBrackets = outerBrackets;
-	let counter = 2;
-	while (totalBrackets.length > 1) {
-		totalBrackets = createOuterBrackets(totalBrackets, counter);
-		counter++;
-	}
-	return totalBrackets;
-}
-
-// Create Final Bracket
-export const createFinalBracket = (allOuterBrackets) => {
-
-	const winnerBracket = document.createElement('div');
-	winnerBracket.classList = 'tournament-container';
-
-	const wbLeft = document.createElement('div');
-
-	const wbRight = document.createElement('div');
-	wbRight.classList = 'winner-container';
-
-	const singleBracket = document.createElement('input');
-	singleBracket.type = 'text';
-	singleBracket.classList = 'final-bracket-input';
-
-	// Move this into the CSS file
-	wbRight.style.display = 'inline-block';
-	wbLeft.style.display = 'inline-block';
-
-	allOuterBrackets.forEach(bracket => {
-		wbLeft.appendChild(bracket);	
-	})
-	
-	wbRight.appendChild(singleBracket);
-
-	winnerBracket.appendChild(wbLeft);
-	winnerBracket.appendChild(wbRight);
-
-	return winnerBracket;
-}
-
 // We don't need to do this with JS. Why not create it in the PUG file?
-	export const createResetButton = () => {
-		const resetButton = document.createElement('button');
-		resetButton.innerText = 'Reset';
-		resetButton.className = 'resetButton';
-		resetButton.id = 'resetBtn';
-		
-		return resetButton;
-	}
+export const createResetButton = () => {
+	const resetButton = document.createElement('button');
+	resetButton.innerText = 'Reset';
+	resetButton.className = 'resetButton';
+	resetButton.id = 'resetBtn';
+	
+	return resetButton;
+}
 
-	export const resetButtonInitialize = () => {
-		// document.getElementById('resetBtn').addEventListener('click', () => {
-		// 	location.reload(true);
-		// });
-	}
+// export const resetButtonInitialize = () => {
+// 	document.getElementById('resetBtn').addEventListener('click', () => {
+// 		location.reload(true);
+// 	});
+// }
 
 // Advance competitor to next bracket
 function advance(element) {
 	element = this;
-	// Get competitors name
-	const value = element.previousElementSibling.value;
 
-	if (element.parentElement.id === '') {
-		// Find if competitor is in the top/bottom bracket
-		const order = element.parentElement.parentElement.parentElement.className.search('top') > -1 ? 0 : 1;
+	const playerName = element.previousElementSibling.value;
+	const roundWon = this.dataset.round; 
+	const matchWon = this.dataset.matchup;
 
-		// Advance value to next round
-		element.closest('.outer-bracket-1').children[1].children[order].children[0].children[0].value = value;
-		
+	// Determine the input to populate with this information
+	let roundToPopulate = parseInt(roundWon) + 1;
+	let matchToPopulate = 0;
+
+	// This determines if the winner was in the top position or the bottom position
+	// ==0 means bottom; !=0 means top
+	let winningPosition = matchWon % 2;
+
+	// Divide the current match by 2 to determine the next round to populate
+	if (winningPosition == 0) {
+		matchToPopulate = parseInt(matchWon) / 2;
 	} else {
-		// Find if competitor is in the top/bottom bracket
-		const order = element.closest('.out-bracket-wrapper').parentElement.className.search('top') > -1 ? 0 : 1;
+		matchToPopulate = (parseInt(matchWon) + 1) / 2;
+	}
 
-		// Get current round
-		const round = element.parentElement.id.slice(6,7);
+	// Identify all buttons in the round that we will be populating
+	let allButtons = document.getElementsByClassName(`btn-round-${roundToPopulate}`);
 
-		const nextRound = parseInt(round) + 1 + '';
-		if (document.getElementsByClassName(`outer-bracket-${nextRound}`).length === 0) {
-			document.getElementsByClassName('final-bracket-input')[0].value = value;
-		}
-		else{
-			// Target next round
-			element.closest(`.outer-bracket-${nextRound}`).children[1].children[order].children[0].children[0].value = value;
+	// Iterate through the buttons until we find the matchup that we are looking for
+	for (let i = 0; i < allButtons.length; i++) {
+		if (allButtons[i].dataset.matchup == matchToPopulate) {
+			// Determine if we punch the top or bottom input field
+			if ( winningPosition == 0) {
+				// Populate the first instance
+				allButtons[i + 1].previousSibling.value = playerName;
+				break;
+			} else {
+				// Populate the second instance
+				allButtons[i].previousSibling.value = playerName;
+				break;
+			}
+			
 		}
 	}
 }
@@ -498,33 +392,3 @@ export const ranSeeding = (arr) => {
 	}
 	return ranArray;
 }
-// Clear and fill textarea with seeded list on randomize
-// export const randomizeTextArea = (competitorPairs) => {
-// 	let newText = '';
-// 	competitorPairs.forEach((firstPairArr) => {
-// 		firstPairArr.forEach((competitor) => {
-// 			newText += competitor[0];
-// 			newText += '\n';
-// 			newText += competitor[1];
-// 			newText += '\n';
-// 		});
-// 	});
-
-// 	const txtArea = document.getElementById('playerNameEntry');
-// 	const back = document.getElementById('backDrop');
-// 	txtArea.value = newText;
-// 	back.innerText = newText;
-// }
-
-// Create Component
-// export const createBracketInputs = (competitors) => {
-// 	const bracket = document.createElement('div');
-// 	bracket.classList = 'tournament-container';
-
-// 	competitors.forEach(el => {
-// 		let pairedBracket = createRoundOneDOMElements(el);
-// 		bracket.appendChild(pairedBracket);
-// 	});
-
-// 	document.body.appendChild(bracket);
-// }

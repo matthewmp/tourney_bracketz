@@ -5,7 +5,7 @@
 export const createMatchups = (participantsObj) => {
 	
 	let tournamentSize = getTournamentSize(participantsObj.length);
-
+	
 	let numOfByes = tournamentSize - participantsObj.length;
 
 	// Insert bye object(s) into participantsObj
@@ -36,7 +36,7 @@ export const getTournamentSize = (numOfParticipants) => {
 		return 8;
 	} else if (numOfParticipants < 17) {
 		return 16;
-	} else if (numOfParticipants < 32) {
+	} else if (numOfParticipants < 33) {
 		return 32;
 	} else if (numOfParticipants < 65) {
 		return 64;
