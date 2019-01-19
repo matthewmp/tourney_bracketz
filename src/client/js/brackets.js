@@ -4,6 +4,8 @@
 // Execute all functions below and return ordered array for Tourney Brackets
 export const createMatchups = (participantsObj) => {
 	
+	let userWinsDefined = false;
+
 	let tournamentSize = getTournamentSize(participantsObj.length);
 	
 	let numOfByes = tournamentSize - participantsObj.length;
@@ -15,6 +17,10 @@ export const createMatchups = (participantsObj) => {
 			seed: tournamentSize - numOfByes + i + 1, // This gives the bye the correct "seed" for later computations
 			wins: 0
 		}
+		if (userWinsDefined) {
+			temp.wins = 10;
+		}
+
 		participantsObj.push(temp);
 	}
 
@@ -25,7 +31,6 @@ export const createMatchups = (participantsObj) => {
 
 // Function to find correct bracket
 // Call function with bracketArr (arr) and number of participants (participants)
-// Utilizing a binary search algorithm (of sorts)
 
 export const getTournamentSize = (numOfParticipants) => {
 	if (numOfParticipants < 2) {
@@ -45,7 +50,7 @@ export const getTournamentSize = (numOfParticipants) => {
 	}
 }
 
-// Matches the participants with correctcompetitor. This will return a 2D array with pairs inside each inner array.
+// Matches the participants with correct competitor. This will return a 2D array with pairs inside each inner array.
 export const matchParticipants = (participants) => {
 	// 2D Array to hold pairs of opponents
 	let brackets = [];

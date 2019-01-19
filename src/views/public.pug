@@ -12,6 +12,11 @@ block content
 	div.public-notes
 		p Public Page to view any Tournament
 
+	//- <script>
+	//- 	| console.log("test")
+	//- 	| var testing = #{tournamentdata}
+	//- </script>
+
 	div.public-notes
 		if tournamentdata
 			if tournamentdata.email
@@ -25,7 +30,22 @@ block content
 	div.title.public-notes
 		p #{tournamentdata.title}
 		p #{prettyDate(tournamentdata.createdAt)}
-	each key in tournamentdata.Players
-		div.public-notes
-			| Seed #{key.seed}
-			| #{key.playername}
+	//- each key in tournamentdata.Players
+	//- 	div.public-notes
+	//- 		| Seed #{key.seed}
+	//- 		| #{key.playername}
+
+	<button id="btnSubmit" type="button">Generate Tournament</button>
+	div#competitorEntrycontainer
+		div#backDrop
+		textarea#playerNameEntry( cols="50" rows="10" name="playerNameEntry" value="1")
+
+	script(type='text/javascript').
+		var tournament = !{JSON.stringify(tournamentdata)}
+		console.log(tournament);
+		const playerNames = document.getElementById('playerNameEntry');
+		const linebreak = document.createElement("br");
+
+		for (let i=0; i < tournament.Players.length; i++) {
+			playerNames.append(tournament.Players[i].playername + "\n")
+		}

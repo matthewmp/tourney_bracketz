@@ -14,6 +14,7 @@ export let numOfRoundsTable = {
 
 // Initialize the buttons, set up listeners
 export const initializeTestBracketz = () => {
+
 	// Grab participant entry elements
 	const submitButton = document.getElementById('btnSubmit');
 	const playerNames = document.getElementById('playerNameEntry');
@@ -43,8 +44,11 @@ export const initializeTestBracketz = () => {
 export const createBrackets = (playerNames) => {
 	clearBrackets();
 
-	// Cconvert the names into an object to match the database format
+	// Convert the names into an object to match the database format
 	let participants = createOrderedPlayerList(playerNames);
+
+	console.log("participants")
+	console.log(participants)
 
 	// Identify who will be playing who in the first round
 	// Returns an array of objects. Each array has 2 players that will play in the first round
@@ -102,7 +106,7 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 			let matchupDiv = document.createElement('div');
 			matchupDiv.classList = `round-${roundCounter} matchups-${matchupsThisRound}`;
 			
-			console.log(matchupsThisRound);
+			// console.log(matchupsThisRound);
 			// Insert 2 inputs for a round that still has competition
 			if (matchupsThisRound >= 1) {
 				roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound}`;
@@ -136,8 +140,13 @@ export const createOrderedPlayerList = (playerNames) => {
 		return el !== "";
 	});
 
+	// False by default. This allows the brackets to be drawn on the public page (no check box).
+	let randomizeOrder = false;
+
 	// Does the user want to randomize the seeds?
-	let randomizeOrder = document.getElementById('randomize').checked;
+	if ( document.getElementById('randomize') != null ) {
+		randomizeOrder = document.getElementById('randomize').checked;
+	}
 
 	// shuffle the array
 	if (randomizeOrder == true) {
