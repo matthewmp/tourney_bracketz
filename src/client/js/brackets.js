@@ -4,8 +4,6 @@
 // Execute all functions below and return ordered array for Tourney Brackets
 export const createMatchups = (participantsObj) => {
 	
-	let userWinsDefined = false;
-
 	let tournamentSize = getTournamentSize(participantsObj.length);
 	
 	let numOfByes = tournamentSize - participantsObj.length;
@@ -17,10 +15,6 @@ export const createMatchups = (participantsObj) => {
 			seed: tournamentSize - numOfByes + i + 1, // This gives the bye the correct "seed" for later computations
 			wins: 0
 		}
-		if (userWinsDefined) {
-			temp.wins = 10;
-		}
-
 		participantsObj.push(temp);
 	}
 

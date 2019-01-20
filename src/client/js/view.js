@@ -106,17 +106,16 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 			let matchupDiv = document.createElement('div');
 			matchupDiv.classList = `round-${roundCounter} matchups-${matchupsThisRound}`;
 			
-			// console.log(matchupsThisRound);
 			// Insert 2 inputs for a round that still has competition
 			if (matchupsThisRound >= 1) {
 				roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound}`;
 
 				// Append the element to matchupDiv
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1, 0) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1, 0) );
 			} else {
 				roundContainer.classList = `winner-round`;
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1) );
+				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1, 0) );
 			}
 			
 			roundContainer.append( matchupDiv )
@@ -161,14 +160,31 @@ export const createOrderedPlayerList = (playerNames) => {
 export const creatPlayerObject = (participants) => {
 	let playerObject = [];
 
+	// The list of wins per user will exist only on the public page
+	const userWinsDefined = document.getElementById('userWins');
+
+	// Create array to store the number of wins
+	let userWinsArray = [];
+
+	// Split this list into an array (if it exists)
+	if (userWinsDefined) {
+		userWinsArray = userWinsDefined.value.split('\n')
+	}
+	
 	// Loop through the participants array and store each in an object to replicate the database structure
 	for (let i=0; i < participants.length; i++) {
-		let temp = {
+		let competitorObject = {
 			playername: participants[i],
 			seed: i + 1,
 			wins: 0
 		}
-		playerObject.push(temp);
+
+		// If wins array exists, populate the corresponding number into the competitor object.
+		if (userWinsArray.length > 0) {
+			competitorObject.wins = userWinsArray[i];
+		}
+
+		playerObject.push(competitorObject);
 	}
 	return playerObject;
 }
@@ -198,7 +214,8 @@ export const createRoundOneDOMElements = (matchups) => {
 			let round = 1;
 			let seed = matchups[j][0][k].seed;
 
-			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed, j+1);
+			// createPlayerDiv = (playerName, round, seed, matchup)
+			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed, j+1, matchups[j][0][k].wins);
 
 			playerDivs.push(playerElement);
 		}
@@ -219,7 +236,7 @@ export const createRoundOneDOMElements = (matchups) => {
 }
 
 // Create Single Bracket (DIV that will contain a single player)
-export const createPlayerDiv = (playerName, round, seed, matchup) => {
+export const createPlayerDiv = (playerName, round, seed, matchup, wins) => {
 	const singleBracket = document.createElement('div');
 	singleBracket.classList = 'playerInputContainer';
 
@@ -234,6 +251,7 @@ export const createPlayerDiv = (playerName, round, seed, matchup) => {
 	btn.dataset.round = round;
 	btn.dataset.seed = seed;
 	btn.dataset.matchup = matchup;
+	btn.dataset.wins = wins;
 	singleBracket.appendChild(input);
 	singleBracket.appendChild(btn);
 

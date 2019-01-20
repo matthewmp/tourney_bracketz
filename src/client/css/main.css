@@ -103,7 +103,7 @@ label.nameInput{
   background: #fff;
 }
 
-#playerNameEntry{
+.playerNameEntryBox{
   position: absolute;
   resize: none;
   width: 100%;
@@ -112,11 +112,11 @@ label.nameInput{
   background-color: white;
 }
 
-textarea#playerNameEntry::-webkit-scrollbar {
+.playerNameEntryBox::-webkit-scrollbar {
     display: none;
 }
 
-#backDrop, #playerNameEntry{
+#backDrop, .playerNameEntryBox{
   font-size: 15px;
   font-family: monospace;
   letter-spacing: 0px;

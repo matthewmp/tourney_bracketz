@@ -30,22 +30,29 @@ block content
 	div.title.public-notes
 		p #{tournamentdata.title}
 		p #{prettyDate(tournamentdata.createdAt)}
-	//- each key in tournamentdata.Players
-	//- 	div.public-notes
-	//- 		| Seed #{key.seed}
-	//- 		| #{key.playername}
 
 	<button id="btnSubmit" type="button">Generate Tournament</button>
-	div#competitorEntrycontainer
-		div#backDrop
+	div
 		textarea#playerNameEntry( cols="50" rows="10" name="playerNameEntry" value="1")
+		textarea#userWins( cols="10" rows="10" name="userWins")
 
 	script(type='text/javascript').
 		var tournament = !{JSON.stringify(tournamentdata)}
+		
 		console.log(tournament);
+		
+		// Identify the names & # of wins per player
 		const playerNames = document.getElementById('playerNameEntry');
+		const userWins = document.getElementById("userWins");
+
+		// Create a line break
 		const linebreak = document.createElement("br");
 
+		// Loop through all players
 		for (let i=0; i < tournament.Players.length; i++) {
+			// Append playernames to textbox
 			playerNames.append(tournament.Players[i].playername + "\n")
+			
+			// Append player wins to textbox
+			userWins.append(tournament.Players[i].wins + "\n")
 		}
