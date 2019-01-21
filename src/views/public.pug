@@ -50,9 +50,13 @@ block content
 
 		// Loop through all players
 		for (let i=0; i < tournament.Players.length; i++) {
-			// Append playernames to textbox
-			playerNames.append(tournament.Players[i].playername + "\n")
-			
-			// Append player wins to textbox
-			userWins.append(tournament.Players[i].wins + "\n")
+			// Append playernames & wins to textboxes
+			if (i < tournament.Players.length - 1) {
+				playerNames.append(tournament.Players[i].playername + "\n")
+				userWins.append(tournament.Players[i].wins + "\n")
+			} else {
+				// No line break for the last item
+				playerNames.append(tournament.Players[i].playername)
+				userWins.append(tournament.Players[i].wins)
+			}
 		}

@@ -32,6 +32,11 @@ export const matchParticipants = (participants) => {
 	// If User Wins provided (public page) populate the array
 	if (userWinsDefined) {
 		userWinsArray = userWinsDefined.value.split('\n')
+
+		// Pad the array to account for byes
+		while (userWinsArray.length < participants.length) {
+			userWinsArray.push(0);
+		}
 	// Else Tourney is being created, populate wins opposite Bye's
 	} else {
 		for (let i =0; i < participants.length; i++) {
@@ -41,6 +46,9 @@ export const matchParticipants = (participants) => {
 				userWinsArray[i] = 0;
 			}
 		}
+
+		// Reverse the array. We assinged the wins to the Byes, and they need to go to the opponents.
+		userWinsArray.reverse();
 	}
 
 	// Match up participants against each other
