@@ -44,56 +44,35 @@ export const initializeTestBracketz = () => {
 export const createBrackets = (playerNames) => {
 	clearBrackets();
 
-	// Convert the names into an object to match the database format
-	let participants = createOrderedPlayerList(playerNames);
+	// Randomize order if user selected. Add byes if needed. Returns an array
+	let participantsArr = finalizeSeeding(playerNames);
 
-	console.log("participants")
-	console.log(participants)
+	// Convert the names into an object to match the database format. 
+	let participantsObj = creatPlayerObjects(participantsArr);
 
-	// Identify who will be playing who in the first round
-	// Returns an array of objects. Each array has 2 players that will play in the first round
-	let roundOneMatchups = brackets.createMatchups(participants);
+	// Returns an array of objects. Each array has 2 players that will play in the first round. Wins per player are set.
+	let roundOneMatchups = brackets.matchParticipants(participantsObj);
 
-	// Create the DOM elements for the 1st round of the tournament
 	// Returns an array of DIVs that contain the DOM structure for the 1st round matchups
 	let pairedBrackets = createRoundOneDOMElements(roundOneMatchups);
-
-	// Create the parent container to hold the tournament layout
-	let tContainer = document.createElement('div');
-	tContainer.id = 'tournament-container';
-
-	// Create a DIV element to hold the round one elements
-	let roundOneDOM = document.createElement('div');
-	roundOneDOM.classList = `round-one-container total-matchups-${pairedBrackets.length}`;
-
-	// Append each matchup to round One DOM element
-	for (let i=0; i < pairedBrackets.length; i++) {
-		roundOneDOM.appendChild(pairedBrackets[i]);
-	}
 	
-	// Append round one to the tournament container
-	tContainer.appendChild(roundOneDOM);
-	
-	
-	// Append the entire container to the DOM
-	document.body.appendChild(tContainer);
-
-	// Determine the number of rounds left to create
-	let firstRoundMatches = roundOneMatchups.length;
+	// Finalize & append round one to the DOM
+	brackets.paintRoundOneToDom(pairedBrackets);
 
 	// Lookup the number of *players* to determine the number of rounds
-	let numberOfRounds = numOfRoundsTable[firstRoundMatches]
+	let numberOfRounds = numOfRoundsTable[roundOneMatchups.length]
 
-	createAllRounds(numberOfRounds, firstRoundMatches);
+	// Create the rest of the tournament elements
+	createAllRounds(numberOfRounds, roundOneMatchups);
 
 	// resetButtonInitialize();
 	addButtonListeners();
 }
 
-export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
+export const createAllRounds = (numberOfRounds, roundOneMatchups) => {
 	let tContainer = document.getElementById('tournament-container');
 	let roundCounter = 2;
-	let matchupsThisRound = firstRoundMatches / 2;
+	let matchupsThisRound = roundOneMatchups.length / 2;
 
 	// Iterate for each *round*
 	while ( numberOfRounds > 1) {
@@ -106,16 +85,23 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 			let matchupDiv = document.createElement('div');
 			matchupDiv.classList = `round-${roundCounter} matchups-${matchupsThisRound}`;
 			
+			let playername = null;
+			let round = roundCounter;
+			let seed = null;
+			let matchup = i + 1;
+			let wins = 0;
+
 			// Insert 2 inputs for a round that still has competition
 			if (matchupsThisRound >= 1) {
 				roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound}`;
 
 				// Append the element to matchupDiv
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1, 0) );
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1, 0) );
+				matchupDiv.append( createPlayerDiv(playername, round, seed, matchup, wins) );
+				matchupDiv.append( createPlayerDiv(playername, round, seed, matchup, wins) );
+			// Otherwise it is the final round
 			} else {
 				roundContainer.classList = `winner-round`;
-				matchupDiv.append( createPlayerDiv(null, roundCounter, null, i + 1, 0) );
+				matchupDiv.append( createPlayerDiv(playername, round, seed, matchup, wins) );
 			}
 			
 			roundContainer.append( matchupDiv )
@@ -130,7 +116,7 @@ export const createAllRounds = (numberOfRounds, firstRoundMatches) => {
 }
 
 // Take a string, isolate the names & store in an object
-export const createOrderedPlayerList = (playerNames) => {
+export const finalizeSeeding = (playerNames) => {
 	// Store the provided names in an array
 	let initialParticipants = playerNames.value.split('\n');
 
@@ -152,24 +138,21 @@ export const createOrderedPlayerList = (playerNames) => {
 		participants = ranSeeding(participants);
 	}
 	
-	participants = creatPlayerObject(participants);
+	// Determine number of byes
+	let tournamentSize = brackets.getTournamentSize(initialParticipants.length);
+	
+	let numOfByes = tournamentSize - participants.length;
+
+	// Add the required number of byes to the array
+	for (let i=0; i < numOfByes; i++) {
+		participants.push("Bye");
+	}
 
 	return participants;
 }
 
-export const creatPlayerObject = (participants) => {
+export const creatPlayerObjects = (participants) => {
 	let playerObject = [];
-
-	// The list of wins per user will exist only on the public page
-	const userWinsDefined = document.getElementById('userWins');
-
-	// Create array to store the number of wins
-	let userWinsArray = [];
-
-	// Split this list into an array (if it exists)
-	if (userWinsDefined) {
-		userWinsArray = userWinsDefined.value.split('\n')
-	}
 	
 	// Loop through the participants array and store each in an object to replicate the database structure
 	for (let i=0; i < participants.length; i++) {
@@ -178,12 +161,6 @@ export const creatPlayerObject = (participants) => {
 			seed: i + 1,
 			wins: 0
 		}
-
-		// If wins array exists, populate the corresponding number into the competitor object.
-		if (userWinsArray.length > 0) {
-			competitorObject.wins = userWinsArray[i];
-		}
-
 		playerObject.push(competitorObject);
 	}
 	return playerObject;
@@ -202,20 +179,21 @@ export const addButtonListeners = () => {
 export const createRoundOneDOMElements = (matchups) => {
 	let playerDivs = []; // Stores one element for each player
 	let playerPairDivs = []; // Stores combined playerDivs for each matchup
-	
+
 	// Create One DOM element for each player and store them in the array
 	// Iterate over the matchups array
 	for (let j=0; j < matchups.length; j++) {
 		
 		// Iterate over the nested array
-		// For some reason there is a third array which requires the static [0] below.
 		for (let k=0; k < matchups[j][0].length; k++) {
 
-			let round = 1;
+			let name = matchups[j][0][k].playername;
 			let seed = matchups[j][0][k].seed;
+			let wins = matchups[j][0][k].wins
+			let round = 1;
+			let matchup = j+1;
 
-			// createPlayerDiv = (playerName, round, seed, matchup)
-			let playerElement = createPlayerDiv(matchups[j][0][k].playername, round, seed, j+1, matchups[j][0][k].wins);
+			let playerElement = createPlayerDiv(name, round, seed, matchup, wins);
 
 			playerDivs.push(playerElement);
 		}
@@ -267,12 +245,6 @@ export const createResetButton = () => {
 	
 	return resetButton;
 }
-
-// export const resetButtonInitialize = () => {
-// 	document.getElementById('resetBtn').addEventListener('click', () => {
-// 		location.reload(true);
-// 	});
-// }
 
 // Advance competitor to next bracket
 function advance(element) {
