@@ -72,39 +72,65 @@ export const createBrackets = (playerNames) => {
 export const createAllRounds = (numberOfRounds, roundOneMatchups) => {
 	let tContainer = document.getElementById('tournament-container');
 	let roundCounter = 2;
-	let matchupsThisRound = roundOneMatchups.length / 2;
+	let matchupsThisRound = roundOneMatchups.length;
 
 	// Iterate for each *round*
 	while ( numberOfRounds > 1) {
 		// Create a DIV to contain this input field
 		let roundContainer = document.createElement('div');
 
-		// Iterate for each *matchup*
+		let matchupDiv = document.createElement('div');
+
+		// Iterate for each *matchup from the previous round*
 		for (let i=0; i < matchupsThisRound; i++) {
+			// matchupDiv.classList = `round-${roundCounter} matchups-${matchupsThisRound}`;
 			// Create parent DIV to contain this matchup
-			let matchupDiv = document.createElement('div');
+			// let matchupDiv = document.createElement('div');
 			matchupDiv.classList = `round-${roundCounter} matchups-${matchupsThisRound}`;
 			
-			let playername = null;
 			let round = roundCounter;
-			let seed = null;
 			let matchup = i + 1;
-			let wins = 0;
+
+			// Determine who won in the top contest & populate that name
+			let playerNameForTopInput = "";
+			let winsForTopInput = "";
+
+			// The top player in the current matchup
+			let firstPlayerWins = roundOneMatchups[i][0][0].wins;
+
+			// The bottom player in the current matchup
+			let secondPlayerWins = roundOneMatchups[i][0][1].wins;
+
+			// Populate the vars based on which (if any) player advanced to this round
+			if (firstPlayerWins + 1 >= roundCounter || secondPlayerWins + 1 >= roundCounter) {
+				if (firstPlayerWins > secondPlayerWins) {
+					playerNameForTopInput = roundOneMatchups[i][0][0].playername;
+					winsForTopInput = firstPlayerWins;
+				} else if (secondPlayerWins > firstPlayerWins) {
+					playerNameForTopInput = roundOneMatchups[i][0][1].playername;
+					winsForTopInput = secondPlayerWins;
+				}
+			}
 
 			// Insert 2 inputs for a round that still has competition
-			if (matchupsThisRound >= 1) {
-				roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound}`;
+			// if (matchupsThisRound >= 1) {
+			// 	roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound}`;
 
-				// Append the element to matchupDiv
-				matchupDiv.append( createPlayerDiv(playername, round, seed, matchup, wins) );
-				matchupDiv.append( createPlayerDiv(playername, round, seed, matchup, wins) );
-			// Otherwise it is the final round
-			} else {
-				roundContainer.classList = `winner-round`;
-				matchupDiv.append( createPlayerDiv(playername, round, seed, matchup, wins) );
-			}
-			
-			roundContainer.append( matchupDiv )
+			// Append the element to matchupDiv
+			matchupDiv.append( createPlayerDiv(playerNameForTopInput, round, null, matchup, winsForTopInput) );
+			// 	// matchupDiv.append( createPlayerDiv(playerNameForBottomInput, round, null, matchup, winsForBottomInput) );
+			// // Otherwise it is the final round
+			// } else {
+			// 	roundContainer.classList = `winner-round`;
+			// 	matchupDiv.append( createPlayerDiv(playerNameForTopInput, round, null, matchup, winsForTopInput) );
+			// }
+
+			// If this is an even iteration, append matchupDiv
+			if ( (i+1) % 2 == 0) {
+				roundContainer.append( matchupDiv )
+				// Reset matchupDiv
+				matchupDiv = document.createElement('div');
+			}			
 		}
 
 		tContainer.append( roundContainer );
@@ -217,18 +243,25 @@ export const createPlayerDiv = (playerName, round, seed, matchup, wins) => {
 	const singleBracket = document.createElement('div');
 	singleBracket.classList = 'playerInputContainer';
 
+	// Insert name and lock the input
 	const input = document.createElement('input');
-	const btn = document.createElement('button');
-	if (playerName != null) {
-		input.value = playerName;
-	}
 	input.setAttribute("disabled", "disabled");
+	input.value = playerName;
+
+	// Create button
+	const btn = document.createElement('button');
 	btn.innerText = '=>';
 	btn.classList = `btn-advance btn-round-${round} btn-seed-${seed}`;
 	btn.dataset.round = round;
 	btn.dataset.seed = seed;
 	btn.dataset.matchup = matchup;
 	btn.dataset.wins = wins;
+
+	// Lock the button so Byes cannot advance to the next round
+	if (playerName == "Bye") {
+		btn.setAttribute("disabled", "disabled");
+	}
+
 	singleBracket.appendChild(input);
 	singleBracket.appendChild(btn);
 
