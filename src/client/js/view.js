@@ -192,7 +192,6 @@ export const createRoundOneDOMElements = (matchups) => {
 			let wins = matchups[j][0][k].wins
 			let round = 1;
 			let matchup = j+1;
-
 			let playerElement = createPlayerDiv(name, round, seed, matchup, wins);
 
 			playerDivs.push(playerElement);

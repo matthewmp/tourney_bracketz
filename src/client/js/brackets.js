@@ -23,7 +23,7 @@ export const matchParticipants = (participants) => {
 	// Array to hold pairs of opponents
 	let brackets = [];
 
-	// Create array to store the number of wins per player
+	// Create array to store the number of wins per player. This will be stored backwords!
 	let userWinsArray = [];
 
 	// This element will exist only on the public page, not during tournament creation
@@ -50,13 +50,13 @@ export const matchParticipants = (participants) => {
 		let lowSeed = participants.splice(participants.length - 1)
 
 		// Set the number of wins for the low seed
-		lowSeed[0].wins = userWinsArray[userWinsArray.length - 1];
+		lowSeed[0].wins = userWinsArray[0];
 
 		// Identify the highest seed (first in array)
 		let highSeed = participants.splice(0,1);
 
 		// Set the number of wins for the high seed
-		highSeed[0].wins = userWinsArray[0];
+		highSeed[0].wins = userWinsArray[userWinsArray.length - 1];
 
 		// Delete the assigned values from userWinsArray
 		userWinsArray.splice(userWinsArray.length - 1, 1)
