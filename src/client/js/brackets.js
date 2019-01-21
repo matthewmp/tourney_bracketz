@@ -50,13 +50,13 @@ export const matchParticipants = (participants) => {
 		let lowSeed = participants.splice(participants.length - 1)
 
 		// Set the number of wins for the low seed
-		lowSeed[0].wins = userWinsArray[0];
+		lowSeed[0].wins = userWinsArray[userWinsArray.length - 1];
 
 		// Identify the highest seed (first in array)
 		let highSeed = participants.splice(0,1);
 
 		// Set the number of wins for the high seed
-		highSeed[0].wins = userWinsArray[userWinsArray.length - 1];
+		highSeed[0].wins = userWinsArray[0];
 
 		// Delete the assigned values from userWinsArray
 		userWinsArray.splice(userWinsArray.length - 1, 1)
