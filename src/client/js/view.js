@@ -13,7 +13,7 @@ export let numOfRoundsTable = {
 }
 
 // Initialize the buttons, set up listeners
-export const initializeTestBracketz = () => {
+export const initializeButtonListeners = () => {
 
 	// Grab participant entry elements
 	const submitButton = document.getElementById('btnSubmit');
@@ -69,16 +69,24 @@ export const createBrackets = (playerNames) => {
 	addButtonListeners();
 }
 
-export const createAllRounds = (numberOfRounds, roundOneMatchups) => {
+export const createAllRounds = (numberOfRounds, matchupsToCreate) => {
 	let tContainer = document.getElementById('tournament-container');
 	let roundCounter = 2;
-	let matchupsThisRound = roundOneMatchups.length;
+	let matchupsThisRound = matchupsToCreate.length;
 
 	// Iterate for each *round*
 	while ( numberOfRounds > 1) {
-		// Create a DIV to contain this input field
+		// Create the parent DIV to contain this input field
 		let roundContainer = document.createElement('div');
-
+		
+		// Add the proper classes to this div
+		if (matchupsThisRound > 1) {
+			roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound / 2}`;
+		} else {
+			roundContainer.classList = `round-${roundCounter}-container`;
+		}
+		
+		
 		let matchupDiv = document.createElement('div');
 
 		// Iterate for each *matchup from the previous round*
@@ -96,25 +104,23 @@ export const createAllRounds = (numberOfRounds, roundOneMatchups) => {
 			let winsForTopInput = "";
 
 			// The top player in the current matchup
-			let firstPlayerWins = roundOneMatchups[i][0][0].wins;
+			let firstPlayerWins = matchupsToCreate[i][0][0].wins;
 
 			// The bottom player in the current matchup
-			let secondPlayerWins = roundOneMatchups[i][0][1].wins;
+			let secondPlayerWins = matchupsToCreate[i][0][1].wins;
 
 			// Populate the vars based on which (if any) player advanced to this round
 			if (firstPlayerWins + 1 >= roundCounter || secondPlayerWins + 1 >= roundCounter) {
 				if (firstPlayerWins > secondPlayerWins) {
-					playerNameForTopInput = roundOneMatchups[i][0][0].playername;
+					playerNameForTopInput = matchupsToCreate[i][0][0].playername;
 					winsForTopInput = firstPlayerWins;
 				} else if (secondPlayerWins > firstPlayerWins) {
-					playerNameForTopInput = roundOneMatchups[i][0][1].playername;
+					playerNameForTopInput = matchupsToCreate[i][0][1].playername;
 					winsForTopInput = secondPlayerWins;
 				}
 			}
 
 			// Insert 2 inputs for a round that still has competition
-			// if (matchupsThisRound >= 1) {
-			// 	roundContainer.classList = `round-${roundCounter}-container total-matchups-${matchupsThisRound}`;
 
 			// Append the element to matchupDiv
 			matchupDiv.append( createPlayerDiv(playerNameForTopInput, round, null, matchup, winsForTopInput) );

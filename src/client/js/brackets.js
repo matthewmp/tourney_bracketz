@@ -97,7 +97,7 @@ export const paintRoundOneToDom = (pairedBrackets) => {
 
 	// Create a DIV element to hold the round one elements
 	let roundOneDOM = document.createElement('div');
-	roundOneDOM.classList = `round-one-container total-matchups-${pairedBrackets.length}`;
+	roundOneDOM.classList = `round-1-container total-matchups-${pairedBrackets.length}`;
 
 	// Append each matchup to round One DOM element
 	for (let i=0; i < pairedBrackets.length; i++) {

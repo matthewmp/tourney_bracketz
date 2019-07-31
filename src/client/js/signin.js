@@ -1,4 +1,4 @@
-import { initializeTestBracketz } from './view';
+import { initializeButtonListeners } from './view';
 
 // Wait for DOM to finish loading before attaching listeners.
 window.onload = () => {
@@ -65,5 +65,5 @@ window.onload = () => {
     confirm_password.onkeyup = validatePassword;
 
     // Test Brackets variables
-    initializeTestBracketz();
+    initializeButtonListeners();
 }
